@@ -1,0 +1,38 @@
+<?php
+//**---------------------------------------------------------------------+
+//**  LYECS 分类模型
+//**---------------------------------------------------------------------+
+//**   版权所有：江西禹商科技有限公司. 官网：https://www.lyecs.com
+//**---------------------------------------------------------------------+
+//**   作者：老杨(YangQiang) yq@lyecs.com
+//**---------------------------------------------------------------------+
+//**   提示：LYECS商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
+//**---------------------------------------------------------------------+
+
+namespace app\model\authority;
+
+use app\common\utils\Time;
+use think\Model;
+
+class AdminUser extends Model
+{
+    protected $pk = 'admin_id';
+    protected $table = 'admin_user';
+    protected $json = ['extra', 'auth_list', 'menu_tag', 'order_export'];
+    // 设置JSON数据返回数组
+    protected $jsonAssoc = true;
+    protected $createTime = "add_time";
+    protected $autoWriteTimestamp = true;
+
+    // 关联角色
+    public function role()
+    {
+        return $this->hasOne(AdminRole::class, 'role_id', 'role_id')->bind(["role_name"]);
+    }
+
+    // 添加时间
+    public function getAddTimeAttr($value)
+    {
+        return Time::format($value);
+    }
+}

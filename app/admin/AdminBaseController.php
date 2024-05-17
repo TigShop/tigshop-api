@@ -1,0 +1,26 @@
+<?php
+
+declare(strict_types=1);
+
+namespace app\admin;
+
+use app\BaseController;
+use app\service\authority\AuthorityService;
+
+/**
+ * 控制器基础类
+ */
+abstract class AdminBaseController extends BaseController
+{
+    /**
+     * 权限验证
+     *
+     * @param string $author
+     * @return bool
+     */
+    public function checkAuthor($author = ''): bool
+    {
+        return true;
+//         return app(AuthorityService::class)->checkAuthor($author,request()->storeId,request()->authList);
+    }
+}
