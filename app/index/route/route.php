@@ -104,7 +104,7 @@ Route::group('common', function () {
     // 验证
     Route::group('verification', function () {
         // 获取验证码
-        Route::get('captcha', 'common.verification/captcha');
+        Route::post('captcha', 'common.verification/captcha');
         // 一次验证
         Route::post('check', 'common.verification/check');
         // 二次验证
