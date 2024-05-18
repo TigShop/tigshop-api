@@ -97,7 +97,7 @@ class WithdrawApply extends IndexBaseController
      * 编辑提现账号
      * @return Response
      */
-    public function account_detail(): Response
+    public function accountDetail(): Response
     {
         $data = $this->request->only([
             'account_id/d' => 0,
