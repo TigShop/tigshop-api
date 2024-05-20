@@ -22,7 +22,7 @@ class WechatPayService extends PayService
     const KEY_LENGTH_BYTE = 32;
     const AUTH_TAG_LENGTH_BYTE = 16;
 
-    private $payType = 'null';
+    private string|null $payType = null;
 
     protected string $appId = '';
 
@@ -350,8 +350,7 @@ class WechatPayService extends PayService
      */
     public function getNotifyUrl(): string
     {
-        return 'https://demo2.lyecs.com/index/test';
-        return Url::app('');
+        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/notify';
     }
 
     /**
@@ -360,8 +359,7 @@ class WechatPayService extends PayService
      */
     public function getRefundNotifyUrl(): string
     {
-        return 'https://demo2.lyecs.com/index/test';
-        return Url::app('');
+        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/refund_notify';
     }
 
     /**

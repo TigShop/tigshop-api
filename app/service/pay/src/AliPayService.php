@@ -240,8 +240,7 @@ class AliPayService extends PayService
      */
     public function getNotifyUrl(): string
     {
-        // todo
-        return 'https://demo2.lyecs.com/index/test';
+        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/notify';
     }
 
     /**
@@ -250,8 +249,7 @@ class AliPayService extends PayService
      */
     public function getRefundNotifyUrl(): string
     {
-        //  todo
-        return 'https://demo2.lyecs.com/index/test';
+        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/refund_notify';
     }
 
     /**
@@ -260,7 +258,6 @@ class AliPayService extends PayService
      */
     public function getReturnUrl(): string
     {
-        // todo
-        return 'https://demo2.lyecs.com/index/test';
+        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/member/order/list';
     }
 }
