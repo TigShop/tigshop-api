@@ -187,7 +187,6 @@ class SeckillService extends BaseService
             throw new ApiException(/** LANG */'当前时间内已存在秒杀活动');
         }
         $seckill_item_data = $data['seckill_item'];
-        unset($data['seckill_item']);
         if (empty($seckill_item_data)) {
             throw new ApiException(/** LANG */'请选择参加秒杀的商品');
         }
@@ -211,6 +210,8 @@ class SeckillService extends BaseService
     public function createSeckill(array $data): bool
     {
         $seckill_data = $this->getSeckillJudge($data);
+        $seckill_item_data = $data['seckill_item'];
+        unset($data['seckill_item']);
         $result = Seckill::create($seckill_data);
         AdminLog::add('新增秒杀活动:' . $data['seckill_name']);
         $id = $result->seckill_id;
