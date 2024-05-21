@@ -240,7 +240,7 @@ class AliPayService extends PayService
      */
     public function getNotifyUrl(): string
     {
-        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/notify';
+        return Config::get('pc_domain') . '/api/index/order/pay/notify';
     }
 
     /**
@@ -249,7 +249,7 @@ class AliPayService extends PayService
      */
     public function getRefundNotifyUrl(): string
     {
-        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/refund_notify';
+        return Config::get('pc_domain') . '/api/index/order/pay/refund_notify';
     }
 
     /**
@@ -258,6 +258,6 @@ class AliPayService extends PayService
      */
     public function getReturnUrl(): string
     {
-        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/member/order/list';
+        return Config::get('pc_domain') . '/member/order/list';
     }
 }

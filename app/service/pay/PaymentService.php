@@ -74,6 +74,7 @@ class PaymentService extends BaseService
                     $order->out_trade_no = $pay_sn;
                     $order->save();
                     app(OrderDetailService::class)->setOrderId($pay_log['order_id'])->setPaidMoney($pay_log['pay_amount'])->updateOrderMoney();
+                    app(OrderService::class)->setOrderPaid($pay_log['order_id']);
                     break;
                 case 1:
                     //充值

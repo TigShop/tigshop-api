@@ -128,7 +128,7 @@ class WechatPayService extends PayService
             $data = json_decode($data, true);
             //查询订单
             $query_data = $this->queryOrderPay($data['out_trade_no']);
-            if ($query_data['trade_state'] == 'trade_state') {
+            if ($query_data['trade_state'] == 'SUCCESS') {
                 //支付成功--设置订单未已支付
                 $pay_sn = $query_data['out_trade_no'];
                 app(PaymentService::class)->paySuccess($pay_sn);
@@ -350,7 +350,7 @@ class WechatPayService extends PayService
      */
     public function getNotifyUrl(): string
     {
-        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/notify';
+        return Config::get('pc_domain') . '/api/index/order/pay/notify';
     }
 
     /**
@@ -359,7 +359,7 @@ class WechatPayService extends PayService
      */
     public function getRefundNotifyUrl(): string
     {
-        return $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/index/order/pay/refund_notify';
+        return Config::get('pc_domain') . '/api/index/order/pay/refund_notify';
     }
 
     /**
