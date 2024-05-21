@@ -6,7 +6,7 @@
 //**---------------------------------------------------------------------+
 //**   作者：老杨 yq@lyecs.com
 //**---------------------------------------------------------------------+
-//**   提示：LYECS老杨商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
+//**   提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
 error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
@@ -46,14 +46,6 @@ defined('STORE_ADMIN_LIB_PATH') or define('STORE_ADMIN_LIB_PATH', APP_PATH . 'st
 defined('COOKIE_PATH') or define('COOKIE_PATH', '/');
 defined('COOKIE_DOMAIN') or define('COOKIE_DOMAIN', '');
 defined('HASH_CODE') or define('HASH_CODE', 'lyecs');
-
-defined('IMAGE_PATH_NAME') or define('IMAGE_PATH_NAME', 'img');
-
-defined('APP_CHARSET') or define('APP_CHARSET', 'utf-8');
-defined('APP_LANG') or define('APP_LANG', 'zh_cn');
-defined('APPNAME') or define('APPNAME', 'LYECS');
-defined('VERSION') or define('VERSION', '5.0');
-defined('RELEASE') or define('RELEASE', '20191001');
 
 defined('TPL_DIR') or define('TPL_DIR', 'tpl'); //模板文件名
 defined('DATA_DIR') or define('DATA_DIR', 'data'); //旧版本
