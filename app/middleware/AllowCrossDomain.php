@@ -45,7 +45,7 @@ class AllowCrossDomain
         if (!isset($header['Access-Control-Allow-Origin'])) {
             $origin = $request->header('origin');
 
-            if ($origin && ('' == $allowList || str_contains($origin, $allowList))) {
+            if ($origin && ('' == $allowList || in_array($origin, $allowList))) {
                 $header['Access-Control-Allow-Origin'] = $origin;
             } else {
                 $header['Access-Control-Allow-Origin'] = '*';

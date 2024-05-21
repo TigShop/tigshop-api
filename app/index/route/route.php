@@ -161,6 +161,16 @@ Route::group('category', function () {
         Route::get('all', 'category.category/all');
         // 商品相关分类
         Route::get('relate_info', 'category.category/relateInfo');
+        // 商品相关分类
+        Route::get('relate_category', 'category.category/getRelateCategory');
+        // 商品相关品牌
+        Route::get('relate_brand', 'category.category/getRelateBrand');
+        // 商品相关排行
+        Route::get('relate_rank', 'category.category/getRelateRank');
+        // 商品相关文章
+        Route::get('relate_article', 'category.category/getRelateArticle');
+        // 商品相关排行
+        Route::get('relate_look_also', 'category.category/getRelateLookAlso');
         // 热门分类
         Route::get('hot', 'category.category/hot');
     });
