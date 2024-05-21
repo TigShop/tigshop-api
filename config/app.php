@@ -37,6 +37,11 @@ return [
     // 显示错误信息
     'show_error_msg'   => false,
 
+    'allow_cross_domain' => [
+        'http://demo.tigshop.com',
+        'https://demo.tigshop.com',
+    ],
+
     'kf'    =>  [
         'yzf_url' => 'https://yzf.qq.com/xv/web/static/chat/index.html?sign=',//腾讯云智服
         'work_url' => 'https://work.weixin.qq.com/kfid/',//企业客服
