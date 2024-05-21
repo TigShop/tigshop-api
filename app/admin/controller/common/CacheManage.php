@@ -1,12 +1,12 @@
 <?php
 //**---------------------------------------------------------------------+
-//**  LYECS 后台控制器文件 -- 缓存管理
+//**   后台控制器文件 -- 缓存管理
 //**---------------------------------------------------------------------+
-//**   版权所有：江西禹商科技有限公司. 官网：https://www.lyecs.com
+//**   版权所有：江西佰商科技有限公司. 官网：https://www.tigshop.com
 //**---------------------------------------------------------------------+
-//**   作者：老杨(YangQiang) yq@lyecs.com
+//**   作者：Tigshop团队，yq@tigshop.com
 //**---------------------------------------------------------------------+
-//**   提示：LYECS商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
+//**   提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 namespace app\admin\controller\common;
 
@@ -31,7 +31,7 @@ class CacheManage extends BaseController
         return $this->success([
             'user_info' => app(AdminUserService::class)->getDetail(request()->adminUid),
             'config' => app(ConfigService::class)->getAdminConfig(),
-            'main_menu' => app(AuthorityService::class)->authorityList(0,0,request()->authList),
+            'main_menu' => app(AuthorityService::class)->authorityList(0, 0, request()->authList),
         ]);
     }
 }

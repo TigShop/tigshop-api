@@ -1,12 +1,12 @@
 <?php
 //**---------------------------------------------------------------------+
-//**  LYECS 后台控制器文件 -- 验证
+//**   后台控制器文件 -- 验证
 //**---------------------------------------------------------------------+
-//**   版权所有：江西禹商科技有限公司. 官网：https://www.lyecs.com
+//**   版权所有：江西佰商科技有限公司. 官网：https://www.tigshop.com
 //**---------------------------------------------------------------------+
-//**   作者：老杨(YangQiang) yq@lyecs.com
+//**   作者：Tigshop团队，yq@tigshop.com
 //**---------------------------------------------------------------------+
-//**   提示：LYECS商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
+//**   提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
 namespace app\index\controller\common;
@@ -78,7 +78,7 @@ class Verification extends IndexBaseController
      * 获取验证码服务
      * @return BlockPuzzleCaptchaService|ClickWordCaptchaService
      */
-    protected function getCaptchaService(): BlockPuzzleCaptchaService|ClickWordCaptchaService
+    protected function getCaptchaService(): BlockPuzzleCaptchaService | ClickWordCaptchaService
     {
         $captchaType = 'blockPuzzle'; //request()->post('captchaType', null);
         $config = config('verification');
