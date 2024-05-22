@@ -136,8 +136,9 @@ class PcNavigationService extends BaseService
     {
         $nav_list = PcNavigation::when($type > 0, function ($query) use ($type) {
             return $query->where('type', $type);
-        })->where("is_show", 1)->order("sort_order", "asc")->select()->toArray();
+        })->where("is_show", 1)->order('parent_id', 'asc')->order("sort_order", "asc")->select()->toArray();
         $res = [];
+
         if (!empty($nav_list)) {
             $res = $this->xmsbGetDataTree($nav_list, $parent_id);
             // 保留二层分类
@@ -152,7 +153,7 @@ class PcNavigationService extends BaseService
      * @param int $first_parent
      * @return array
      */
-    public function xmsbGetDataTree(array $arr, int $first_parent = 0): array
+    public function xmsbGetDataTree(array $arr, int $first_parent = 0, $data = []): array
     {
         $tree = ['id' => 0, 'parent_id' => 0];
         $tmpMap = [$first_parent => &$tree];
@@ -166,6 +167,7 @@ class PcNavigationService extends BaseService
         }
         return (array) $tree['children'];
     }
+
 
     /**
      * 获取二层分类
