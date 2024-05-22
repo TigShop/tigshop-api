@@ -87,6 +87,7 @@ Route::group('common', function () {
         // 售后服务配置
         Route::get('after_sales_service', 'common.config/afterSalesService');
     });
+
     // PC
     Route::group('pc', function () {
         // 获取头部导航
@@ -95,6 +96,11 @@ Route::group('common', function () {
         Route::get('get_nav', 'common.pc/getNav');
         // 获取PC分类抽屉
         Route::get('get_cat_floor', 'common.pc/getCatFloor');
+    });
+    // PC
+    Route::group('util', function () {
+        // 获取头部导航
+        Route::get('qr_code', 'common.util/qrCode');
     });
     // 推荐位
     Route::group('recommend', function () {

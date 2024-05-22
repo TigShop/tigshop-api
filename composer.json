@@ -43,7 +43,8 @@
         "alibabacloud/dysmsapi-20170525": "2.0.24",
         "alipaysdk/easysdk": "^2.2",
         "qcloud/cos-sdk-v5": "^2.6",
-        "ext-curl": "*"
+        "ext-curl": "*",
+        "chillerlan/php-qrcode": "v5.0.2"
     },
     "repositories": [
         {

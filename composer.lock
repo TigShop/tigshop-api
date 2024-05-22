@@ -4,7 +4,7 @@
     "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
     "This file is @generated automatically"
   ],
-  "content-hash": "db4be4497c5e107a90af856f301b5ccf",
+  "content-hash": "beb1481615f3322c77c0752d97ac6886",
   "packages": [
     {
       "name": "adbario/php-dot-notation",
@@ -489,16 +489,16 @@
     },
     {
       "name": "alibabacloud/sdk",
-      "version": "1.8.2094",
+      "version": "1.8.2117",
       "source": {
         "type": "git",
         "url": "https://github.com/aliyun/openapi-sdk-php.git",
-        "reference": "fdb06920185ce4c7084b9b87588f54ef5973eb08"
+        "reference": "4f5527328a01582d04f07211f73e4ebdb296d479"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/aliyun/openapi-sdk-php/zipball/fdb06920185ce4c7084b9b87588f54ef5973eb08",
-        "reference": "fdb06920185ce4c7084b9b87588f54ef5973eb08",
+        "url": "https://api.github.com/repos/aliyun/openapi-sdk-php/zipball/4f5527328a01582d04f07211f73e4ebdb296d479",
+        "reference": "4f5527328a01582d04f07211f73e4ebdb296d479",
         "shasum": "",
         "mirrors": [
           {
@@ -729,7 +729,7 @@
         "issues": "https://github.com/aliyun/openapi-sdk-php/issues",
         "source": "https://github.com/aliyun/openapi-sdk-php"
       },
-      "time": "2024-04-01T02:32:20+00:00"
+      "time": "2024-05-22T05:42:25+00:00"
     },
     {
       "name": "alibabacloud/tea",
@@ -1015,12 +1015,12 @@
       "source": {
         "type": "git",
         "url": "https://github.com/alipay/alipay-sdk-php-all.git",
-        "reference": "3b86882423995c15992c277ffeb1c8e8b2a4a6c3"
+        "reference": "e97bc8a2069d410948c1c96985da84c19389186f"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/alipay/alipay-sdk-php-all/zipball/3b86882423995c15992c277ffeb1c8e8b2a4a6c3",
-        "reference": "3b86882423995c15992c277ffeb1c8e8b2a4a6c3",
+        "url": "https://api.github.com/repos/alipay/alipay-sdk-php-all/zipball/e97bc8a2069d410948c1c96985da84c19389186f",
+        "reference": "e97bc8a2069d410948c1c96985da84c19389186f",
         "shasum": "",
         "mirrors": [
           {
@@ -1075,7 +1075,7 @@
       "support": {
         "source": "https://github.com/alipay/alipay-sdk-php-all/tree/master"
       },
-      "time": "2024-03-27T06:32:49+00:00"
+      "time": "2024-05-20T05:59:04+00:00"
     },
     {
       "name": "aliyuncs/oss-sdk-php",
@@ -1202,6 +1202,177 @@
         }
       ],
       "time": "2024-02-09T16:56:22+00:00"
+    },
+    {
+      "name": "chillerlan/php-qrcode",
+      "version": "5.0.2",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/chillerlan/php-qrcode.git",
+        "reference": "da5bdb82c8755f54de112b271b402aaa8df53269"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/chillerlan/php-qrcode/zipball/da5bdb82c8755f54de112b271b402aaa8df53269",
+        "reference": "da5bdb82c8755f54de112b271b402aaa8df53269",
+        "shasum": "",
+        "mirrors": [
+          {
+            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+            "preferred": true
+          }
+        ]
+      },
+      "require": {
+        "chillerlan/php-settings-container": "^2.1.4 || ^3.1",
+        "ext-mbstring": "*",
+        "php": "^7.4 || ^8.0"
+      },
+      "require-dev": {
+        "chillerlan/php-authenticator": "^4.1 || ^5.1",
+        "phan/phan": "^5.4",
+        "phpmd/phpmd": "^2.15",
+        "phpunit/phpunit": "^9.6",
+        "setasign/fpdf": "^1.8.2",
+        "squizlabs/php_codesniffer": "^3.8"
+      },
+      "suggest": {
+        "chillerlan/php-authenticator": "Yet another Google authenticator! Also creates URIs for mobile apps.",
+        "setasign/fpdf": "Required to use the QR FPDF output.",
+        "simple-icons/simple-icons": "SVG icons that you can use to embed as logos in the QR Code"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "chillerlan\\QRCode\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT",
+        "Apache-2.0"
+      ],
+      "authors": [
+        {
+          "name": "Kazuhiko Arase",
+          "homepage": "https://github.com/kazuhikoarase/qrcode-generator"
+        },
+        {
+          "name": "ZXing Authors",
+          "homepage": "https://github.com/zxing/zxing"
+        },
+        {
+          "name": "Ashot Khanamiryan",
+          "homepage": "https://github.com/khanamiryan/php-qrcode-detector-decoder"
+        },
+        {
+          "name": "Smiley",
+          "email": "smiley@chillerlan.net",
+          "homepage": "https://github.com/codemasher"
+        },
+        {
+          "name": "Contributors",
+          "homepage": "https://github.com/chillerlan/php-qrcode/graphs/contributors"
+        }
+      ],
+      "description": "A QR code generator and reader with a user friendly API. PHP 7.4+",
+      "homepage": "https://github.com/chillerlan/php-qrcode",
+      "keywords": [
+        "phpqrcode",
+        "qr",
+        "qr code",
+        "qr-reader",
+        "qrcode",
+        "qrcode-generator",
+        "qrcode-reader"
+      ],
+      "support": {
+        "docs": "https://php-qrcode.readthedocs.io",
+        "issues": "https://github.com/chillerlan/php-qrcode/issues",
+        "source": "https://github.com/chillerlan/php-qrcode"
+      },
+      "funding": [
+        {
+          "url": "https://www.paypal.com/donate?hosted_button_id=WLYUNAT9ZTJZ4",
+          "type": "custom"
+        },
+        {
+          "url": "https://ko-fi.com/codemasher",
+          "type": "ko_fi"
+        }
+      ],
+      "time": "2024-02-27T14:37:26+00:00"
+    },
+    {
+      "name": "chillerlan/php-settings-container",
+      "version": "3.2.0",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/chillerlan/php-settings-container.git",
+        "reference": "8f93648fac8e6bacac8e00a8d325eba4950295e6"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/chillerlan/php-settings-container/zipball/8f93648fac8e6bacac8e00a8d325eba4950295e6",
+        "reference": "8f93648fac8e6bacac8e00a8d325eba4950295e6",
+        "shasum": "",
+        "mirrors": [
+          {
+            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+            "preferred": true
+          }
+        ]
+      },
+      "require": {
+        "ext-json": "*",
+        "php": "^8.1"
+      },
+      "require-dev": {
+        "phan/phan": "^5.4",
+        "phpmd/phpmd": "^2.15",
+        "phpunit/phpunit": "^10.5",
+        "squizlabs/php_codesniffer": "^3.9"
+      },
+      "type": "library",
+      "autoload": {
+        "psr-4": {
+          "chillerlan\\Settings\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Smiley",
+          "email": "smiley@chillerlan.net",
+          "homepage": "https://github.com/codemasher"
+        }
+      ],
+      "description": "A container class for immutable settings objects. Not a DI container.",
+      "homepage": "https://github.com/chillerlan/php-settings-container",
+      "keywords": [
+        "Settings",
+        "configuration",
+        "container",
+        "helper"
+      ],
+      "support": {
+        "issues": "https://github.com/chillerlan/php-settings-container/issues",
+        "source": "https://github.com/chillerlan/php-settings-container"
+      },
+      "funding": [
+        {
+          "url": "https://www.paypal.com/donate?hosted_button_id=WLYUNAT9ZTJZ4",
+          "type": "custom"
+        },
+        {
+          "url": "https://ko-fi.com/codemasher",
+          "type": "ko_fi"
+        }
+      ],
+      "time": "2024-03-02T20:07:15+00:00"
     },
     {
       "name": "clagiordano/weblibs-configmanager",
@@ -1375,20 +1546,8 @@
       "version": "v6.10.0",
       "source": {
         "type": "git",
-        "url": "https://github.com/firebase/php-jwt.git",
+        "url": "https://gitee.com/tigshop-work/php-jwt.git",
         "reference": "a49db6f0a5033aef5143295342f1c95521b075ff"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/firebase/php-jwt/zipball/a49db6f0a5033aef5143295342f1c95521b075ff",
-        "reference": "a49db6f0a5033aef5143295342f1c95521b075ff",
-        "shasum": "",
-        "mirrors": [
-          {
-            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-            "preferred": true
-          }
-        ]
       },
       "require": {
         "php": "^7.4||^8.0"
@@ -1411,7 +1570,6 @@
           "Firebase\\JWT\\": "src"
         }
       },
-      "notification-url": "https://packagist.org/downloads/",
       "license": [
         "BSD-3-Clause"
       ],
@@ -1433,10 +1591,6 @@
         "jwt",
         "php"
       ],
-      "support": {
-        "issues": "https://github.com/firebase/php-jwt/issues",
-        "source": "https://github.com/firebase/php-jwt/tree/v6.10.0"
-      },
       "time": "2023-12-01T16:26:39+00:00"
     },
     {
@@ -1497,6 +1651,95 @@
         "source": "https://github.com/fukuball/jieba-php/tree/0.34"
       },
       "time": "2022-08-15T06:26:03+00:00"
+    },
+    {
+      "name": "guzzlehttp/command",
+      "version": "1.3.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/guzzle/command.git",
+        "reference": "0eebc653784f4902b3272e826fe8e88743d14e77"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/guzzle/command/zipball/0eebc653784f4902b3272e826fe8e88743d14e77",
+        "reference": "0eebc653784f4902b3272e826fe8e88743d14e77",
+        "shasum": "",
+        "mirrors": [
+          {
+            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+            "preferred": true
+          }
+        ]
+      },
+      "require": {
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/promises": "^1.5.3 || ^2.0.1",
+        "guzzlehttp/psr7": "^1.9.1 || ^2.5.1",
+        "php": "^7.2.5 || ^8.0"
+      },
+      "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.8.2",
+        "phpunit/phpunit": "^8.5.19 || ^9.5.8"
+      },
+      "type": "library",
+      "extra": {
+        "bamarni-bin": {
+          "bin-links": true,
+          "forward-command": false
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "GuzzleHttp\\Command\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Graham Campbell",
+          "email": "hello@gjcampbell.co.uk",
+          "homepage": "https://github.com/GrahamCampbell"
+        },
+        {
+          "name": "Michael Dowling",
+          "email": "mtdowling@gmail.com",
+          "homepage": "https://github.com/mtdowling"
+        },
+        {
+          "name": "Jeremy Lindblom",
+          "email": "jeremeamia@gmail.com",
+          "homepage": "https://github.com/jeremeamia"
+        },
+        {
+          "name": "Tobias Nyholm",
+          "email": "tobias.nyholm@gmail.com",
+          "homepage": "https://github.com/Nyholm"
+        }
+      ],
+      "description": "Provides the foundation for building command-based web service clients",
+      "support": {
+        "issues": "https://github.com/guzzle/command/issues",
+        "source": "https://github.com/guzzle/command/tree/1.3.1"
+      },
+      "funding": [
+        {
+          "url": "https://github.com/GrahamCampbell",
+          "type": "github"
+        },
+        {
+          "url": "https://github.com/Nyholm",
+          "type": "github"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/guzzlehttp/command",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2023-12-03T20:46:20+00:00"
     },
     {
       "name": "guzzlehttp/guzzle",
@@ -1629,6 +1872,99 @@
         }
       ],
       "time": "2023-12-03T20:35:24+00:00"
+    },
+    {
+      "name": "guzzlehttp/guzzle-services",
+      "version": "1.4.1",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/guzzle/guzzle-services.git",
+        "reference": "bcab7c0d61672b606510a6fe5af3039d04968c0f"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/guzzle/guzzle-services/zipball/bcab7c0d61672b606510a6fe5af3039d04968c0f",
+        "reference": "bcab7c0d61672b606510a6fe5af3039d04968c0f",
+        "shasum": "",
+        "mirrors": [
+          {
+            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+            "preferred": true
+          }
+        ]
+      },
+      "require": {
+        "guzzlehttp/command": "^1.3.1",
+        "guzzlehttp/guzzle": "^7.8",
+        "guzzlehttp/psr7": "^1.9.1 || ^2.5.1",
+        "guzzlehttp/uri-template": "^1.0.1",
+        "php": "^7.2.5 || ^8.0"
+      },
+      "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.8.2",
+        "phpunit/phpunit": "^8.5.19 || ^9.5.8"
+      },
+      "suggest": {
+        "gimler/guzzle-description-loader": "^0.0.4"
+      },
+      "type": "library",
+      "extra": {
+        "bamarni-bin": {
+          "bin-links": true,
+          "forward-command": false
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "GuzzleHttp\\Command\\Guzzle\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Graham Campbell",
+          "email": "hello@gjcampbell.co.uk",
+          "homepage": "https://github.com/GrahamCampbell"
+        },
+        {
+          "name": "Michael Dowling",
+          "email": "mtdowling@gmail.com",
+          "homepage": "https://github.com/mtdowling"
+        },
+        {
+          "name": "Stefano Kowalke",
+          "email": "blueduck@mail.org",
+          "homepage": "https://github.com/Konafets"
+        },
+        {
+          "name": "Tobias Nyholm",
+          "email": "tobias.nyholm@gmail.com",
+          "homepage": "https://github.com/Nyholm"
+        }
+      ],
+      "description": "Provides an implementation of the Guzzle Command library that uses Guzzle service descriptions to describe web services, serialize requests, and parse responses into easy to use model structures.",
+      "support": {
+        "issues": "https://github.com/guzzle/guzzle-services/issues",
+        "source": "https://github.com/guzzle/guzzle-services/tree/1.4.1"
+      },
+      "funding": [
+        {
+          "url": "https://github.com/GrahamCampbell",
+          "type": "github"
+        },
+        {
+          "url": "https://github.com/Nyholm",
+          "type": "github"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/guzzlehttp/guzzle-services",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2023-12-03T20:48:14+00:00"
     },
     {
       "name": "guzzlehttp/promises",
@@ -1840,6 +2176,98 @@
         }
       ],
       "time": "2023-12-03T20:05:35+00:00"
+    },
+    {
+      "name": "guzzlehttp/uri-template",
+      "version": "v1.0.3",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/guzzle/uri-template.git",
+        "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/guzzle/uri-template/zipball/ecea8feef63bd4fef1f037ecb288386999ecc11c",
+        "reference": "ecea8feef63bd4fef1f037ecb288386999ecc11c",
+        "shasum": "",
+        "mirrors": [
+          {
+            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+            "preferred": true
+          }
+        ]
+      },
+      "require": {
+        "php": "^7.2.5 || ^8.0",
+        "symfony/polyfill-php80": "^1.24"
+      },
+      "require-dev": {
+        "bamarni/composer-bin-plugin": "^1.8.2",
+        "phpunit/phpunit": "^8.5.36 || ^9.6.15",
+        "uri-template/tests": "1.0.0"
+      },
+      "type": "library",
+      "extra": {
+        "bamarni-bin": {
+          "bin-links": true,
+          "forward-command": false
+        }
+      },
+      "autoload": {
+        "psr-4": {
+          "GuzzleHttp\\UriTemplate\\": "src"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "Graham Campbell",
+          "email": "hello@gjcampbell.co.uk",
+          "homepage": "https://github.com/GrahamCampbell"
+        },
+        {
+          "name": "Michael Dowling",
+          "email": "mtdowling@gmail.com",
+          "homepage": "https://github.com/mtdowling"
+        },
+        {
+          "name": "George Mponos",
+          "email": "gmponos@gmail.com",
+          "homepage": "https://github.com/gmponos"
+        },
+        {
+          "name": "Tobias Nyholm",
+          "email": "tobias.nyholm@gmail.com",
+          "homepage": "https://github.com/Nyholm"
+        }
+      ],
+      "description": "A polyfill class for uri_template of PHP",
+      "keywords": [
+        "guzzlehttp",
+        "uri-template"
+      ],
+      "support": {
+        "issues": "https://github.com/guzzle/uri-template/issues",
+        "source": "https://github.com/guzzle/uri-template/tree/v1.0.3"
+      },
+      "funding": [
+        {
+          "url": "https://github.com/GrahamCampbell",
+          "type": "github"
+        },
+        {
+          "url": "https://github.com/Nyholm",
+          "type": "github"
+        },
+        {
+          "url": "https://tidelift.com/funding/github/packagist/guzzlehttp/uri-template",
+          "type": "tidelift"
+        }
+      ],
+      "time": "2023-12-03T19:50:20+00:00"
     },
     {
       "name": "intervention/image",
@@ -2503,16 +2931,16 @@
     },
     {
       "name": "monolog/monolog",
-      "version": "2.9.2",
+      "version": "2.9.3",
       "source": {
         "type": "git",
         "url": "https://github.com/Seldaek/monolog.git",
-        "reference": "437cb3628f4cf6042cc10ae97fc2b8472e48ca1f"
+        "reference": "a30bfe2e142720dfa990d0a7e573997f5d884215"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/Seldaek/monolog/zipball/437cb3628f4cf6042cc10ae97fc2b8472e48ca1f",
-        "reference": "437cb3628f4cf6042cc10ae97fc2b8472e48ca1f",
+        "url": "https://api.github.com/repos/Seldaek/monolog/zipball/a30bfe2e142720dfa990d0a7e573997f5d884215",
+        "reference": "a30bfe2e142720dfa990d0a7e573997f5d884215",
         "shasum": "",
         "mirrors": [
           {
@@ -2539,8 +2967,8 @@
         "mongodb/mongodb": "^1.8",
         "php-amqplib/php-amqplib": "~2.4 || ^3",
         "phpspec/prophecy": "^1.15",
-        "phpstan/phpstan": "^0.12.91",
-        "phpunit/phpunit": "^8.5.14",
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^8.5.38 || ^9.6.19",
         "predis/predis": "^1.1 || ^2.0",
         "rollbar/rollbar": "^1.3 || ^2 || ^3",
         "ruflin/elastica": "^7",
@@ -2595,7 +3023,7 @@
       ],
       "support": {
         "issues": "https://github.com/Seldaek/monolog/issues",
-        "source": "https://github.com/Seldaek/monolog/tree/2.9.2"
+        "source": "https://github.com/Seldaek/monolog/tree/2.9.3"
       },
       "funding": [
         {
@@ -2607,7 +3035,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2023-10-27T15:25:26+00:00"
+      "time": "2024-04-12T20:52:51+00:00"
     },
     {
       "name": "mtdowling/jmespath.php",
@@ -3686,6 +4114,80 @@
       "time": "2021-10-29T13:26:27+00:00"
     },
     {
+      "name": "qcloud/cos-sdk-v5",
+      "version": "v2.6.9",
+      "source": {
+        "type": "git",
+        "url": "https://github.com/tencentyun/cos-php-sdk-v5.git",
+        "reference": "85e11f94ff4e13f3f866c4720902e991221b8baa"
+      },
+      "dist": {
+        "type": "zip",
+        "url": "https://api.github.com/repos/tencentyun/cos-php-sdk-v5/zipball/85e11f94ff4e13f3f866c4720902e991221b8baa",
+        "reference": "85e11f94ff4e13f3f866c4720902e991221b8baa",
+        "shasum": "",
+        "mirrors": [
+          {
+            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+            "preferred": true
+          }
+        ]
+      },
+      "require": {
+        "ext-curl": "*",
+        "ext-json": "*",
+        "ext-mbstring": "*",
+        "ext-simplexml": "*",
+        "guzzlehttp/guzzle": "^6.2.1 || ^7.0",
+        "guzzlehttp/guzzle-services": "^1.1",
+        "guzzlehttp/psr7": "^1.3.1 || ^2.0",
+        "php": ">=5.6"
+      },
+      "type": "library",
+      "extra": {
+        "branch-alias": {
+          "dev-master": "2.4-dev"
+        }
+      },
+      "autoload": {
+        "files": [
+          "src/Common.php"
+        ],
+        "psr-4": {
+          "Qcloud\\Cos\\": "src/"
+        }
+      },
+      "notification-url": "https://packagist.org/downloads/",
+      "license": [
+        "MIT"
+      ],
+      "authors": [
+        {
+          "name": "yaozongyou",
+          "email": "yaozongyou@vip.qq.com"
+        },
+        {
+          "name": "lewzylu",
+          "email": "327874225@qq.com"
+        },
+        {
+          "name": "tuunalai",
+          "email": "550566181@qq.com"
+        }
+      ],
+      "description": "PHP SDK for QCloud COS",
+      "keywords": [
+        "cos",
+        "php",
+        "qcloud"
+      ],
+      "support": {
+        "issues": "https://github.com/tencentyun/cos-php-sdk-v5/issues",
+        "source": "https://github.com/tencentyun/cos-php-sdk-v5/tree/v2.6.9"
+      },
+      "time": "2024-01-17T02:50:42+00:00"
+    },
+    {
       "name": "ralouphie/getallheaders",
       "version": "3.0.3",
       "source": {
@@ -3737,16 +4239,16 @@
     },
     {
       "name": "symfony/cache",
-      "version": "v6.4.4",
+      "version": "v6.4.7",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/cache.git",
-        "reference": "0ef36534694c572ff526d91c7181f3edede176e7"
+        "reference": "b9e9b93c9817ec6c789c7943f5e54b57a041c16a"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/cache/zipball/0ef36534694c572ff526d91c7181f3edede176e7",
-        "reference": "0ef36534694c572ff526d91c7181f3edede176e7",
+        "url": "https://api.github.com/repos/symfony/cache/zipball/b9e9b93c9817ec6c789c7943f5e54b57a041c16a",
+        "reference": "b9e9b93c9817ec6c789c7943f5e54b57a041c16a",
         "shasum": "",
         "mirrors": [
           {
@@ -3819,7 +4321,7 @@
         "psr6"
       ],
       "support": {
-        "source": "https://github.com/symfony/cache/tree/v6.4.4"
+        "source": "https://github.com/symfony/cache/tree/v6.4.7"
       },
       "funding": [
         {
@@ -3835,7 +4337,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2024-02-22T20:27:10+00:00"
+      "time": "2024-04-18T09:22:46+00:00"
     },
     {
       "name": "symfony/cache-contracts",
@@ -4177,16 +4679,16 @@
     },
     {
       "name": "symfony/http-foundation",
-      "version": "v6.4.4",
+      "version": "v6.4.7",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/http-foundation.git",
-        "reference": "ebc713bc6e6f4b53f46539fc158be85dfcd77304"
+        "reference": "b4db6b833035477cb70e18d0ae33cb7c2b521759"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/http-foundation/zipball/ebc713bc6e6f4b53f46539fc158be85dfcd77304",
-        "reference": "ebc713bc6e6f4b53f46539fc158be85dfcd77304",
+        "url": "https://api.github.com/repos/symfony/http-foundation/zipball/b4db6b833035477cb70e18d0ae33cb7c2b521759",
+        "reference": "b4db6b833035477cb70e18d0ae33cb7c2b521759",
         "shasum": "",
         "mirrors": [
           {
@@ -4240,7 +4742,7 @@
       "description": "Defines an object-oriented layer for the HTTP specification",
       "homepage": "https://symfony.com",
       "support": {
-        "source": "https://github.com/symfony/http-foundation/tree/v6.4.4"
+        "source": "https://github.com/symfony/http-foundation/tree/v6.4.7"
       },
       "funding": [
         {
@@ -4256,20 +4758,20 @@
           "type": "tidelift"
         }
       ],
-      "time": "2024-02-08T15:01:18+00:00"
+      "time": "2024-04-18T09:22:46+00:00"
     },
     {
       "name": "symfony/mime",
-      "version": "v6.4.3",
+      "version": "v6.4.7",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/mime.git",
-        "reference": "5017e0a9398c77090b7694be46f20eb796262a34"
+        "reference": "decadcf3865918ecfcbfa90968553994ce935a5e"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/mime/zipball/5017e0a9398c77090b7694be46f20eb796262a34",
-        "reference": "5017e0a9398c77090b7694be46f20eb796262a34",
+        "url": "https://api.github.com/repos/symfony/mime/zipball/decadcf3865918ecfcbfa90968553994ce935a5e",
+        "reference": "decadcf3865918ecfcbfa90968553994ce935a5e",
         "shasum": "",
         "mirrors": [
           {
@@ -4296,6 +4798,7 @@
         "league/html-to-markdown": "^5.0",
         "phpdocumentor/reflection-docblock": "^3.0|^4.0|^5.0",
         "symfony/dependency-injection": "^5.4|^6.0|^7.0",
+        "symfony/process": "^5.4|^6.4|^7.0",
         "symfony/property-access": "^5.4|^6.0|^7.0",
         "symfony/property-info": "^5.4|^6.0|^7.0",
         "symfony/serializer": "^6.3.2|^7.0"
@@ -4330,7 +4833,7 @@
         "mime-type"
       ],
       "support": {
-        "source": "https://github.com/symfony/mime/tree/v6.4.3"
+        "source": "https://github.com/symfony/mime/tree/v6.4.7"
       },
       "funding": [
         {
@@ -4346,7 +4849,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2024-01-30T08:32:12+00:00"
+      "time": "2024-04-18T09:22:46+00:00"
     },
     {
       "name": "symfony/polyfill-iconv",
@@ -5122,16 +5625,16 @@
     },
     {
       "name": "symfony/process",
-      "version": "v7.0.4",
+      "version": "v7.0.7",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/process.git",
-        "reference": "0e7727191c3b71ebec6d529fa0e50a01ca5679e9"
+        "reference": "3839e56b94dd1dbd13235d27504e66baf23faba0"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/process/zipball/0e7727191c3b71ebec6d529fa0e50a01ca5679e9",
-        "reference": "0e7727191c3b71ebec6d529fa0e50a01ca5679e9",
+        "url": "https://api.github.com/repos/symfony/process/zipball/3839e56b94dd1dbd13235d27504e66baf23faba0",
+        "reference": "3839e56b94dd1dbd13235d27504e66baf23faba0",
         "shasum": "",
         "mirrors": [
           {
@@ -5169,7 +5672,7 @@
       "description": "Executes commands in sub-processes",
       "homepage": "https://symfony.com",
       "support": {
-        "source": "https://github.com/symfony/process/tree/v7.0.4"
+        "source": "https://github.com/symfony/process/tree/v7.0.7"
       },
       "funding": [
         {
@@ -5185,7 +5688,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2024-02-22T20:27:20+00:00"
+      "time": "2024-04-18T09:29:19+00:00"
     },
     {
       "name": "symfony/psr-http-message-bridge",
@@ -5372,16 +5875,16 @@
     },
     {
       "name": "symfony/translation",
-      "version": "v6.4.4",
+      "version": "v6.4.7",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/translation.git",
-        "reference": "bce6a5a78e94566641b2594d17e48b0da3184a8e"
+        "reference": "7495687c58bfd88b7883823747b0656d90679123"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/translation/zipball/bce6a5a78e94566641b2594d17e48b0da3184a8e",
-        "reference": "bce6a5a78e94566641b2594d17e48b0da3184a8e",
+        "url": "https://api.github.com/repos/symfony/translation/zipball/7495687c58bfd88b7883823747b0656d90679123",
+        "reference": "7495687c58bfd88b7883823747b0656d90679123",
         "shasum": "",
         "mirrors": [
           {
@@ -5453,7 +5956,7 @@
       "description": "Provides tools to internationalize your application",
       "homepage": "https://symfony.com",
       "support": {
-        "source": "https://github.com/symfony/translation/tree/v6.4.4"
+        "source": "https://github.com/symfony/translation/tree/v6.4.7"
       },
       "funding": [
         {
@@ -5469,7 +5972,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2024-02-20T13:16:58+00:00"
+      "time": "2024-04-18T09:22:46+00:00"
     },
     {
       "name": "symfony/translation-contracts",
@@ -5557,16 +6060,16 @@
     },
     {
       "name": "symfony/var-exporter",
-      "version": "v7.0.4",
+      "version": "v7.0.7",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/var-exporter.git",
-        "reference": "dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41"
+        "reference": "cdecc0022e40e90340ba1a59a3d5ccf069777078"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/var-exporter/zipball/dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41",
-        "reference": "dfb0acb6803eb714f05d97dd4c5abe6d5fa9fe41",
+        "url": "https://api.github.com/repos/symfony/var-exporter/zipball/cdecc0022e40e90340ba1a59a3d5ccf069777078",
+        "reference": "cdecc0022e40e90340ba1a59a3d5ccf069777078",
         "shasum": "",
         "mirrors": [
           {
@@ -5579,6 +6082,8 @@
         "php": ">=8.2"
       },
       "require-dev": {
+        "symfony/property-access": "^6.4|^7.0",
+        "symfony/serializer": "^6.4|^7.0",
         "symfony/var-dumper": "^6.4|^7.0"
       },
       "type": "library",
@@ -5617,7 +6122,7 @@
         "serialize"
       ],
       "support": {
-        "source": "https://github.com/symfony/var-exporter/tree/v7.0.4"
+        "source": "https://github.com/symfony/var-exporter/tree/v7.0.7"
       },
       "funding": [
         {
@@ -5633,27 +6138,15 @@
           "type": "tidelift"
         }
       ],
-      "time": "2024-02-26T10:35:24+00:00"
+      "time": "2024-04-18T09:29:19+00:00"
     },
     {
       "name": "thans/tp-jwt-auth",
       "version": "v2.2.1",
       "source": {
         "type": "git",
-        "url": "https://github.com/QThans/jwt-auth.git",
+        "url": "https://gitee.com/tigshop-work/jwt-auth.git",
         "reference": "c7dd8e946a496dd0cdc920117ac0e673d9fa882f"
-      },
-      "dist": {
-        "type": "zip",
-        "url": "https://api.github.com/repos/QThans/jwt-auth/zipball/c7dd8e946a496dd0cdc920117ac0e673d9fa882f",
-        "reference": "c7dd8e946a496dd0cdc920117ac0e673d9fa882f",
-        "shasum": "",
-        "mirrors": [
-          {
-            "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-            "preferred": true
-          }
-        ]
       },
       "require": {
         "lcobucci/jwt": "^4.3",
@@ -5672,14 +6165,13 @@
         }
       },
       "autoload": {
-        "files": [
-          "src/helper.php"
-        ],
         "psr-4": {
           "thans\\jwt\\": "src"
-        }
+        },
+        "files": [
+          "src/helper.php"
+        ]
       },
-      "notification-url": "https://packagist.org/downloads/",
       "license": [
         "MIT"
       ],
@@ -5690,10 +6182,6 @@
         }
       ],
       "description": "thinkphp jwt auth composer",
-      "support": {
-        "issues": "https://github.com/QThans/jwt-auth/issues",
-        "source": "https://github.com/QThans/jwt-auth/tree/v2.2.1"
-      },
       "time": "2023-08-15T06:52:42+00:00"
     },
     {
@@ -6612,16 +7100,16 @@
   "packages-dev": [
     {
       "name": "symfony/var-dumper",
-      "version": "v7.0.4",
+      "version": "v7.0.7",
       "source": {
         "type": "git",
         "url": "https://github.com/symfony/var-dumper.git",
-        "reference": "e03ad7c1535e623edbb94c22cc42353e488c6670"
+        "reference": "d1627b66fd87c8b4d90cabe5671c29d575690924"
       },
       "dist": {
         "type": "zip",
-        "url": "https://api.github.com/repos/symfony/var-dumper/zipball/e03ad7c1535e623edbb94c22cc42353e488c6670",
-        "reference": "e03ad7c1535e623edbb94c22cc42353e488c6670",
+        "url": "https://api.github.com/repos/symfony/var-dumper/zipball/d1627b66fd87c8b4d90cabe5671c29d575690924",
+        "reference": "d1627b66fd87c8b4d90cabe5671c29d575690924",
         "shasum": "",
         "mirrors": [
           {
@@ -6681,7 +7169,7 @@
         "dump"
       ],
       "support": {
-        "source": "https://github.com/symfony/var-dumper/tree/v7.0.4"
+        "source": "https://github.com/symfony/var-dumper/tree/v7.0.7"
       },
       "funding": [
         {
@@ -6697,7 +7185,7 @@
           "type": "tidelift"
         }
       ],
-      "time": "2024-02-15T11:33:06+00:00"
+      "time": "2024-04-18T09:29:19+00:00"
     },
     {
       "name": "topthink/think-trace",
@@ -6765,8 +7253,9 @@
   "prefer-stable": false,
   "prefer-lowest": false,
   "platform": {
-    "php": ">=8.0.0"
+    "php": ">=8.0.0",
+    "ext-curl": "*"
   },
   "platform-dev": [],
-  "plugin-api-version": "2.3.0"
+  "plugin-api-version": "2.6.0"
 }
