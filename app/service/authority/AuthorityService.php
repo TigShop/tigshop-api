@@ -106,7 +106,6 @@ class AuthorityService extends BaseService
      */
     public function createAuthority(array $data):int
     {
-        $this->checkParentId($data);
         $this->authorityModel->save($data);
         AdminLog::add('新增权限:' . $data['authority_name']);
         return $this->authorityModel->getKey();
@@ -123,7 +122,6 @@ class AuthorityService extends BaseService
      */
     public function updateAuthority(int $id, array $data):bool
     {
-        $this->checkParentId($data, $id);
         $result = $this->authorityModel->where('authority_id', $id)->save($data);
         AdminLog::add('更新权限:' . $this->getName($id));
         return $result !== false;

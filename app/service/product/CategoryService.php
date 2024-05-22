@@ -119,22 +119,6 @@ class CategoryService extends BaseService
     public function updateCategory(int $id, array $data, bool $isAdd = false)
     {
         validate(CategoryValidate::class)->only(array_keys($data))->check($data);
-        if (isset($data['parend_id'])) {
-            /* 判断上级目录是否合法 */
-            $children = $this->catAllChildIds($id); // 获得当前分类的所有下级分类
-            unset($children[0]);
-            if ($id) {
-                if (in_array($data['parent_id'], $children)) {
-                    /* 选定的父类是当前分类或当前分类的下级分类 */
-                    throw new ApiException('所选择的上级分类不能是当前分类或者当前分类的下级分类');
-                }
-                if ($id == $data['parent_id']) {
-                    /* 选定的父类是当前分类或当前分类的下级分类 */
-                    throw new ApiException('所选择的上级分类不能是当前分类');
-                }
-            }
-        }
-
         if ($isAdd) {
             $result = $this->categoryModel->save($data);
             AdminLog::add('新增分类:' . $data['category_name']);

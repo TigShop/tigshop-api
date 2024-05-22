@@ -139,13 +139,15 @@ class Authority extends AdminBaseController
             'is_show' => 0,
             'sort_order' => 50,
         ], 'post');
-        $data["auth_list"] = request()->authList;
         try {
             validate(AuthorityValidate::class)
                 ->scene('update')
                 ->check($data);
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
+        }
+        if ($data['authority_id'] == $data['parent_id']) {
+            return $this->error(/** LANG */ '上级不能选自己');
         }
         $result = $this->authorityService->updateAuthority($id, $data);
         if ($result) {

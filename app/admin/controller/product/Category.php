@@ -126,7 +126,9 @@ class Category extends AdminBaseController
             'is_show' => 0,
             'sort_order' => 50,
         ], 'post');
-
+        if ($data['category_id'] == $data['parent_id']) {
+            return $this->error(/** LANG */ '上级不能选自己');
+        }
         $result = $this->categoryService->updateCategory($id, $data, false);
         if ($result) {
             AdminLog::add('编辑分类：' . $data['category_name']);
