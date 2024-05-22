@@ -103,7 +103,6 @@ class Authority extends AdminBaseController
             'is_show' => 0,
             'sort_order' => 50,
         ], 'post');
-        $data["auth_list"] = request()->authList;
 
         try {
             validate(AuthorityValidate::class)
@@ -165,7 +164,7 @@ class Authority extends AdminBaseController
     public function getAllAuthority(): Response
     {
         $type = input('type/d', 0);
-        $cat_list = $this->authorityService->authorityList(0, $type,request()->authList);
+        $cat_list = $this->authorityService->authorityList(0, $type, request()->authList);
 
         return $this->success([
             'item' => $cat_list,
