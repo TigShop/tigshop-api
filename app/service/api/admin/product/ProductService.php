@@ -18,6 +18,7 @@ use app\common\utils\Time;
 use app\model\product\Product;
 use app\model\product\ProductArticle;
 use app\model\product\ProductSku;
+use app\model\promotion\Coupon;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\participle\ParticipleService;
 use app\validate\product\ProductValidate;
@@ -121,6 +122,28 @@ class ProductService extends BaseService
 //                $query->where('product_name', 'exp', " REGEXP '$keyword_where' ");
             });
         }
+        if (!empty($filter['coupon_id'])) {
+            $coupon = Coupon::find($filter['coupon_id']);
+            if (empty($coupon)) {
+                $query->where('product_id', -1);
+            } else {
+                if ($coupon['send_range'] == 1) {
+                    $query->where(function ($query) use ($filter, $coupon) {
+                        foreach ($coupon['send_range_data'] as $rand_data) {
+                            $query->whereIn('category_id', app(CategoryService::class)->catAllChildIds($rand_data),
+                                'OR');
+                        }
+                    });
+
+                } elseif ($coupon['send_range'] == 2) {
+                    $query->whereIn('brand_id', $coupon['send_range_data']);
+                } elseif ($coupon['send_range'] == 3) {
+                    $query->whereIn('product_id', $coupon['send_range_data']);
+                } elseif ($coupon['send_range'] == 4) {
+                    $query->whereNotIn('product_id', $coupon['send_range_data']);
+                }
+            }
+        }
 
         if (isset($filter['is_show']) && $filter['is_show'] > -1) {
             $query->where('is_show', $filter['is_show']);
@@ -169,6 +192,7 @@ class ProductService extends BaseService
         if (isset($filter["intro_type"]) && !empty($filter["intro_type"])) {
             $query->introType($filter["intro_type"]);
         }
+
 
         // 商品上下架
         if (isset($filter["product_status"]) && $filter["product_status"] != -1) {

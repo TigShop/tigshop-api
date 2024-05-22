@@ -53,7 +53,7 @@ class Search extends IndexBaseController
             'keyword' => '',
             'max/d' => 0,
             'min/d' => 0,
-            'intro' => "",
+            'intro' => ""
         ]);
         $product_search = new ProductSearchService($params, 'list');
         $filter_selected = $product_search->getFilterSeleted();
