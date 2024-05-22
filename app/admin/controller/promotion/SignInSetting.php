@@ -13,7 +13,7 @@ namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\promotion\SignInSettingService;
+use app\service\api\admin\promotion\SignInSettingService;
 use app\validate\promotion\SignInSettingValidate;
 use think\App;
 use think\exception\ValidateException;

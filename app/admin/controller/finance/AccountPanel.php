@@ -12,7 +12,7 @@
 namespace app\admin\controller\finance;
 
 use app\admin\AdminBaseController;
-use app\service\finance\AccountPanelService;
+use app\service\api\admin\finance\AccountPanelService;
 use think\App;
 use think\response\Json;
 

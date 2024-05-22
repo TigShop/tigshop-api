@@ -5,15 +5,14 @@ namespace app\index\controller\order;
 use app\common\exceptions\ApiException;
 use app\common\utils\Config;
 use app\index\IndexBaseController;
-use app\service\order\OrderDetailService;
-use app\service\order\OrderService;
-use app\service\pay\PayLogService;
-use app\service\pay\PaymentService;
-use app\service\pay\src\AliPayService;
-use app\service\pay\src\PayPalService;
-use app\service\pay\src\WechatPayService;
+use app\service\api\admin\order\OrderDetailService;
+use app\service\api\admin\order\OrderService;
+use app\service\api\admin\pay\PayLogService;
+use app\service\api\admin\pay\PaymentService;
+use app\service\api\admin\pay\src\AliPayService;
+use app\service\api\admin\pay\src\PayPalService;
+use app\service\api\admin\pay\src\WechatPayService;
 use think\App;
-use think\response\Json;
 
 class Pay extends IndexBaseController
 {

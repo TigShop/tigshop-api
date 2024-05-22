@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\user\CollectProductService;
+use app\service\api\admin\user\CollectProductService;
 use think\App;
 use think\Response;
 

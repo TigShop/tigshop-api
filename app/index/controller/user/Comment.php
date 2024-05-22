@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\product\CommentService;
+use app\service\api\admin\product\CommentService;
 use think\App;
 use think\Response;
 

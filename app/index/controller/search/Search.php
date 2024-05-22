@@ -12,7 +12,7 @@
 namespace app\index\controller\search;
 
 use app\index\IndexBaseController;
-use app\service\product\ProductSearchService;
+use app\service\api\admin\product\ProductSearchService;
 use think\App;
 
 /**

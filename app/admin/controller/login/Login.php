@@ -12,12 +12,12 @@
 namespace app\admin\controller\login;
 
 use app\BaseController;
-use app\service\authority\AccessTokenService;
-use app\service\authority\AdminUserService;
-use app\service\authority\AuthorityService;
-use app\service\captcha\CaptchaService;
-use app\service\common\sms\SmsService;
-use app\service\setting\ConfigService;
+use app\service\api\admin\authority\AccessTokenService;
+use app\service\api\admin\authority\AdminUserService;
+use app\service\api\admin\authority\AuthorityService;
+use app\service\api\admin\captcha\CaptchaService;
+use app\service\api\admin\common\sms\SmsService;
+use app\service\api\admin\setting\ConfigService;
 use think\App;
 use think\Response;
 

@@ -13,12 +13,12 @@ namespace app\index\controller\user;
 
 use app\common\exceptions\ApiException;
 use app\index\IndexBaseController;
-use app\service\finance\UserRechargeOrderService;
-use app\service\pay\PayLogService;
-use app\service\pay\PaymentService;
-use app\service\pay\src\AliPayService;
-use app\service\pay\src\PayPalService;
-use app\service\pay\src\WechatPayService;
+use app\service\api\admin\finance\UserRechargeOrderService;
+use app\service\api\admin\pay\PayLogService;
+use app\service\api\admin\pay\PaymentService;
+use app\service\api\admin\pay\src\AliPayService;
+use app\service\api\admin\pay\src\PayPalService;
+use app\service\api\admin\pay\src\WechatPayService;
 use think\App;
 use think\Response;
 use think\response\Json;

@@ -13,7 +13,7 @@ namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\promotion\SeckillService;
+use app\service\api\admin\promotion\SeckillService;
 use app\validate\promotion\SeckillValidate;
 use think\App;
 use think\exception\ValidateException;

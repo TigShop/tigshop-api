@@ -12,9 +12,8 @@
 namespace app\admin\controller\user;
 
 use app\admin\AdminBaseController;
-use app\service\user\UserPointsLogService;
+use app\service\api\admin\user\UserPointsLogService;
 use think\App;
-use think\response\Json;
 
 /**
  * 积分日志控制器

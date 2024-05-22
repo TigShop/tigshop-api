@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\finance\OrderInvoiceService;
+use app\service\api\admin\finance\OrderInvoiceService;
 use app\validate\finance\OrderInvoiceValidate;
 use think\App;
 use think\exception\ValidateException;

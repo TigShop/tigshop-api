@@ -14,7 +14,7 @@ namespace app\admin\controller\authority;
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
 use app\common\log\AdminLog;
-use app\service\authority\AuthorityService;
+use app\service\api\admin\authority\AuthorityService;
 use app\validate\authority\AuthorityValidate;
 use think\App;
 use think\exception\ValidateException;

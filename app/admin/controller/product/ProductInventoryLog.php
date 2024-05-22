@@ -12,9 +12,8 @@
 namespace app\admin\controller\product;
 
 use app\admin\AdminBaseController;
-use app\service\product\ProductInventoryLogService;
+use app\service\api\admin\product\ProductInventoryLogService;
 use think\App;
-use think\response\Json;
 
 /**
  * 商品库存日志控制器

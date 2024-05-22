@@ -12,8 +12,8 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\promotion\CouponService;
-use app\service\user\UserCouponService;
+use app\service\api\admin\promotion\CouponService;
+use app\service\api\admin\user\UserCouponService;
 use think\App;
 use think\Response;
 

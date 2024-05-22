@@ -12,9 +12,8 @@
 namespace app\admin\controller\store;
 
 use app\admin\AdminBaseController;
-use app\service\store\StoreService;
+use app\service\api\admin\store\StoreService;
 use think\App;
-use think\response\Json;
 
 /**
  * 店铺控制器

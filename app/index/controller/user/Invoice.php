@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\finance\UserInvoiceService;
+use app\service\api\admin\finance\UserInvoiceService;
 use think\App;
 use think\Response;
 

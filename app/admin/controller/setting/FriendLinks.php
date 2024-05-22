@@ -13,7 +13,7 @@ namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\setting\FriendLinksService;
+use app\service\api\admin\setting\FriendLinksService;
 use app\validate\setting\FriendLinksValidate;
 use think\App;
 use think\exception\ValidateException;

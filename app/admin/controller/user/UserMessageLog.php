@@ -12,9 +12,8 @@
 namespace app\admin\controller\user;
 
 use app\admin\AdminBaseController;
-use app\service\user\UserMessageLogService;
+use app\service\api\admin\user\UserMessageLogService;
 use think\App;
-use think\response\Json;
 
 /**
  * 会员控制器

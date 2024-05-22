@@ -13,12 +13,11 @@ namespace app\index\controller\user;
 
 use app\common\exceptions\ApiException;
 use app\index\IndexBaseController;
-use app\service\captcha\CaptchaService;
-use app\service\common\sms\SmsService;
-use app\service\user\UserRegistService;
-use app\service\user\UserService;
+use app\service\api\admin\captcha\CaptchaService;
+use app\service\api\admin\common\sms\SmsService;
+use app\service\api\admin\user\UserRegistService;
+use app\service\api\admin\user\UserService;
 use think\App;
-use think\response\Json;
 
 /**
  * 会员登录控制器

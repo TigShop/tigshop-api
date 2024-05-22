@@ -12,9 +12,8 @@
 namespace app\admin\controller\user;
 
 use app\admin\AdminBaseController;
-use app\service\user\UserRankService;
+use app\service\api\admin\user\UserRankService;
 use think\App;
-use think\response\Json;
 
 /**
  * 会员等级控制器

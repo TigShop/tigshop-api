@@ -12,9 +12,9 @@ namespace app\admin\controller\common;
 
 use app\BaseController;
 use app\common\CacheManager;
-use app\service\authority\AdminUserService;
-use app\service\authority\AuthorityService;
-use app\service\setting\ConfigService;
+use app\service\api\admin\authority\AdminUserService;
+use app\service\api\admin\authority\AuthorityService;
+use app\service\api\admin\setting\ConfigService;
 
 class CacheManage extends BaseController
 {

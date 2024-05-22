@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\user\UserPointsLogService;
+use app\service\api\admin\user\UserPointsLogService;
 use think\App;
 use think\response\Json;
 

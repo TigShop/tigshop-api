@@ -12,9 +12,8 @@
 namespace app\admin\controller\sys;
 
 use app\admin\AdminBaseController;
-use app\service\sys\AccessLogService;
+use app\service\api\admin\sys\AccessLogService;
 use think\App;
-use think\response\Json;
 
 /**
  * 访问日志控制器

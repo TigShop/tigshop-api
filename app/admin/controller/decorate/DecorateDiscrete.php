@@ -12,7 +12,7 @@
 namespace app\admin\controller\decorate;
 
 use app\admin\AdminBaseController;
-use app\service\decorate\DecorateDiscreteService;
+use app\service\api\admin\decorate\DecorateDiscreteService;
 use think\App;
 use think\Response;
 

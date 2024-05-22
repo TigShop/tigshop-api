@@ -12,9 +12,8 @@
 namespace app\admin\controller\product;
 
 use app\admin\AdminBaseController;
-use app\service\product\ProductAttributesTplService;
+use app\service\api\admin\product\ProductAttributesTplService;
 use think\App;
-use think\response\Json;
 
 /**
  * 商品属性模板控制器

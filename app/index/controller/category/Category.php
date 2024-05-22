@@ -12,8 +12,8 @@
 namespace app\index\controller\category;
 
 use app\index\IndexBaseController;
-use app\service\product\CategoryService;
-use app\service\product\ProductService;
+use app\service\api\admin\product\CategoryService;
+use app\service\api\admin\product\ProductService;
 use think\App;
 use think\Response;
 

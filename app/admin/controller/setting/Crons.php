@@ -13,7 +13,7 @@ namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\setting\CronsService;
+use app\service\api\admin\setting\CronsService;
 use app\validate\setting\CronsValidate;
 use think\App;
 use think\exception\ValidateException;

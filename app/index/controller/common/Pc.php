@@ -13,8 +13,8 @@ namespace app\index\controller\common;
 
 use app\common\utils\Config;
 use app\index\IndexBaseController;
-use app\service\decorate\PcCatFloorService;
-use app\service\decorate\PcNavigationService;
+use app\service\api\admin\decorate\PcCatFloorService;
+use app\service\api\admin\decorate\PcNavigationService;
 use think\App;
 use think\Response;
 

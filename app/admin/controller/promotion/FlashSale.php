@@ -12,7 +12,7 @@
 namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
-use app\service\promotion\FlashSaleService;
+use app\service\api\admin\promotion\FlashSaleService;
 use think\App;
 use think\response\Json;
 

@@ -13,7 +13,7 @@ namespace app\admin\controller\finance;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\finance\OrderInvoiceService;
+use app\service\api\admin\finance\OrderInvoiceService;
 use app\validate\finance\OrderInvoiceValidate;
 use think\App;
 use think\exception\ValidateException;

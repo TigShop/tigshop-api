@@ -12,8 +12,8 @@
 namespace app\admin\controller\decorate;
 
 use app\admin\AdminBaseController;
-use app\service\decorate\DecorateRequestService;
-use app\service\decorate\DecorateService;
+use app\service\api\admin\decorate\DecorateRequestService;
+use app\service\api\admin\decorate\DecorateService;
 use think\App;
 use think\Response;
 

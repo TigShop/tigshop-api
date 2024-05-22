@@ -11,10 +11,10 @@
 
 namespace app\index\controller\search;
 
-use app\service\participle\ParticipleService;
-use think\App;
 use app\index\IndexBaseController;
 use app\model\product\Product;
+use app\service\api\admin\participle\ParticipleService;
+use think\App;
 use think\Response;
 
 /**

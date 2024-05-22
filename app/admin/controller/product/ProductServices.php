@@ -12,9 +12,8 @@
 namespace app\admin\controller\product;
 
 use app\admin\AdminBaseController;
-use app\service\product\ProductServicesService;
+use app\service\api\admin\product\ProductServicesService;
 use think\App;
-use think\response\Json;
 
 /**
  * 商品服务控制器

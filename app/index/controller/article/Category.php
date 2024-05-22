@@ -11,11 +11,10 @@
 
 namespace app\index\controller\article;
 
-use app\service\content\ArticleService;
-use think\App;
-use think\response\Json;
 use app\index\IndexBaseController;
-use app\service\content\ArticleCategoryService;
+use app\service\api\admin\content\ArticleCategoryService;
+use app\service\api\admin\content\ArticleService;
+use think\App;
 
 /**
  * 文章分类控制器

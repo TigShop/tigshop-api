@@ -14,9 +14,8 @@ namespace app\admin\controller\product;
 use app\admin\AdminBaseController;
 use app\common\CacheManager;
 use app\common\log\AdminLog;
-use app\service\product\CategoryService;
+use app\service\api\admin\product\CategoryService;
 use think\App;
-use think\response\Json;
 
 /**
  * 分类控制器

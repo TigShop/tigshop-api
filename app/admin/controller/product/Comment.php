@@ -12,9 +12,8 @@
 namespace app\admin\controller\product;
 
 use app\admin\AdminBaseController;
-use app\service\product\CommentService;
+use app\service\api\admin\product\CommentService;
 use think\App;
-use think\response\Json;
 
 /**
  * 评论晒单控制器

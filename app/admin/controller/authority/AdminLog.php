@@ -13,7 +13,7 @@ namespace app\admin\controller\authority;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\authority\AdminLogService;
+use app\service\api\admin\authority\AdminLogService;
 use think\App;
 use think\facade\Db;
 use think\Response;

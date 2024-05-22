@@ -12,7 +12,7 @@
 namespace app\admin\controller\product;
 
 use app\admin\AdminBaseController;
-use app\service\product\BrandService;
+use app\service\api\admin\product\BrandService;
 use app\validate\product\BrandValidate;
 use think\App;
 use think\exception\ValidateException;

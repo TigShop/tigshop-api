@@ -13,7 +13,7 @@ namespace app\admin\controller\decorate;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\decorate\DecorateService;
+use app\service\api\admin\decorate\DecorateService;
 use app\validate\decorate\DecorateValidate;
 use think\App;
 use think\exception\ValidateException;

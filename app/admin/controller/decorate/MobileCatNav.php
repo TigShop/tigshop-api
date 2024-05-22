@@ -13,7 +13,7 @@ namespace app\admin\controller\decorate;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\decorate\MobileCatNavService;
+use app\service\api\admin\decorate\MobileCatNavService;
 use think\App;
 use think\facade\Db;
 use think\Response;

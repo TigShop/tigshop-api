@@ -12,7 +12,7 @@
 namespace app\admin\controller\msg;
 
 use app\admin\AdminBaseController;
-use app\service\msg\AdminMsgService;
+use app\service\api\admin\msg\AdminMsgService;
 use think\App;
 use think\Response;
 

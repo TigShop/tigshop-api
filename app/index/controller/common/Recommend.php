@@ -12,7 +12,7 @@
 namespace app\index\controller\common;
 
 use app\index\IndexBaseController;
-use app\service\product\ProductService;
+use app\service\api\admin\product\ProductService;
 use think\App;
 use think\Response;
 

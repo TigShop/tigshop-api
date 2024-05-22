@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\finance\UserWithdrawApplyService;
+use app\service\api\admin\finance\UserWithdrawApplyService;
 use think\App;
 use think\Response;
 

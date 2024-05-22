@@ -13,7 +13,7 @@ namespace app\admin\controller\example;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\example\ExampleService;
+use app\service\api\admin\example\ExampleService;
 use app\validate\example\ExampleValidate;
 use think\App;
 use think\exception\ValidateException;

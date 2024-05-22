@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace app\admin;
 
 use app\BaseController;
-use app\service\authority\AuthorityService;
 
 /**
  * 控制器基础类

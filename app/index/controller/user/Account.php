@@ -3,8 +3,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\finance\UserBalanceLogService;
-use app\service\user\UserAddressService;
+use app\service\api\admin\finance\UserBalanceLogService;
 use think\App;
 use think\Response;
 

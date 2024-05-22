@@ -13,7 +13,7 @@ namespace app\index\controller\common;
 
 use app\common\utils\Config as UtilsConfig;
 use app\index\IndexBaseController;
-use app\service\image\Image;
+use app\service\api\admin\image\Image;
 use think\App;
 use think\Response;
 

@@ -3,7 +3,7 @@
 namespace app\job\order;
 
 use app\job\BaseJob;
-use app\service\order\OrderService;
+use app\service\api\admin\order\OrderService;
 
 class OrderCancelJob extends BaseJob
 {

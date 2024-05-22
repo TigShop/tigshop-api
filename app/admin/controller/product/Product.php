@@ -15,21 +15,19 @@ use app\admin\AdminBaseController;
 use app\common\utils\Config;
 use app\common\utils\Time;
 use app\model\product\ProductArticle;
-use app\service\authority\SuppliersService;
-use app\service\participle\ParticipleService;
-use app\service\product\ProductAttributesService;
-use app\service\product\ProductAttributesTplService;
-use app\service\product\ProductGalleryService;
-use app\service\product\ProductMemberPriceService;
-use app\service\product\ProductService;
-use app\service\product\ProductServicesService;
-use app\service\product\ProductSkuService;
-use app\service\shipping\ShippingTplService;
-use app\service\user\UserRankService;
-use http\Env\Response;
+use app\service\api\admin\authority\SuppliersService;
+use app\service\api\admin\participle\ParticipleService;
+use app\service\api\admin\product\ProductAttributesService;
+use app\service\api\admin\product\ProductAttributesTplService;
+use app\service\api\admin\product\ProductGalleryService;
+use app\service\api\admin\product\ProductMemberPriceService;
+use app\service\api\admin\product\ProductService;
+use app\service\api\admin\product\ProductServicesService;
+use app\service\api\admin\product\ProductSkuService;
+use app\service\api\admin\shipping\ShippingTplService;
+use app\service\api\admin\user\UserRankService;
 use think\App;
 use think\facade\Db;
-use think\response\Json;
 
 /**
  * 商品管理控制器

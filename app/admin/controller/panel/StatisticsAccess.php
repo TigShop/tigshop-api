@@ -12,7 +12,7 @@
 namespace app\admin\controller\panel;
 
 use app\admin\AdminBaseController;
-use app\service\panel\StatisticsAccessService;
+use app\service\api\admin\panel\StatisticsAccessService;
 use think\App;
 use think\Response;
 

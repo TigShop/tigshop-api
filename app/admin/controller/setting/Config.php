@@ -14,9 +14,9 @@ namespace app\admin\controller\setting;
 use app\admin\AdminBaseController;
 use app\common\utils\Config as ShopConfig;
 use app\model\setting\Region;
-use app\service\file\FileStorage;
-use app\service\pay\CertificatesService;
-use app\service\setting\ConfigService;
+use app\service\api\admin\file\FileStorage;
+use app\service\api\admin\pay\CertificatesService;
+use app\service\api\admin\setting\ConfigService;
 use think\App;
 use think\Response;
 

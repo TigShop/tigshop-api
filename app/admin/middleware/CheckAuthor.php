@@ -4,11 +4,7 @@ declare (strict_types=1);
 
 namespace app\admin\middleware;
 
-use app\service\authority\AccessTokenService;
-use app\service\authority\AdminUserService;
-use app\service\authority\AuthorityService;
-use think\Exception;
-use think\facade\Request;
+use app\service\api\admin\authority\AuthorityService;
 
 
 class CheckAuthor

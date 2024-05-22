@@ -14,12 +14,12 @@ namespace app\index\controller\user;
 use app\common\exceptions\ApiException;
 use app\common\utils\Config;
 use app\index\IndexBaseController;
-use app\service\captcha\CaptchaService;
-use app\service\common\sms\SmsService;
-use app\service\image\Image;
-use app\service\oauth\WechatOauthService;
-use app\service\product\ProductService;
-use app\service\user\UserInfoService;
+use app\service\api\admin\captcha\CaptchaService;
+use app\service\api\admin\common\sms\SmsService;
+use app\service\api\admin\image\Image;
+use app\service\api\admin\oauth\WechatOauthService;
+use app\service\api\admin\product\ProductService;
+use app\service\api\admin\user\UserInfoService;
 use think\App;
 
 /**

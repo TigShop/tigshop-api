@@ -13,7 +13,7 @@ namespace app\admin\controller\finance;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\pay\PayLogService;
+use app\service\api\admin\pay\PayLogService;
 use think\App;
 use think\facade\Db;
 use think\Response;

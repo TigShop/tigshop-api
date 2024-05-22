@@ -2,8 +2,7 @@
 namespace app\job;
 
 
-use app\common\exceptions\ApiException;
-use app\service\common\sms\SmsService;
+use app\service\api\admin\common\sms\SmsService;
 
 /**
  * 发送短信队列

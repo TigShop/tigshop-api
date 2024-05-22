@@ -12,7 +12,7 @@
 namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
-use app\service\setting\AppVersionService;
+use app\service\api\admin\setting\AppVersionService;
 use think\App;
 use think\Response;
 

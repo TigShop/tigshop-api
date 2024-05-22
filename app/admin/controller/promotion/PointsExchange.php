@@ -13,7 +13,7 @@ namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\promotion\PointsExchangeService;
+use app\service\api\admin\promotion\PointsExchangeService;
 use app\validate\promotion\PointsExchangeValidate;
 use think\App;
 use think\exception\ValidateException;

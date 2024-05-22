@@ -13,7 +13,7 @@ namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\promotion\RechargeSettingService;
+use app\service\api\admin\promotion\RechargeSettingService;
 use think\App;
 use think\facade\Db;
 use think\Response;

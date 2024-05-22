@@ -12,7 +12,7 @@
 namespace app\index\controller\sys;
 
 use app\index\IndexBaseController;
-use app\service\setting\RegionService;
+use app\service\api\admin\setting\RegionService;
 use think\App;
 use think\Response;
 

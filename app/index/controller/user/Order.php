@@ -12,9 +12,8 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\order\OrderService;
+use app\service\api\admin\order\OrderService;
 use think\App;
-use think\response\Json;
 
 /**
  * 会员中心订单控制器

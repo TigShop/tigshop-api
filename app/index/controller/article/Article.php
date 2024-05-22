@@ -12,8 +12,8 @@
 namespace app\index\controller\article;
 
 use app\index\IndexBaseController;
-use app\service\content\ArticleService;
-use app\service\product\ProductService;
+use app\service\api\admin\content\ArticleService;
+use app\service\api\admin\product\ProductService;
 use think\App;
 
 /**

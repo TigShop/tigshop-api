@@ -13,8 +13,8 @@ namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\promotion\ProductPromotionService;
-use app\service\user\UserRankService;
+use app\service\api\admin\promotion\ProductPromotionService;
+use app\service\api\admin\user\UserRankService;
 use app\validate\promotion\ProductPromotionValidate;
 use think\App;
 use think\exception\ValidateException;

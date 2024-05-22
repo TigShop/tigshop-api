@@ -13,7 +13,7 @@ namespace app\admin\controller\decorate;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\decorate\PcCatFloorService;
+use app\service\api\admin\decorate\PcCatFloorService;
 use app\validate\decorate\PcCatFloorValidate;
 use think\App;
 use think\exception\ValidateException;

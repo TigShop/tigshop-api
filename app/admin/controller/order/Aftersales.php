@@ -14,9 +14,8 @@ namespace app\admin\controller\order;
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
 use app\common\utils\Util;
-use app\service\order\AftersalesService;
+use app\service\api\admin\order\AftersalesService;
 use think\App;
-use think\Exception;
 use think\response\Json;
 
 /**

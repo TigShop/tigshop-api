@@ -12,9 +12,8 @@
 namespace app\admin\controller\user;
 
 use app\admin\AdminBaseController;
-use app\service\user\FeedbackService;
+use app\service\api\admin\user\FeedbackService;
 use think\App;
-use think\response\Json;
 
 /**
  * 会员留言控制器

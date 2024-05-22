@@ -12,10 +12,9 @@
 namespace app\index\controller\order;
 
 use app\index\IndexBaseController;
-use app\service\order\OrderCheckService;
-use app\service\user\UserAddressService;
+use app\service\api\admin\order\OrderCheckService;
+use app\service\api\admin\user\UserAddressService;
 use think\App;
-use think\response\Json;
 
 /**
  * 商品控制器

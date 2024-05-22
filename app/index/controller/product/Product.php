@@ -13,16 +13,15 @@ namespace app\index\controller\product;
 
 use app\common\exceptions\ApiException;
 use app\index\IndexBaseController;
-use app\service\order\CartService;
-use app\service\product\ProductDetailService;
-use app\service\product\ProductService;
-use app\service\promotion\CouponService;
-use app\service\user\FeedbackService;
-use app\service\user\UserCouponService;
-use app\service\user\UserService;
+use app\service\api\admin\order\CartService;
+use app\service\api\admin\product\ProductDetailService;
+use app\service\api\admin\product\ProductService;
+use app\service\api\admin\promotion\CouponService;
+use app\service\api\admin\user\FeedbackService;
+use app\service\api\admin\user\UserCouponService;
+use app\service\api\admin\user\UserService;
 use think\App;
 use think\Response;
-use think\response\Json;
 
 /**
  * 商品控制器

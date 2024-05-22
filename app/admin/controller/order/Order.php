@@ -12,11 +12,10 @@
 namespace app\admin\controller\order;
 
 use app\admin\AdminBaseController;
-use app\service\order\OrderDetailService;
-use app\service\order\OrderLogService;
-use app\service\order\OrderService;
+use app\service\api\admin\order\OrderDetailService;
+use app\service\api\admin\order\OrderLogService;
+use app\service\api\admin\order\OrderService;
 use think\App;
-use think\response\Json;
 
 /**
  * 订单控制器

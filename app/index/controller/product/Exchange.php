@@ -12,10 +12,9 @@
 namespace app\index\controller\product;
 
 use app\index\IndexBaseController;
-use app\service\product\ProductDetailService;
-use app\service\promotion\PointsExchangeService;
+use app\service\api\admin\product\ProductDetailService;
+use app\service\api\admin\promotion\PointsExchangeService;
 use think\App;
-use think\response\Json;
 
 /**
  * 商品控制器

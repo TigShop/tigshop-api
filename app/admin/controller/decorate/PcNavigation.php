@@ -13,7 +13,7 @@ namespace app\admin\controller\decorate;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\decorate\PcNavigationService;
+use app\service\api\admin\decorate\PcNavigationService;
 use app\validate\decorate\PcNavigationValidate;
 use think\App;
 use think\exception\ValidateException;

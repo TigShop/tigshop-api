@@ -13,7 +13,7 @@ namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\setting\ShippingTypeService;
+use app\service\api\admin\setting\ShippingTypeService;
 use app\validate\setting\ShippingTypeValidate;
 use think\App;
 use think\exception\ValidateException;

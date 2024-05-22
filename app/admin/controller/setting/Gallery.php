@@ -13,7 +13,7 @@ namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\setting\GalleryService;
+use app\service\api\admin\setting\GalleryService;
 use app\validate\setting\GalleryValidate;
 use think\App;
 use think\exception\ValidateException;

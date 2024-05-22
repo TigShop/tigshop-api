@@ -13,12 +13,12 @@ namespace app\index\controller\home;
 
 use app\common\utils\Config;
 use app\index\IndexBaseController;
-use app\service\decorate\DecorateDiscreteService;
-use app\service\decorate\DecorateService;
-use app\service\decorate\MobileCatNavService;
-use app\service\promotion\CouponService;
-use app\service\promotion\SeckillService;
-use app\service\setting\FriendLinksService;
+use app\service\api\admin\decorate\DecorateDiscreteService;
+use app\service\api\admin\decorate\DecorateService;
+use app\service\api\admin\decorate\MobileCatNavService;
+use app\service\api\admin\promotion\CouponService;
+use app\service\api\admin\promotion\SeckillService;
+use app\service\api\admin\setting\FriendLinksService;
 use think\App;
 use think\Response;
 

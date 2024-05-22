@@ -12,8 +12,8 @@
 namespace app\admin\controller\panel;
 
 use app\admin\AdminBaseController;
-use app\service\authority\AuthorityService;
-use app\service\panel\SalesStatisticsService;
+use app\service\api\admin\authority\AuthorityService;
+use app\service\api\admin\panel\SalesStatisticsService;
 use think\App;
 use think\Response;
 

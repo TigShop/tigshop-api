@@ -13,7 +13,7 @@ namespace app\admin\controller\authority;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\authority\AdminRoleService;
+use app\service\api\admin\authority\AdminRoleService;
 use app\validate\authority\AdminRoleValidate;
 use think\App;
 use think\exception\ValidateException;

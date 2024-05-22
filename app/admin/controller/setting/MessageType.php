@@ -13,7 +13,7 @@ namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\setting\MessageTypeService;
+use app\service\api\admin\setting\MessageTypeService;
 use think\App;
 use think\facade\Db;
 use think\Response;

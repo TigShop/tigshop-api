@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\user\UserAddressService;
+use app\service\api\admin\user\UserAddressService;
 use app\validate\user\UserAddressValidate;
 use think\App;
 use think\exception\ValidateException;

@@ -12,13 +12,12 @@
 namespace app\admin\controller\user;
 
 use app\admin\AdminBaseController;
-use app\service\finance\UserBalanceLogService;
-use app\service\user\UserGrowthPointsLogService;
-use app\service\user\UserPointsLogService;
-use app\service\user\UserRankService;
-use app\service\user\UserService;
+use app\service\api\admin\finance\UserBalanceLogService;
+use app\service\api\admin\user\UserGrowthPointsLogService;
+use app\service\api\admin\user\UserPointsLogService;
+use app\service\api\admin\user\UserRankService;
+use app\service\api\admin\user\UserService;
 use think\App;
-use think\response\Json;
 
 /**
  * 会员控制器

@@ -13,7 +13,7 @@ namespace app\admin\controller\finance;
 
 use app\admin\AdminBaseController;
 use app\common\exceptions\ApiException;
-use app\service\finance\UserWithdrawApplyService;
+use app\service\api\admin\finance\UserWithdrawApplyService;
 use app\validate\finance\UserWithdrawApplyValidate;
 use think\App;
 use think\exception\ValidateException;

@@ -12,10 +12,10 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\captcha\CaptchaService;
-use app\service\common\sms\SmsService;
-use app\service\oauth\WechatOAuthService;
-use app\service\user\UserService;
+use app\service\api\admin\captcha\CaptchaService;
+use app\service\api\admin\common\sms\SmsService;
+use app\service\api\admin\oauth\WechatOAuthService;
+use app\service\api\admin\user\UserService;
 use think\App;
 use think\Response;
 

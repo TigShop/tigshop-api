@@ -12,7 +12,7 @@
 namespace app\index\controller\user;
 
 use app\index\IndexBaseController;
-use app\service\user\UserMessageService;
+use app\service\api\admin\user\UserMessageService;
 use think\App;
 use think\Response;
 

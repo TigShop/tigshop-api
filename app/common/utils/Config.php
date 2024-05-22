@@ -2,7 +2,7 @@
 
 namespace app\common\utils;
 
-use app\service\setting\ConfigService;
+use app\service\api\admin\setting\ConfigService;
 
 class Config
 {

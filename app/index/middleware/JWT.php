@@ -4,11 +4,9 @@ declare (strict_types = 1);
 
 namespace app\index\middleware;
 
-use app\service\authority\AccessTokenService;
-use app\service\user\UserService;
-use common\Token;
+use app\service\api\admin\authority\AccessTokenService;
+use app\service\api\admin\user\UserService;
 use think\Exception;
-use think\facade\Request;
 
 /**
  * JWT验证刷新token机制
