@@ -106,7 +106,6 @@ class Aftersales extends Model
     const PROGRESSING_STATUS = [
         self::STATUS_IN_REVIEW,
         self::STATUS_APPROVED_FOR_PROCESSING,
-        self::STATUS_REFUSE,
         self::STATUS_SEND_BACK,
         self::STATUS_RETURNED,
     ];
@@ -145,7 +144,6 @@ class Aftersales extends Model
         return in_array($this->status, [
             self::STATUS_IN_REVIEW,
             self::STATUS_SEND_BACK,
-            self::STATUS_REFUSE,
             self::STATUS_APPROVED_FOR_PROCESSING,
         ]);
     }

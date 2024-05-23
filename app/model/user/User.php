@@ -11,6 +11,7 @@
 
 namespace app\model\user;
 
+use app\common\utils\Config;
 use app\common\utils\Time;
 use think\Model;
 
@@ -23,6 +24,11 @@ class User extends Model
     public function userRank()
     {
         return $this->hasOne(UserRank::class, 'rank_id', 'rank_id')->bind(["rank_name", "rank_ico", "discount"]);
+    }
+
+    public function getAvatarAttr($value)
+    {
+        return empty($value) ? Config::get('default_avatar') : $value;
     }
 
     // 关联收货信息
