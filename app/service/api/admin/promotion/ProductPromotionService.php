@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\promotion;
 
-use app\common\exceptions\ApiException;
 use app\model\promotion\ProductPromotion;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 优惠活动服务类

@@ -124,7 +124,7 @@ class WithdrawApply extends IndexBaseController
     /**
      * 添加提现申请
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function apply(): Response
     {

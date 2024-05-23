@@ -38,7 +38,7 @@ class StatisticsUser extends AdminBaseController
     /**
      * 新增会员趋势统计图 / 导出
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function addUserTrends(): Response
     {

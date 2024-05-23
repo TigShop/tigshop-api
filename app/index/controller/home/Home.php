@@ -11,7 +11,6 @@
 
 namespace app\index\controller\home;
 
-use app\common\utils\Config;
 use app\index\IndexBaseController;
 use app\service\api\admin\decorate\DecorateDiscreteService;
 use app\service\api\admin\decorate\DecorateService;
@@ -21,6 +20,7 @@ use app\service\api\admin\promotion\SeckillService;
 use app\service\api\admin\setting\FriendLinksService;
 use think\App;
 use think\Response;
+use utils\Config;
 
 /**
  * 首页控制器
@@ -81,7 +81,7 @@ class Home extends IndexBaseController
     /**
      * 首页今日推荐
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

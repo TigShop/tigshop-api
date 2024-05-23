@@ -11,8 +11,8 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 会员登录服务类

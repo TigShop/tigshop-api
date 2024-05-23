@@ -11,10 +11,6 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\model\finance\UserBalanceLog;
 use app\model\order\Order;
 use app\model\product\Product;
@@ -26,6 +22,10 @@ use app\service\api\admin\authority\AccessTokenService;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\common\sms\SmsService;
 use app\validate\user\UserValidate;
+use exceptions\ApiException;
+use log\AdminLog;
+use utils\Config;
+use utils\Time;
 
 /**
  * 会员服务类

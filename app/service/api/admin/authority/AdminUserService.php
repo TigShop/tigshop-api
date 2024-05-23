@@ -2,12 +2,12 @@
 
 namespace app\service\api\admin\authority;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\authority\AdminRole;
 use app\model\authority\AdminUser;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\common\sms\SmsService;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 管理员服务类

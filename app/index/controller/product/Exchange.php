@@ -60,7 +60,7 @@ class Exchange extends IndexBaseController
     /**
      * 详情
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function detail(): \think\Response
     {

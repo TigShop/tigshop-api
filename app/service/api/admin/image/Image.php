@@ -2,14 +2,14 @@
 
 namespace app\service\api\admin\image;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\service\api\admin\image\src\Cos;
 use app\service\api\admin\image\src\Local;
 use app\service\api\admin\image\src\Oss;
+use exceptions\ApiException;
 use think\Exception;
 use think\File\UploadedFile;
+use utils\Config;
+use utils\Time;
 
 /**
  * Class Image

@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
 use app\model\user\UserMessage;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 用户站内信服务类

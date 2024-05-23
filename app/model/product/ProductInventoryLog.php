@@ -11,8 +11,8 @@
 
 namespace app\model\product;
 
-use app\common\utils\Time;
 use think\Model;
+use utils\Time;
 
 class ProductInventoryLog extends Model
 {

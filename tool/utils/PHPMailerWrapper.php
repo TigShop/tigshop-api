@@ -1,11 +1,10 @@
 <?php
 
-namespace app\common\utils;
+namespace utils;
 
 
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\PHPMailer;
 
 /**
  * 发送邮件

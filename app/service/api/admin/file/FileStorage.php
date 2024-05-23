@@ -2,11 +2,11 @@
 
 namespace app\service\api\admin\file;
 
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\service\api\admin\file\src\Local;
 use app\service\api\admin\file\src\Oss;
 use think\file\UploadedFile;
+use utils\Config;
+use utils\Time;
 
 class FileStorage
 {
@@ -59,7 +59,7 @@ class FileStorage
     /**
      * 保存文件
      * @return string
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function save(): string
     {

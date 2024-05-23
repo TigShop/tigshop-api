@@ -2,13 +2,13 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Util;
 use app\model\product\Brand;
 use app\service\api\admin\BaseService;
 use app\validate\product\BrandValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 use think\facade\Db;
+use utils\Util;
 
 /**
  * 品牌服务类

@@ -69,7 +69,7 @@ class Category extends IndexBaseController
     /**
      * 商品相关分类 -- 同级分类 - 同类其他品牌
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function relateInfo(): Response
     {

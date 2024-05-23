@@ -4,11 +4,11 @@ declare (strict_types = 1);
 
 namespace app;
 
-use app\common\traits\OutputTrait;
 use think\App;
 use think\exception\ValidateException;
 use think\Response;
 use think\Validate;
+use traits\OutputTrait;
 
 /**
  * 控制器基础类

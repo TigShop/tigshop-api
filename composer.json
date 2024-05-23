@@ -65,7 +65,7 @@
             "app\\": "app"
         },
         "psr-0": {
-            "": "extend/"
+            "": "tool/"
         }
     },
     "config": {

@@ -39,7 +39,7 @@ class DecorateRequest extends AdminBaseController
     /**
      * 获取商品列表
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function productList():Response
     {

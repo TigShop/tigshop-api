@@ -2,12 +2,12 @@
 
 namespace app\service\api\admin\setting;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Config as UtilsConfig;
-use app\common\utils\Util;
 use app\model\setting\Config;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
+use utils\Config as UtilsConfig;
+use utils\Util;
 
 /**
  * 设置服务类

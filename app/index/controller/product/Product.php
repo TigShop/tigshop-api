@@ -11,7 +11,6 @@
 
 namespace app\index\controller\product;
 
-use app\common\exceptions\ApiException;
 use app\index\IndexBaseController;
 use app\service\api\admin\order\CartService;
 use app\service\api\admin\product\ProductDetailService;
@@ -20,6 +19,7 @@ use app\service\api\admin\promotion\CouponService;
 use app\service\api\admin\user\FeedbackService;
 use app\service\api\admin\user\UserCouponService;
 use app\service\api\admin\user\UserService;
+use exceptions\ApiException;
 use think\App;
 use think\Response;
 
@@ -237,7 +237,7 @@ class Product extends IndexBaseController
     /**
      * 判断商品是否被收藏
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function isCollect(): \think\Response
     {

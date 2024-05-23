@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\promotion;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Util;
 use app\model\promotion\PointsExchange;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use utils\Util;
 
 /**
  * 积分商品服务类

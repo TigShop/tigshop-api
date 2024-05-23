@@ -11,9 +11,9 @@
 
 namespace app\model\promotion;
 
-use app\common\utils\Time;
 use app\model\product\Product;
 use think\Model;
+use utils\Time;
 
 class Seckill extends Model
 {

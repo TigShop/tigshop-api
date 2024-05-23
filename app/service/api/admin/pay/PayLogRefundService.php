@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\pay;
 
-use app\common\utils\Time;
 use app\model\payment\PayLogRefund;
 use app\service\api\admin\BaseService;
 use Fastknife\Utils\RandomUtils;
+use utils\Time;
 
 class PayLogRefundService extends BaseService
 {

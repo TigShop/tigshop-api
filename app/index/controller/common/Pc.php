@@ -11,12 +11,12 @@
 
 namespace app\index\controller\common;
 
-use app\common\utils\Config;
 use app\index\IndexBaseController;
 use app\service\api\admin\decorate\PcCatFloorService;
 use app\service\api\admin\decorate\PcNavigationService;
 use think\App;
 use think\Response;
+use utils\Config;
 
 /**
  * 首页控制器

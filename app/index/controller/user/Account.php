@@ -11,7 +11,7 @@ class Account extends IndexBaseController
 {
     /**
      * @param App $app
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function __construct(App $app)
     {

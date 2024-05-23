@@ -11,14 +11,14 @@
 
 namespace app\service\api\admin\promotion;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Time;
 use app\model\promotion\Seckill;
 use app\model\promotion\SeckillItem;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\product\ProductService;
+use exceptions\ApiException;
+use log\AdminLog;
 use think\facade\Db;
+use utils\Time;
 
 /**
  * 秒杀活动服务类

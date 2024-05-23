@@ -24,7 +24,7 @@ class PointsLog extends IndexBaseController
      * 构造函数
      * @param App $app
      * @param UserPointsLogService $userPointsLogService
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function __construct(App $app, UserPointsLogService $userPointsLogService)
     {

@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\content;
 
-use app\common\exceptions\ApiException;
 use app\model\content\Article;
 use app\model\content\ArticleCategory;
 use app\model\product\ProductArticle;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 文章标题服务类

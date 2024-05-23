@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\decorate;
 
-use app\common\exceptions\ApiException;
 use app\model\decorate\PcNavigation;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * PC导航栏服务类

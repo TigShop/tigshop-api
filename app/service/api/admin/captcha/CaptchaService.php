@@ -2,8 +2,8 @@
 
 namespace app\service\api\admin\captcha;
 
-use app\common\exceptions\ApiException;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 use Fastknife\Exception\ParamException;
 use Fastknife\Service\BlockPuzzleCaptchaService;
 use Fastknife\Service\ClickWordCaptchaService;

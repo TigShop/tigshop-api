@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\setting;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Time;
 use app\model\setting\MailTemplates;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
+use utils\Time;
 
 /**
  * 邮件模板设置服务类

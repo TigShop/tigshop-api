@@ -11,12 +11,12 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Util;
 use app\model\order\Order;
 use app\model\user\User;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\common\sms\SmsService;
+use exceptions\ApiException;
+use utils\Util;
 
 /**
  * 会员服务类

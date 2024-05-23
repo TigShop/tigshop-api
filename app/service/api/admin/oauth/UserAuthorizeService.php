@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\oauth;
 
-use app\common\utils\Time;
 use app\model\user\UserAuthorize;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\user\UserInfoService;
+use utils\Time;
 
 class UserAuthorizeService extends BaseService
 {
@@ -23,7 +23,7 @@ class UserAuthorizeService extends BaseService
      * @param string $open_id
      * @param string $union_id
      * @return array
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

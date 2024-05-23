@@ -12,13 +12,13 @@
 namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
-use app\common\utils\Config as ShopConfig;
 use app\model\setting\Region;
 use app\service\api\admin\file\FileStorage;
 use app\service\api\admin\pay\CertificatesService;
 use app\service\api\admin\setting\ConfigService;
 use think\App;
 use think\Response;
+use utils\Config as ShopConfig;
 
 /**
  * 设置项控制器
@@ -95,7 +95,7 @@ class Config extends AdminBaseController
     /**
      * 添加配置
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function create(): Response
     {
@@ -108,7 +108,7 @@ class Config extends AdminBaseController
     /**
      * 编辑配置
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function update(): Response
     {
@@ -207,7 +207,7 @@ class Config extends AdminBaseController
     /**
      * 发送测试邮件
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function sendTestEmail(): Response
     {
@@ -219,7 +219,7 @@ class Config extends AdminBaseController
     /**
      * 上传API文件
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function uploadFile(): Response
     {

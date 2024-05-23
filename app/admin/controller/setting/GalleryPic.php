@@ -12,16 +12,16 @@
 namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
-use app\common\utils\Time;
 use app\service\api\admin\image\Image;
 use app\service\api\admin\setting\GalleryPicService;
 use app\service\api\admin\setting\GalleryService;
 use app\validate\setting\GalleryPicValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;
 use think\Response;
+use utils\Time;
 
 /**
  * 相册图片控制器
@@ -183,7 +183,7 @@ class GalleryPic extends AdminBaseController
     /**
      * 图片上传
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\Exception
      */
     public function uploadImg(): Response

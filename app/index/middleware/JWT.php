@@ -19,7 +19,7 @@ class JWT
      * @param \Closure $next
      * @return object|mixed
      * @throws Exception
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function handle($request, \Closure $next): object
     {

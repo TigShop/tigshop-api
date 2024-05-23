@@ -11,10 +11,6 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\model\authority\AdminUser;
 use app\model\order\Order;
 use app\model\order\OrderItem;
@@ -24,7 +20,11 @@ use app\service\api\admin\BaseService;
 use app\service\api\admin\order\OrderStatusService;
 use app\service\api\admin\user\UserService;
 use app\validate\product\CommentValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 use think\facade\Db;
+use utils\Config;
+use utils\Time;
 
 /**
  * 评论晒单服务类

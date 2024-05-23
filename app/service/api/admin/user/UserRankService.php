@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\user\UserRank;
 use app\service\api\admin\BaseService;
 use app\validate\user\UserRankValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 会员等级服务类

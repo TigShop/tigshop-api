@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\setting;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Config;
 use app\model\setting\Region;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
+use utils\Config;
 
 /**
  * 地区管理服务类

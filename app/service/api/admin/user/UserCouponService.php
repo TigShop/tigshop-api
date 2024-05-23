@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Time;
 use app\model\user\UserCoupon;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use utils\Time;
 
 /**
  * 用户优惠券服务类

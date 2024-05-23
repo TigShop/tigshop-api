@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\exceptions;
+namespace exceptions;
 
 use think\Exception;
 

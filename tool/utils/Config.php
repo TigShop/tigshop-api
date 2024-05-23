@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\utils;
+namespace utils;
 
 use app\service\api\admin\setting\ConfigService;
 

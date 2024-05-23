@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\authority;
 
-use app\common\exceptions\ApiException;
 use app\model\authority\AdminLog as AdminLogModel;
 use app\service\api\admin\BaseService;
 use app\validate\authority\AdminLogValidate;
+use exceptions\ApiException;
 
 /**
  * 管理员日志服务类

@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
 use app\model\product\ProductInventoryLog;
 use app\service\api\admin\BaseService;
 use app\validate\product\ProductInventoryLogValidate;
+use exceptions\ApiException;
 
 /**
  * 商品库存日志服务类

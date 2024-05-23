@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\authority;
 
-use app\common\exceptions\ApiException;
 use app\model\authority\Suppliers;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 供应商服务类

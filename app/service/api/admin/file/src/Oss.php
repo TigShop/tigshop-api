@@ -2,9 +2,9 @@
 
 namespace app\service\api\admin\file\src;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
+use exceptions\ApiException;
 use OSS\OssClient;
+use utils\Config;
 
 class Oss
 {

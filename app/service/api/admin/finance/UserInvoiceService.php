@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\finance;
 
-use app\common\exceptions\ApiException;
 use app\model\finance\UserInvoice;
 use app\service\api\admin\BaseService;
 use app\validate\finance\UserInvoiceValidate;
+use exceptions\ApiException;
 
 /**
  * 增票资质申请服务类

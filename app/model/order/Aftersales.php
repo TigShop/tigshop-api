@@ -11,9 +11,9 @@
 
 namespace app\model\order;
 
-use app\common\utils\Time;
 use app\model\finance\RefundApply;
 use think\Model;
+use utils\Time;
 
 class Aftersales extends Model
 {

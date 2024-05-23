@@ -11,8 +11,8 @@
 
 namespace app\validate\user;
 
-use app\common\utils\Util;
 use think\Validate;
+use utils\Util;
 
 class UserAddressValidate extends Validate
 {

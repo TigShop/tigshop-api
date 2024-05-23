@@ -19,8 +19,8 @@ return [
     // 扩展语言包
     'extend_list'     => [
         'zh-cn' => [
-                app()->getAppPath() . 'common/lang/zh-cn/common.php',
-            ]
+
+        ]
     ],
     // Accept-Language转义为对应语言包名称
     'accept_language' => [

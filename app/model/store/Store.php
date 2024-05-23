@@ -11,9 +11,9 @@
 
 namespace app\model\store;
 
-use app\common\utils\Time;
 use app\model\user\User;
 use think\Model;
+use utils\Time;
 
 class Store extends Model
 {

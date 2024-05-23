@@ -11,7 +11,6 @@
 
 namespace app\index\controller\user;
 
-use app\common\exceptions\ApiException;
 use app\index\IndexBaseController;
 use app\service\api\admin\finance\UserRechargeOrderService;
 use app\service\api\admin\pay\PayLogService;
@@ -19,6 +18,7 @@ use app\service\api\admin\pay\PaymentService;
 use app\service\api\admin\pay\src\AliPayService;
 use app\service\api\admin\pay\src\PayPalService;
 use app\service\api\admin\pay\src\WechatPayService;
+use exceptions\ApiException;
 use think\App;
 use think\Response;
 use think\response\Json;
@@ -109,7 +109,7 @@ class RechargeOrder extends IndexBaseController
     /**
      * 充值支付
      * @return Json
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function pay(): Response
     {

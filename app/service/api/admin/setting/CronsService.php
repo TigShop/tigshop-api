@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\setting;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\setting\Crons;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 计划任务服务类

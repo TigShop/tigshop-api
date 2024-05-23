@@ -38,7 +38,7 @@ class OrderInvoice extends IndexBaseController
     /**
      * 添加更新订单发票
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function update(): Response
     {
@@ -78,7 +78,7 @@ class OrderInvoice extends IndexBaseController
     /**
      * 添加发票申请
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function create(): Response
     {
@@ -89,7 +89,7 @@ class OrderInvoice extends IndexBaseController
     /**
      * 订单发票详情
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException

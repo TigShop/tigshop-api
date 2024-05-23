@@ -2,9 +2,9 @@
 
 namespace app\service\api\admin\image\src;
 
-use app\common\utils\Util;
 use Intervention\Image\ImageManagerStatic;
 use think\File\UploadedFile;
+use utils\Util;
 
 class Local
 {

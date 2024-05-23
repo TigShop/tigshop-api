@@ -11,9 +11,9 @@
 
 namespace app\model\user;
 
-use app\common\utils\Time;
 use app\model\promotion\Coupon;
 use think\Model;
+use utils\Time;
 
 class UserCoupon extends Model
 {

@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\setting;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\setting\Config;
 use app\service\api\admin\BaseService;
 use app\validate\setting\AppVersionValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * APP版本管理服务类

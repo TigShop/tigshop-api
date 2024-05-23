@@ -11,9 +11,6 @@
 
 namespace app\service\api\admin\order;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\model\finance\OrderInvoice;
 use app\model\order\Order;
 use app\model\product\Product;
@@ -31,7 +28,10 @@ use app\service\api\admin\setting\ShippingTplService;
 use app\service\api\admin\user\UserAddressService;
 use app\service\api\admin\user\UserCouponService;
 use app\service\api\admin\user\UserService;
+use exceptions\ApiException;
 use think\facade\Db;
+use utils\Config;
+use utils\Time;
 
 /**
  * 订单服务类
@@ -820,7 +820,7 @@ class OrderCheckService extends BaseService
             'invoice_fee' => $total['invoice_fee'], //发票费用
             'discount_amount' => $total['discount_amount'], //各种优惠活动金额，如折扣、满减等 todo
             'order_extension' => $this->extension, //[JSON]记录订单使用的优惠券、优惠活动、不同店铺配送等的具体细节信息
-            'order_source' => \app\common\utils\Util::getUserAgent(), //下单来源设备，APP|PC|H5|微信公众号|微信小程序
+            'order_source' => \utils\Util::getUserAgent(), //下单来源设备，APP|PC|H5|微信公众号|微信小程序
         ];
         if (count($carts) === 1) {
             // 所有商品都是来自同一店铺时

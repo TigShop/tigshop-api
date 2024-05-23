@@ -12,8 +12,6 @@
 namespace app\admin\controller\product;
 
 use app\admin\AdminBaseController;
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\model\product\ProductArticle;
 use app\service\api\admin\authority\SuppliersService;
 use app\service\api\admin\participle\ParticipleService;
@@ -29,6 +27,8 @@ use app\service\api\admin\user\UserRankService;
 use app\validate\product\ProductValidate;
 use think\App;
 use think\facade\Db;
+use utils\Config;
+use utils\Time;
 
 /**
  * 商品管理控制器
@@ -224,7 +224,7 @@ class Product extends AdminBaseController
     /**
      * 新增接口
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\Exception
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException

@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\decorate;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Time;
 use app\model\decorate\Decorate;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use utils\Time;
 
 /**
  * 装修服务类

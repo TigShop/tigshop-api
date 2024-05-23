@@ -1,8 +1,8 @@
 <?php
 
-namespace app\common\utils;
+namespace utils;
 
-use app\common\exceptions\ApiException;
+use exceptions\ApiException;
 use think\facade\Db;
 use think\facade\Request;
 

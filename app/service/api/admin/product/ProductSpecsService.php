@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\product\ProductSpecs;
 use app\service\api\admin\BaseService;
 use app\validate\product\ProductSpecsValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 商品规格服务类

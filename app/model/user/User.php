@@ -11,9 +11,9 @@
 
 namespace app\model\user;
 
-use app\common\utils\Config;
-use app\common\utils\Time;
 use think\Model;
+use utils\Config;
+use utils\Time;
 
 class User extends Model
 {

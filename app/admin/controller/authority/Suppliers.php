@@ -12,9 +12,9 @@
 namespace app\admin\controller\authority;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
 use app\service\api\admin\authority\SuppliersService;
 use app\validate\authority\SuppliersValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;

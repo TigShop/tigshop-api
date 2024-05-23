@@ -11,10 +11,10 @@
 
 namespace app\model\msg;
 
-use app\common\utils\Time;
 use app\model\order\Order;
 use app\model\order\OrderItem;
 use think\Model;
+use utils\Time;
 
 class AdminMsg extends Model
 {

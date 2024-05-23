@@ -12,10 +12,10 @@
 namespace app\admin\controller\product;
 
 use app\admin\AdminBaseController;
-use app\common\CacheManager;
-use app\common\log\AdminLog;
 use app\service\api\admin\product\CategoryService;
+use log\AdminLog;
 use think\App;
+use tig\CacheManager;
 
 /**
  * 分类控制器

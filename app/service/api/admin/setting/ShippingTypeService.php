@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\setting;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\setting\ShippingType;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 配送类型服务类

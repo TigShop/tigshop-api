@@ -165,7 +165,7 @@ class Order extends AdminBaseController
     /**
      * 确认收货
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function confirmReceipt(): \think\Response
     {

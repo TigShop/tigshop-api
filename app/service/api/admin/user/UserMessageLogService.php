@@ -11,12 +11,12 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\user\User;
 use app\model\user\UserMessage;
 use app\model\user\UserMessageLog;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 站内信服务类

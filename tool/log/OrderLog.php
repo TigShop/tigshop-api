@@ -1,10 +1,9 @@
 <?php
 
-namespace app\common\log;
+namespace log;
 
 use think\facade\Db;
-use app\common\utils\Time;
-use app\common\log\AdminLog;
+use utils\Time;
 
 class OrderLog
 {

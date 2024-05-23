@@ -1,9 +1,8 @@
 <?php
 
-namespace app\common\utils;
+namespace utils;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
-use PhpOffice\PhpSpreadsheet\Shared\StringHelper;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Excel

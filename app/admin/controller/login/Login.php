@@ -85,7 +85,7 @@ class Login extends BaseController
     /**
      * 获取验证码
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function sendMobileCode(): Response
     {

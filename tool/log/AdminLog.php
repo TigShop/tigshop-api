@@ -1,10 +1,10 @@
 <?php
 
-namespace app\common\log;
+namespace log;
 
 use think\facade\Db;
-use app\common\utils\Time;
-use app\common\utils\Util;
+use utils\Time;
+use utils\Util;
 
 class AdminLog
 {

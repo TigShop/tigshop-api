@@ -2,8 +2,6 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\product\Brand;
 use app\model\product\Category;
 use app\model\product\Product;
@@ -11,6 +9,8 @@ use app\model\product\ProductArticle;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\content\ArticleService;
 use app\validate\product\CategoryValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 use think\facade\Cache;
 use think\facade\Db;
 

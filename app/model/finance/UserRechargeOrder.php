@@ -11,9 +11,9 @@
 
 namespace app\model\finance;
 
-use app\common\utils\Time;
 use app\model\user\User;
 use think\Model;
+use utils\Time;
 
 class UserRechargeOrder extends Model
 {

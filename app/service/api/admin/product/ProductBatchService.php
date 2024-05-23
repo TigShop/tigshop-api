@@ -11,16 +11,16 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
-use app\common\utils\Excel;
-use app\common\utils\Time;
 use app\model\category\Category;
 use app\model\product\Brand;
 use app\model\product\Product;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 use think\Exception;
 use think\facade\Db;
+use utils\Config;
+use utils\Excel;
+use utils\Time;
 
 class ProductBatchService extends BaseService
 {

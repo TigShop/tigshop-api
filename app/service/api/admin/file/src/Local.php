@@ -2,8 +2,8 @@
 
 namespace app\service\api\admin\file\src;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Util;
+use exceptions\ApiException;
+use utils\Util;
 
 class Local
 {

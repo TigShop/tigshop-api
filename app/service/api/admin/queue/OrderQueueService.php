@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\queue;
 
-use app\common\utils\Config;
-use app\common\utils\TigQueue;
 use app\job\order\OrderCancelJob;
 use app\service\api\admin\BaseService;
+use utils\Config;
+use utils\TigQueue;
 
 class OrderQueueService extends BaseService
 {

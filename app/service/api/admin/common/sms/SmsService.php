@@ -2,11 +2,11 @@
 
 namespace app\service\api\admin\common\sms;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\TigQueue;
 use app\service\api\admin\common\sms\providers\AliyunSmsService;
 use app\service\api\admin\setting\MessageTemplateService;
+use exceptions\ApiException;
 use think\facade\Cache;
+use utils\TigQueue;
 
 class SmsService
 {

@@ -4,12 +4,12 @@ namespace app\service\api\admin\pay\src;
 
 use Alipay\EasySDK\Kernel\Config as AliConfig;
 use Alipay\EasySDK\Kernel\Factory;
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
-use app\common\utils\Util;
 use app\service\api\admin\pay\PaymentService;
 use app\service\api\admin\pay\PayService;
+use exceptions\ApiException;
 use think\Exception;
+use utils\Config;
+use utils\Util;
 
 class AliPayService extends PayService
 {

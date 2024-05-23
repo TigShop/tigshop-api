@@ -59,7 +59,7 @@ class Coupon extends IndexBaseController
     /**
      * 删除优惠券
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function del(): Response
     {
@@ -96,7 +96,7 @@ class Coupon extends IndexBaseController
     /**
      * 领取优惠券
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -111,7 +111,7 @@ class Coupon extends IndexBaseController
     /**
      * 优惠券详情
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function detail(): Response
     {

@@ -12,9 +12,9 @@
 namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
 use app\service\api\admin\promotion\SignInSettingService;
 use app\validate\promotion\SignInSettingValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;

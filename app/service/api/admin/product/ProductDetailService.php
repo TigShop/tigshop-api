@@ -11,8 +11,6 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Time;
 use app\model\product\Product;
 use app\model\product\ProductServices;
 use app\model\promotion\Seckill;
@@ -20,6 +18,8 @@ use app\model\user\CollectProduct;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\promotion\SeckillService;
 use app\service\api\admin\user\FeedbackService;
+use exceptions\ApiException;
+use utils\Time;
 
 /**
  * 商品服务类

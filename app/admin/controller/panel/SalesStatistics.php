@@ -38,7 +38,7 @@ class SalesStatistics extends AdminBaseController
     /**
      * 销售统计
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function list(): Response
     {
@@ -61,7 +61,7 @@ class SalesStatistics extends AdminBaseController
     /**
      * 销售明细
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function salesDetail(): Response
     {

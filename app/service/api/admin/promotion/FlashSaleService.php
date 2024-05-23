@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\promotion;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\promotion\FlashSale;
 use app\service\api\admin\BaseService;
 use app\validate\promotion\FlashSaleValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 秒杀服务类

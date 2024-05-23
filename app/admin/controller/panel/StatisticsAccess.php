@@ -38,7 +38,7 @@ class StatisticsAccess extends AdminBaseController
     /**
      * 访问统计
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function accessStatistics(): Response
     {

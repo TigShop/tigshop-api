@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\promotion;
 
-use app\common\exceptions\ApiException;
 use app\model\promotion\RechargeSetting;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 余额充值服务类

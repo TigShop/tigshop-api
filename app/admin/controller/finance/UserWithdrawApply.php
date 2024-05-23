@@ -12,9 +12,9 @@
 namespace app\admin\controller\finance;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
 use app\service\api\admin\finance\UserWithdrawApplyService;
 use app\validate\finance\UserWithdrawApplyValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;
@@ -83,7 +83,7 @@ class UserWithdrawApply extends AdminBaseController
     /**
      * 添加
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function create(): Response
     {

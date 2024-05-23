@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common\traits;
+namespace traits;
 
 use think\facade\Env;
 use think\Response;

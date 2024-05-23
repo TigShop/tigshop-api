@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\pay\src;
 
-use app\common\utils\Config;
 use app\service\api\admin\pay\PayService;
 use app\service\api\admin\setting\RegionService;
 use common\Url;
+use utils\Config;
 
 class PayPalService extends PayService
 {

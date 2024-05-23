@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\finance;
 
-use app\common\exceptions\ApiException;
 use app\model\finance\OrderInvoice;
 use app\model\order\Order;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 发票申请服务类

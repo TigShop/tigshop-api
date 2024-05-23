@@ -11,8 +11,8 @@
 
 namespace app\model\setting;
 
-use app\common\utils\Time;
 use think\Model;
+use utils\Time;
 
 class Crons extends Model
 {

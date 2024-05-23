@@ -70,7 +70,7 @@ class CollectProduct extends IndexBaseController
     /**
      * 取消收藏
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function cancel(): Response
     {

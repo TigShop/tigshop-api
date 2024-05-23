@@ -12,9 +12,9 @@
 namespace app\admin\controller\decorate;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
 use app\service\api\admin\decorate\DecorateService;
 use app\validate\decorate\DecorateValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;
@@ -69,7 +69,7 @@ class Decorate extends AdminBaseController
     /**
      * 详情
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function detail(): Response
     {

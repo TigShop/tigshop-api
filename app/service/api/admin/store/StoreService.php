@@ -11,11 +11,11 @@
 
 namespace app\service\api\admin\store;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\store\Store;
 use app\service\api\admin\BaseService;
 use app\validate\store\StoreValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 店铺服务类

@@ -1,6 +1,6 @@
 <?php
 
-namespace app\common;
+namespace tig;
 
 use think\facade\Cache;
 

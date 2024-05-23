@@ -11,12 +11,12 @@
 
 namespace app\service\api\admin\setting;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\setting\MessageTemplate;
 use app\model\setting\MessageType;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\oauth\MiniWechatService;
+use exceptions\ApiException;
+use log\AdminLog;
 use think\Exception;
 use think\facade\Db;
 

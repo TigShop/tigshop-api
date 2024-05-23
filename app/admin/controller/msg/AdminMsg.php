@@ -64,7 +64,7 @@ class AdminMsg extends AdminBaseController
     /**
      * 设置单个已读
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function setReaded(): Response
     {

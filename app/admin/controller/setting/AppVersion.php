@@ -77,7 +77,7 @@ class AppVersion extends AdminBaseController
     /**
      * 添加
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function create(): Response
     {

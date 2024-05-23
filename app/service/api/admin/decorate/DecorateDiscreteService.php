@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\decorate;
 
-use app\common\exceptions\ApiException;
 use app\model\decorate\DecorateDiscrete;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 装修模块服务类

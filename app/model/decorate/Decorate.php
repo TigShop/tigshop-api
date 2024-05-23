@@ -11,8 +11,8 @@
 
 namespace app\model\decorate;
 
-use app\common\utils\Time;
 use think\Model;
+use utils\Time;
 
 class Decorate extends Model
 {

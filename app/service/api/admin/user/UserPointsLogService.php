@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\user\UserPointsLog;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 积分日志服务类

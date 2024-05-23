@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\oauth;
 
-use app\common\utils\Config;
-use app\common\utils\Util;
 use app\service\api\admin\BaseService;
 use EasyWeChat\OfficialAccount\Application;
+use utils\Config;
+use utils\Util;
 
 class WechatOAuthService extends BaseService
 {

@@ -12,10 +12,10 @@
 namespace app\admin\controller\promotion;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
 use app\service\api\admin\promotion\CouponService;
 use app\service\api\admin\user\UserRankService;
 use app\validate\promotion\CouponValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;
@@ -127,7 +127,7 @@ class Coupon extends AdminBaseController
     /**
      * 添加
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function create()
     {

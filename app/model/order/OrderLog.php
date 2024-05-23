@@ -11,10 +11,10 @@
 
 namespace app\model\order;
 
-use app\common\utils\Time;
 use app\model\authority\AdminUser;
 use app\model\user\User;
 use think\Model;
+use utils\Time;
 
 class OrderLog extends Model
 {

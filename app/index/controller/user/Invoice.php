@@ -57,7 +57,7 @@ class Invoice extends IndexBaseController
     /**
      * 执行添加操作
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\db\exception\DbException
      */
     public function create(): Response
@@ -74,7 +74,7 @@ class Invoice extends IndexBaseController
     /**
      * 执行更新操作
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function update(): Response
     {
@@ -93,7 +93,7 @@ class Invoice extends IndexBaseController
     /**
      * 添加或编辑页面
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function detail(): Response
     {

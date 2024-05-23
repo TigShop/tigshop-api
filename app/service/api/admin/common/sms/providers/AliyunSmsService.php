@@ -6,10 +6,10 @@ use AlibabaCloud\SDK\Dysmsapi\V20170525\Dysmsapi;
 use AlibabaCloud\SDK\Dysmsapi\V20170525\Models\SendSmsRequest;
 use AlibabaCloud\Tea\Exception\TeaError;
 use AlibabaCloud\Tea\Utils\Utils\RuntimeOptions;
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
 use Darabonba\OpenApi\Models\Config as OpenApiConfig;
+use exceptions\ApiException;
 use think\Exception;
+use utils\Config;
 
 class AliyunSmsService
 {

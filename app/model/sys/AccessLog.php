@@ -11,8 +11,8 @@
 
 namespace app\model\sys;
 
-use app\common\utils\Time;
 use think\Model;
+use utils\Time;
 
 class AccessLog extends Model
 {

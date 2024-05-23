@@ -27,7 +27,7 @@ class Order extends IndexBaseController
      * 构造函数
      * @param App $app
      * @param OrderService $orderService
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function __construct(App $app, OrderService $orderService)
     {
@@ -112,7 +112,7 @@ class Order extends IndexBaseController
     /**
      * 确认收货
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function confirmReceipt(): \think\Response
     {
@@ -137,7 +137,7 @@ class Order extends IndexBaseController
     /**
      * 再次购买
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function buyAgain(): \think\Response
     {

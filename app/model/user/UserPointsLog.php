@@ -11,8 +11,8 @@
 
 namespace app\model\user;
 
-use app\common\utils\Time;
 use think\Model;
+use utils\Time;
 
 class UserPointsLog extends Model
 {

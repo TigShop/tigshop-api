@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\pay;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
 use app\service\api\admin\BaseService;
 use app\service\pay\RuntimeException;
+use exceptions\ApiException;
+use utils\Config;
 
 class CertificatesService extends BaseService
 {

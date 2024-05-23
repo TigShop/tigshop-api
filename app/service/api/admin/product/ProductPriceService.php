@@ -15,7 +15,7 @@ class ProductPriceService extends BaseService
      * @param int $user_rank_id
      * @param array $ranks_list
      * @return float|int
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function getProductFinalPrice(int $product_id, float $price, int $sku_id, int $user_rank_id = 0, array $ranks_list = []): float|int
     {

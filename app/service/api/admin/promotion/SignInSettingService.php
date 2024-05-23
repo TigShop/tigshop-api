@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\promotion;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\promotion\SignInSetting;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 积分签到服务类

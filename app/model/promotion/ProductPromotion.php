@@ -11,8 +11,8 @@
 
 namespace app\model\promotion;
 
-use app\common\utils\Time;
 use think\Model;
+use utils\Time;
 
 class ProductPromotion extends Model
 {

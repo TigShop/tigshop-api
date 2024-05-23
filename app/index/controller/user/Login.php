@@ -72,7 +72,7 @@ class Login extends IndexBaseController
     }
     /**
      * 获取验证码
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function sendMobileCode()
     {
@@ -95,7 +95,7 @@ class Login extends IndexBaseController
 
     /**
      * 获得pc端微信登录跳转的url
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function getWxLoginUrl()
     {
@@ -111,7 +111,7 @@ class Login extends IndexBaseController
 
     /**
      * 通过微信code获得微信用户信息
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function getWxLoginInfoByCode()
     {

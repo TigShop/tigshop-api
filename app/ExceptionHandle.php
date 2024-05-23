@@ -2,6 +2,7 @@
 
 namespace app;
 
+use exceptions\ApiException;
 use think\db\exception\DataNotFoundException;
 use think\db\exception\ModelNotFoundException;
 use think\exception\Handle;
@@ -9,11 +10,10 @@ use think\exception\HttpException;
 use think\exception\HttpResponseException;
 use think\exception\ValidateException;
 use think\facade\Env;
-use think\Response;
 use think\Request;
-use app\common\traits\OutputTrait;
-use app\common\exceptions\ApiException;
+use think\Response;
 use Throwable;
+use traits\OutputTrait;
 
 /**
  * 应用异常处理类

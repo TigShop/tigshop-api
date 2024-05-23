@@ -11,8 +11,6 @@
 
 namespace app\index\controller\user;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
 use app\index\IndexBaseController;
 use app\service\api\admin\captcha\CaptchaService;
 use app\service\api\admin\common\sms\SmsService;
@@ -20,7 +18,9 @@ use app\service\api\admin\image\Image;
 use app\service\api\admin\oauth\WechatOauthService;
 use app\service\api\admin\product\ProductService;
 use app\service\api\admin\user\UserInfoService;
+use exceptions\ApiException;
 use think\App;
+use utils\Config;
 
 /**
  * 会员中心控制器
@@ -54,7 +54,7 @@ class User extends IndexBaseController
     /**
      * 修改个人信息
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function updateInformation(): \think\Response
     {
@@ -72,7 +72,7 @@ class User extends IndexBaseController
     /**
      * 会员中心首页数据
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function memberCenter(): \think\Response
     {
@@ -106,7 +106,7 @@ class User extends IndexBaseController
 
     /**
      * 修改密码获取验证码
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function sendMobileCodeByModifyPassword(): \think\Response
     {
@@ -130,7 +130,7 @@ class User extends IndexBaseController
     /**
      * 修改密码手机验证
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function checkModifyPasswordMobileCode(): \think\Response
     {
@@ -151,7 +151,7 @@ class User extends IndexBaseController
     /**
      * 修改密码
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      * @throws \think\db\exception\DataNotFoundException
      * @throws \think\db\exception\DbException
      * @throws \think\db\exception\ModelNotFoundException
@@ -170,7 +170,7 @@ class User extends IndexBaseController
 
     /**
      * 手机修改获取验证码
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function sendMobileCodeByMobileValidate(): \think\Response
     {
@@ -193,7 +193,7 @@ class User extends IndexBaseController
 
     /**
      * 手机修改新手机获取验证码
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function sendMobileCodeByModifyMobile(): \think\Response
     {
@@ -218,7 +218,7 @@ class User extends IndexBaseController
     /**
      * 手机验证
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function mobileValidate(): \think\Response
     {
@@ -234,7 +234,7 @@ class User extends IndexBaseController
     /**
      * 手机绑定
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function modifyMobile(): \think\Response
     {
@@ -248,7 +248,7 @@ class User extends IndexBaseController
     /**
      * 邮箱验证 / 邮箱绑定
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function emailValidate(): \think\Response
     {

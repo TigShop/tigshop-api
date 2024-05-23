@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\oauth;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
 use app\service\api\admin\BaseService;
 use EasyWeChat\MiniApp\Application;
+use exceptions\ApiException;
+use utils\Config;
 
 class MiniWechatService extends BaseService
 {

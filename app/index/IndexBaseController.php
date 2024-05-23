@@ -5,8 +5,7 @@ declare (strict_types = 1);
 namespace app\index;
 
 use app\BaseController;
-use app\common\exceptions\ApiException;
-use think\Exception;
+use exceptions\ApiException;
 
 /**
  * 控制器基础类

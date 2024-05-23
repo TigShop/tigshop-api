@@ -11,10 +11,10 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
 use app\model\user\UserAddress;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\setting\RegionService;
+use exceptions\ApiException;
 
 /**
  * 收货地址服务类

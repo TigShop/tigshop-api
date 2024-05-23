@@ -13,11 +13,11 @@ declare (strict_types = 1);
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\model\user\User;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use utils\Config;
+use utils\Time;
 
 /**
  * 会员登录服务类

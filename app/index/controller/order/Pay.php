@@ -2,8 +2,6 @@
 
 namespace app\index\controller\order;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
 use app\index\IndexBaseController;
 use app\service\api\admin\order\OrderDetailService;
 use app\service\api\admin\order\OrderService;
@@ -12,7 +10,9 @@ use app\service\api\admin\pay\PaymentService;
 use app\service\api\admin\pay\src\AliPayService;
 use app\service\api\admin\pay\src\PayPalService;
 use app\service\api\admin\pay\src\WechatPayService;
+use exceptions\ApiException;
 use think\App;
+use utils\Config;
 
 class Pay extends IndexBaseController
 {
@@ -29,7 +29,7 @@ class Pay extends IndexBaseController
     /**
      * 订单支付
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function index(): \think\Response
     {

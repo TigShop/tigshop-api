@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\msg;
 
-use app\common\exceptions\ApiException;
 use app\model\msg\AdminMsg;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 示例模板服务类

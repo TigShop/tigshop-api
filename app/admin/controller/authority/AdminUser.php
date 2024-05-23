@@ -12,16 +12,16 @@
 namespace app\admin\controller\authority;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
-use app\common\utils\Format;
 use app\service\api\admin\authority\AdminUserService;
 use app\service\api\admin\captcha\CaptchaService;
 use app\service\api\admin\common\sms\SmsService;
 use app\validate\authority\AdminUserValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;
 use think\Response;
+use utils\Format;
 
 /**
  * APP版本管理控制器
@@ -265,7 +265,7 @@ class AdminUser extends AdminBaseController
     /**
      * 获取验证码
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function getCode(): Response
     {

@@ -57,7 +57,7 @@ class Message extends IndexBaseController
     /**
      * 全部标记已读
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function updateAllRead(): Response
     {
@@ -68,7 +68,7 @@ class Message extends IndexBaseController
     /**
      * 设置站内信已读
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function updateMessageRead(): Response
     {
@@ -80,7 +80,7 @@ class Message extends IndexBaseController
     /**
      * 删除站内信
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function del(): Response
     {

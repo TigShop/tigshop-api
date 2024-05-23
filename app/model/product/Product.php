@@ -11,10 +11,10 @@
 
 namespace app\model\product;
 
-use app\common\utils\Time;
 use app\model\promotion\SeckillItem;
 use app\service\api\admin\product\CategoryService;
 use think\Model;
+use utils\Time;
 
 class Product extends Model
 {

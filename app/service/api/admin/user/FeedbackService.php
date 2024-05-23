@@ -11,13 +11,13 @@
 
 namespace app\service\api\admin\user;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\authority\AdminUser;
 use app\model\user\Feedback;
 use app\model\user\User;
 use app\service\api\admin\BaseService;
 use app\validate\user\FeedbackValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 会员留言服务类

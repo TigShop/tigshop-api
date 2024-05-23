@@ -2,11 +2,11 @@
 
 namespace app\service\api\admin\image\src;
 
-use app\common\utils\Config;
 use OSS\Core\OssException;
 use OSS\OssClient;
 use think\Exception;
 use think\File\UploadedFile;
+use utils\Config;
 
 class Oss
 {

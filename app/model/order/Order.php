@@ -11,10 +11,10 @@
 
 namespace app\model\order;
 
-use app\common\utils\Time;
 use app\model\product\Comment;
 use app\model\user\User;
 use think\Model;
+use utils\Time;
 
 class Order extends Model
 {

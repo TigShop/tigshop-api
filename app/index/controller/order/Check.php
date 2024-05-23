@@ -35,7 +35,7 @@ class Check extends IndexBaseController
     /**
      * 购物车结算
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function index(): \think\Response
     {

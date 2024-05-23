@@ -11,12 +11,12 @@
 
 namespace app\index\controller\user;
 
-use app\common\exceptions\ApiException;
 use app\index\IndexBaseController;
 use app\service\api\admin\captcha\CaptchaService;
 use app\service\api\admin\common\sms\SmsService;
 use app\service\api\admin\user\UserRegistService;
 use app\service\api\admin\user\UserService;
+use exceptions\ApiException;
 use think\App;
 
 /**
@@ -116,7 +116,7 @@ class Regist extends IndexBaseController
     }
     /**
      * 获取验证码
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function sendMobileCode()
     {

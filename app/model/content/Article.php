@@ -11,9 +11,9 @@
 
 namespace app\model\content;
 
-use app\common\utils\Time;
 use app\model\product\ProductArticle;
 use think\Model;
+use utils\Time;
 
 class Article extends Model
 {

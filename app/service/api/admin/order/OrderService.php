@@ -11,10 +11,6 @@
 
 namespace app\service\api\admin\order;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Config;
-use app\common\utils\Excel;
-use app\common\utils\Time;
 use app\model\authority\AdminUser;
 use app\model\order\Aftersales;
 use app\model\order\AftersalesItem;
@@ -25,7 +21,11 @@ use app\model\setting\Region;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\product\ProductService;
 use app\validate\order\OrderValidate;
+use exceptions\ApiException;
 use tig\Http;
+use utils\Config;
+use utils\Excel;
+use utils\Time;
 
 /**
  * 订单服务类

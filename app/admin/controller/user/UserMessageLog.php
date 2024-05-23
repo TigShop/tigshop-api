@@ -129,7 +129,7 @@ class UserMessageLog extends AdminBaseController
     /**
      * 删除
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function del(): \think\Response
     {
@@ -141,7 +141,7 @@ class UserMessageLog extends AdminBaseController
     /**
      * 撤回
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function recall(): \think\Response
     {

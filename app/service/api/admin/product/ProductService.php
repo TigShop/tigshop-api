@@ -11,10 +11,6 @@
 
 namespace app\service\api\admin\product;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
-use app\common\utils\Config;
-use app\common\utils\Time;
 use app\model\product\Product;
 use app\model\product\ProductArticle;
 use app\model\product\ProductSku;
@@ -22,7 +18,11 @@ use app\model\promotion\Coupon;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\participle\ParticipleService;
 use app\validate\product\ProductValidate;
+use exceptions\ApiException;
+use log\AdminLog;
 use think\facade\Db;
+use utils\Config;
+use utils\Time;
 
 /**
  * 商品服务类

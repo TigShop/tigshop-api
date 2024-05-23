@@ -2,11 +2,11 @@
 
 namespace app\service\api\admin\pay;
 
-use app\common\exceptions\ApiException;
-use app\common\utils\Time;
 use app\model\payment\PayLog as PayLogModel;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 use Fastknife\Utils\RandomUtils;
+use utils\Time;
 
 class PayLogService extends BaseService
 {

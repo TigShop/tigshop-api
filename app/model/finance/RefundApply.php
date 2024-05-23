@@ -11,10 +11,10 @@
 
 namespace app\model\finance;
 
-use app\common\utils\Time;
 use app\model\order\Aftersales;
 use app\model\order\Order;
 use think\Model;
+use utils\Time;
 
 class RefundApply extends Model
 {

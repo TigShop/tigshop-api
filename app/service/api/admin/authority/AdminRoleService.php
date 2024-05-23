@@ -11,9 +11,9 @@
 
 namespace app\service\api\admin\authority;
 
-use app\common\exceptions\ApiException;
 use app\model\authority\AdminRole;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
 
 /**
  * 角色管理服务类

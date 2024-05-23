@@ -11,11 +11,11 @@
 
 namespace app\model\user;
 
-use app\common\utils\Time;
 use app\model\order\Order;
 use app\model\product\Product;
 use app\model\store\Store;
 use think\Model;
+use utils\Time;
 
 class Feedback extends Model
 {

@@ -133,7 +133,7 @@ class Aftersales extends IndexBaseController
     /**
      * 查看售后记录
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function detail(): Response
     {
@@ -147,7 +147,7 @@ class Aftersales extends IndexBaseController
     /**
      * 查看售后log记录
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function detailLog(): Response
     {
@@ -161,7 +161,7 @@ class Aftersales extends IndexBaseController
     /**
      * 提交售后反馈记录
      * @return Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function feedback(): Response
     {

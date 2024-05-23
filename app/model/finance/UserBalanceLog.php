@@ -11,10 +11,10 @@
 
 namespace app\model\finance;
 
-use app\common\utils\Time;
-use app\common\utils\Util;
 use app\model\user\User;
 use think\Model;
+use utils\Time;
+use utils\Util;
 
 class UserBalanceLog extends Model
 {

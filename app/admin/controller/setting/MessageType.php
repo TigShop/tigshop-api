@@ -12,8 +12,8 @@
 namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
 use app\service\api\admin\setting\MessageTypeService;
+use exceptions\ApiException;
 use think\App;
 use think\facade\Db;
 use think\Response;
@@ -198,7 +198,7 @@ class MessageType extends AdminBaseController
     /**
      * 生成小程序消息模板
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function miniProgramMessageTemplate()
     {
@@ -209,7 +209,7 @@ class MessageType extends AdminBaseController
     /**
      * 同步小程序消息模板
      * @return \think\Response
-     * @throws \app\common\exceptions\ApiException
+     * @throws \exceptions\ApiException
      */
     public function miniProgramMessageTemplateSync()
     {

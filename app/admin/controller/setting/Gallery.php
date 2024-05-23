@@ -12,9 +12,9 @@
 namespace app\admin\controller\setting;
 
 use app\admin\AdminBaseController;
-use app\common\exceptions\ApiException;
 use app\service\api\admin\setting\GalleryService;
 use app\validate\setting\GalleryValidate;
+use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
 use think\facade\Db;

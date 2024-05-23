@@ -2,10 +2,10 @@
 
 namespace app\service\api\admin\authority;
 
-use app\common\exceptions\ApiException;
-use app\common\log\AdminLog;
 use app\model\authority\Authority;
 use app\service\api\admin\BaseService;
+use exceptions\ApiException;
+use log\AdminLog;
 
 /**
  * 商品权限服务类
