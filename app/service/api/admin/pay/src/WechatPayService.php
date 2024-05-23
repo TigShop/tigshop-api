@@ -399,12 +399,12 @@ class WechatPayService extends PayService
         $config = [
             'mch_id' => $cfg['wechat_pay_mchid'],
             // 商户证书
-            'private_key' => app()->getRootPath() . '/app/common/certs/wechat/apiclient_key.pem',
-            'certificate' => app()->getRootPath() . '/app/common/certs/wechat/apiclient_cert.pem',
+            'private_key' => app()->getRootPath() . '/runtime/certs/wechat/apiclient_key.pem',
+            'certificate' => app()->getRootPath() . '/runtime/certs/wechat/apiclient_cert.pem',
             // v3 API 秘钥
             'secret_key' => $cfg['wechat_pay_key'],
             'platform_certs' => [
-                app()->getRootPath() . '/app/common/certs/wechat/cert.pem',
+                app()->getRootPath() . '/runtime/certs/wechat/cert.pem',
             ],
             'http' => [
                 'throw' => true, // 状态码非 200、300 时是否抛出异常，默认为开启

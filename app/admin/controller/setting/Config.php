@@ -49,9 +49,9 @@ class Config extends AdminBaseController
         $config = $this->configService->getConfig($code);
         if ($code == 'payment') {
             //检测证书状态
-            $private_key = app()->getRootPath() . '/app/common/certs/wechat/apiclient_key.pem';
-            $certificate = app()->getRootPath() . '/app/common/certs/wechat/apiclient_cert.pem';
-            $platform_certs = app()->getRootPath() . '/app/common/certs/wechat/cert.pem';
+            $private_key = app()->getRootPath() . '/runtime/certs/wechat/apiclient_key.pem';
+            $certificate = app()->getRootPath() . '/runtime/certs/wechat/apiclient_cert.pem';
+            $platform_certs = app()->getRootPath() . '/runtime/certs/wechat/cert.pem';
             if (is_file($private_key)) {
                 $config['wechat_pay_private_key'] = 1;
             }
@@ -224,7 +224,7 @@ class Config extends AdminBaseController
     public function uploadFile(): Response
     {
         $type = input('type/d');
-        $rootPathName = app()->getRootPath() . '/app/common/certs/wechat/';
+        $rootPathName = app()->getRootPath() . '/runtime/certs/wechat/';
         $fileName = '';
         if ($type == 1) {
             $fileName = 'apiclient_cert.pem';
