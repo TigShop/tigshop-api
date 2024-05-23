@@ -9,9 +9,12 @@ return [
     ],
     //滑动验证码
     'block_puzzle' => [
-        'backgrounds' => [], //背景图片路径， 不填使用默认值
-        'templates' => [], //模板图
+        'backgrounds' => app()->getRootPath() . '/tool/tig/captcha/original/', //背景图片路径， 不填使用默认值
+        'templates' =>  app()->getRootPath() . '/tool/tig/captcha/slidingBlock/', //模板图
         'offset' => 10, //容错偏移量
+        'is_cache_pixel' => true, //是否开启缓存图片像素值，开启后能提升服务端响应性能（但要注意更换图片时，需要清除缓存）
+
+        // 'is_interfere' => true, //开启干扰图
     ],
     //水印
     'watermark' => [
