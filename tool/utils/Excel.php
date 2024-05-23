@@ -3,6 +3,7 @@
 namespace utils;
 
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Reader\Xlsx;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 class Excel
@@ -51,6 +52,7 @@ class Excel
         header('Content-Disposition:attachment;filename=' . $file_name);// MIME 协议的扩展
         header('Cache-Control:max-age=0');
 
+
         $objWriter = IOFactory::createWriter($objPHPExcel, 'Xlsx');
         $objWriter->save('php://output');
     }
@@ -66,7 +68,9 @@ class Excel
     public static function import($fileName, $start = 2, $getHighestColumn = 'auto'):array
     {
         $spreadsheet = IOFactory::load($fileName);
+
         $worksheet = $spreadsheet->getActiveSheet();
+
         $highestRow = $worksheet->getHighestRow();
         $highestColumn = $getHighestColumn == 'auto' ? $worksheet->getHighestColumn() : $getHighestColumn;
         $data = [];

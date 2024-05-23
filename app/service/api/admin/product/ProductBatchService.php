@@ -191,7 +191,7 @@ class ProductBatchService extends BaseService
 
                 $product_price = $row[3] ?? "0.00";
                 $res = [
-                    "product_name" => $row[0],
+                    "product_name" => mb_convert_encoding($row[0], 'GBK', 'UTF-8'),
                     "product_sn" => $row[1],
                     "category_id" => $cat_id,
                     "product_price" => $product_price,
@@ -199,9 +199,9 @@ class ProductBatchService extends BaseService
                     "product_status" => !empty($row[5]) ? 1 : 0,
                     "brand_id" => $brand_id ?? 0,
                     "pic_thumb" => $row[7] ?? "",
-                    "keywords" => $row[8] ?? "",
+                    "keywords" => mb_convert_encoding($row[8], 'GBK', 'UTF-8') ?? "",
                     "product_brief" => $row[9] ?? "",
-                    "product_desc" => $row[10] ?? "",
+                    "product_desc" => mb_convert_encoding($row[10], 'GBK', 'UTF-8') ?? "",
                     "product_weight" => $row[11] ?? 0,
                     "product_stock" => $row[12] ?? 0,
                     "store_id" => (request()->storeId) > 0 ? request()->storeId : 0,
@@ -219,11 +219,11 @@ class ProductBatchService extends BaseService
             }
             if ($data["is_upload"]) {
                 // 上传
-                Product::saveAll($result);
+                (new Product)->saveAll($result);
             }
             return [
                 "count" => $count,
-                "msg" => $msg,
+                "msg" => $msg ?: "上传完成",
             ];
         }
         return ["count" => 0, "msg" => "请上传有数据的文件"];
@@ -233,9 +233,9 @@ class ProductBatchService extends BaseService
      * 是否自动添加分类
      * @param array $cate_name
      * @param int $is_auto_cat
-     * @return int
+     * @return int|null
      */
-    public function getCategoryIds(array $cate_name, int $is_auto_cat): int
+    public function getCategoryIds(array $cate_name, int $is_auto_cat): int|null
     {
         $cat_id = $parent_id = 0;
         foreach ($cate_name as $k => $name) {
