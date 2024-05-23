@@ -112,10 +112,11 @@ class AftersalesService extends BaseService
      */
     public function getDetail(int $id): array
     {
-        $result = Aftersales::with(["aftersales_items" => ['items'], "aftersales_log", 'orders'])
+        $result = Aftersales::with(["aftersales_items" => ['items'], "aftersales_log", 'orders', 'refund'])
             ->append(['aftersales_type_name', "status_name", 'user_name', 'shipping_time'])->findOrEmpty($id);
         $result->can_Cancel = $result->canCancel();
         $result->step_status = $this->getStepStatus($result);
+
         if (!$result) {
             throw new ApiException('退换货不存在');
         }
