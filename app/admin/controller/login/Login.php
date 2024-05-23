@@ -71,13 +71,13 @@ class Login extends BaseController
         if (!$user) {
             return $this->error('账户或密码错误！');
         }
-        $this->adminUserService->setLogin($user['admin_id']);
-        $token = app(AccessTokenService::class)->setApp('admin')->setId($user['admin_id'])->createToken();
+        $this->adminUserService->setLogin($user->admin_id);
+        $token = app(AccessTokenService::class)->setApp('admin')->setId($user->admin_id)->createToken();
 
         return $this->success([
-            'user_info' => $this->adminUserService->getDetail($user['admin_id']),
+            'user_info' => $this->adminUserService->getDetail($user->admin_id),
             'config' => app(ConfigService::class)->getAdminConfig(),
-            'main_menu' => app(AuthorityService::class)->authorityList(0,0,request()->authList),
+            'main_menu' => app(AuthorityService::class)->authorityList(0, 0, request()->authList),
             'token' => $token,
         ]);
     }

@@ -469,7 +469,7 @@ class UserService extends BaseService
      */
     public function addProductHistory(int $user_id, int $product_id): bool
     {
-        Product::where('product_id', $product_id)->inc('click_count')->update();
+        Product::where('product_id', $product_id)->inc('click_count')->save();
         $user = User::find($user_id);
         if (!$user) {
             return true;
@@ -520,7 +520,7 @@ class UserService extends BaseService
             "change_desc" => $change_desc,
         ];
         UserPointsLog::create($log);
-        return User::where('user_id', $user_id)->dec('points', $point)->update();
+        return User::where('user_id', $user_id)->dec('points', $point)->save();
     }
 
     /**
@@ -538,7 +538,7 @@ class UserService extends BaseService
             "change_desc" => $change_desc,
         ];
         UserPointsLog::create($log);
-        return User::where('user_id', $user_id)->inc('points', $point)->update();
+        return User::where('user_id', $user_id)->inc('points', $point)->save();
     }
 
     /**
@@ -550,7 +550,7 @@ class UserService extends BaseService
      */
     public function decBalance(float $balance, int $user_id, string $change_desc = '减余额'): bool
     {
-        $result = User::where('user_id', $user_id)->dec('balance', $balance)->update();
+        $result = User::where('user_id', $user_id)->dec('balance', $balance)->save();
         $user_balance_log = [
             "user_id" => $user_id,
             "change_desc" => $change_desc,
@@ -570,7 +570,7 @@ class UserService extends BaseService
      */
     public function incBalance(float $balance, int $user_id, string $change_desc = '加余额'): bool
     {
-        $result = User::where('user_id', $user_id)->inc('balance', $balance)->update();
+        $result = User::where('user_id', $user_id)->inc('balance', $balance)->save();
         $user_balance_log = [
             "user_id" => $user_id,
             "change_desc" => $change_desc,
@@ -590,7 +590,7 @@ class UserService extends BaseService
      */
     public function decFrozenBalance(float $frozen_balance, int $user_id, string $change_desc = '减冻结余额'): bool
     {
-        $result = User::where('user_id', $user_id)->dec('frozen_balance', $frozen_balance)->update();
+        $result = User::where('user_id', $user_id)->dec('frozen_balance', $frozen_balance)->save();
         $user_balance_log = [
             "user_id" => $user_id,
             "change_desc" => $change_desc,
@@ -610,7 +610,7 @@ class UserService extends BaseService
      */
     public function incFrozenBalance(float $frozen_balance, int $user_id, string $change_desc = '增加冻结余额'): bool
     {
-        $result = User::where('user_id', $user_id)->inc('frozen_balance', $frozen_balance)->update();
+        $result = User::where('user_id', $user_id)->inc('frozen_balance', $frozen_balance)->save();
         $user_balance_log = [
             "user_id" => $user_id,
             "change_desc" => $change_desc,
