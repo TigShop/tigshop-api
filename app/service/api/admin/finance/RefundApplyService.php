@@ -101,7 +101,10 @@ class RefundApplyService extends BaseService
      */
     public function getDetail(int $id): RefundApply
     {
-        $result = RefundApply::with(["aftersales", 'order_info'])->append(["refund_type_name", "refund_status_name"])->find($id);
+        $result = RefundApply::with(["aftersales" => ['orders'], 'order_info'])->append([
+            "refund_type_name",
+            "refund_status_name"
+        ])->find($id);
         $order = Order::find($result['order_id']);
         if (!$result) {
             throw new ApiException(/** LANG */'退款申请不存在');

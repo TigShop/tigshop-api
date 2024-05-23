@@ -39,7 +39,7 @@ class RefundApply extends Model
     // 关联售后
     public function aftersales(): \think\model\relation\HasOne
     {
-        return $this->hasOne(Aftersales::class, 'aftersale_id', 'aftersale_id')->bind(["aftersales_sn", "refund_amount"]);
+        return $this->hasOne(Aftersales::class, 'aftersale_id', 'aftersale_id');
     }
 
     /**
