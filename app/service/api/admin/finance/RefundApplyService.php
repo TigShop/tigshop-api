@@ -15,6 +15,7 @@ use app\model\finance\RefundApply;
 use app\model\finance\RefundLog;
 use app\model\order\Aftersales;
 use app\model\order\AftersalesItem;
+use app\model\order\Order;
 use app\model\payment\PayLogRefund;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\order\OrderService;
@@ -101,6 +102,7 @@ class RefundApplyService extends BaseService
     public function getDetail(int $id): RefundApply
     {
         $result = RefundApply::with(["aftersales", 'order_info'])->append(["refund_type_name", "refund_status_name"])->find($id);
+        $order = Order::find($result['order_id']);
         if (!$result) {
             throw new ApiException(/** LANG */'退款申请不存在');
         }
@@ -113,23 +115,16 @@ class RefundApplyService extends BaseService
         }
 
         // 排除退款成功的支付金额
-        $complete_order = RefundApply::where(["order_id" => $result->order_id, "refund_status" => 1]);
+        $complete_order = RefundApply::where(["order_id" => $result->order_id])->whereIn('refund_status', [1, 2]);
         $complete_balance = $complete_order->sum('refund_balance');
         $complete_online_balance = $complete_order->sum('online_balance');
         $complete_offline_balance = $complete_order->sum('offline_balance');
         // 已完成的总金额
         $total_complete_amount = $complete_balance + $complete_online_balance + $complete_offline_balance;
 
-        // 先判断是否有协商金额 -- 可退款的最大金额
-        if ($result->refund_amount > 0) {
-            $result->effective_online_balance = ($result->refund_amount - $complete_online_balance > 0) ? $result->refund_amount - $complete_online_balance : 0;
-            $result->effective_balance = ($result->refund_amount - $complete_balance > 0) ? $result->refund_amount - $complete_balance : 0;
-        } else {
-            $result->effective_online_balance = ($result->online_paid_amount - $complete_online_balance > 0) ? $result->online_paid_amount - $complete_online_balance : 0;
-            // 余额 = (退款商品总价格 / 订单商品总价格 * 订单已支付金额) - 已成功退款余额
-            $effective_balance = ($price / $result->product_amount * $result->paid_amount) - $complete_balance;
-            $result->effective_balance = $effective_balance > 0 ? $effective_balance : 0;
-        }
+        $result->effective_online_balance = $order->online_paid_amount;
+        $result->effective_offline_balance = $order->offline_paid_amount;
+        $result->effective_balance = $order->balance;
 
         // 转换数据类型
         $result->effective_balance = Util::number_format_convert($result->effective_balance);
