@@ -915,6 +915,8 @@ Route::group('product', function () {
         Route::get('detail', 'product.product/detail');
         // 商品新增
         Route::post('create', 'product.product/create');
+        // 商品复制
+        Route::post('copy', 'product.product/copy');
         // 商品配置型词典
         Route::get('config', 'product.product/config');
         // 商品编辑

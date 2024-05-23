@@ -245,9 +245,8 @@ class ProductService extends BaseService
     public function getDetail(int $id): array
     {
         $result = Product::where('product_id', $id)->find();
-
         if (!$result) {
-            throw new ApiException('商品不存在2');
+            throw new ApiException('商品不存在');
         }
         $item = $result->toArray();
 
@@ -306,7 +305,7 @@ class ProductService extends BaseService
      */
     public function updateProduct(int $id, array $data, bool $isAdd = false)
     {
-        validate(ProductValidate::class)->only(array_keys($data))->check($data);
+
         if (isset($data["promote_start_date"], $data["promote_end_date"]) && !empty($data["promote_start_date"]) && !empty($data["promote_end_date"])) {
             $data["promote_start_date"] = Time::toTime($data["promote_start_date"]);
             $data["promote_end_date"] = Time::toTime($data["promote_end_date"]);

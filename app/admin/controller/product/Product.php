@@ -26,6 +26,7 @@ use app\service\api\admin\product\ProductServicesService;
 use app\service\api\admin\product\ProductSkuService;
 use app\service\api\admin\shipping\ShippingTplService;
 use app\service\api\admin\user\UserRankService;
+use app\validate\product\ProductValidate;
 use think\App;
 use think\facade\Db;
 
@@ -157,6 +158,40 @@ class Product extends AdminBaseController
         ]);
     }
 
+    /**
+     * 商品复制
+     * @return \think\Response
+     */
+    public function copy(): \think\Response
+    {
+        $id = input('product_id/d', 0);
+        $item = $this->productService->getDetail($id);
+        // 关联文章
+        $item["product_article_list"] = ProductArticle::where("goods_id", $id)->column('article_id');
+
+        //属性
+        $item['attr_list'] = app(ProductAttributesService::class)->getAttrList($item['product_id']);
+        //规格
+        $item['product_list'] = app(ProductSkuService::class)->getSkuList($item['product_id']);
+        unset($item['product_id']);
+        $result = $this->productService->updateProduct($id, $item, true);
+        if ($result) {
+            $id = $result;
+            /* 处理属性 */
+            app(ProductAttributesService::class)->dealProductAttr($id, $item['attr_list']);
+            /* 处理规格 */
+            app(ProductSkuService::class)->dealProductSpec($id, $item['product_list']);
+            //处理相册
+            $img_list = $item['img_list'];
+            unset($item['img_list']);
+            //处理图片
+            app(ProductGalleryService::class)->updateProductGallery($id, $img_list);
+            return $this->success('商品复制成功');
+        } else {
+            return $this->error('商品复制失败');
+        }
+    }
+
 
     /**
      * 获取分词
@@ -244,6 +279,7 @@ class Product extends AdminBaseController
             'product_article_list' => [],
             'img_list' => [],
         ], 'post');
+        validate(ProductValidate::class)->only(array_keys($data))->check($data);
         $result = $this->productService->updateProduct($id, $data, true);
         if ($result) {
             $id = $result;
