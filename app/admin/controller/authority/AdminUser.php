@@ -77,7 +77,7 @@ class AdminUser extends AdminBaseController
     public function config(): Response
     {
         return $this->success([
-            'Role_list' => $this->adminUserService->getRoleList()
+            'Role_list' => $this->adminUserService->getRoleList(),
         ]);
     }
 
@@ -89,7 +89,20 @@ class AdminUser extends AdminBaseController
     {
         $id = input('id/d', 0);
         $item = $this->adminUserService->getDetail($id);
-        $item['mobile'] = Format::dimMobile($item['mobile']);
+        $item['mobile'] = Format::dimMobile($item->mobile);
+
+        return $this->success([
+            'item' => $item,
+        ]);
+    }
+    /**
+     * 管理员详情
+     * @return Response
+     */
+    public function mine_detail(): Response
+    {
+        $item = $this->adminUserService->getDetail(request()->adminUid);
+        $item['mobile'] = Format::dimMobile($item->mobile);
 
         return $this->success([
             'item' => $item,

@@ -65,8 +65,10 @@ Route::group('authority', function () {
     Route::group('admin_user', function () {
         // 管理员列表
         Route::get('list', 'authority.adminUser/list');
-        // 管理员详情
+        // 指定管理员详情
         Route::get('detail', 'authority.adminUser/detail');
+        // 当前管理员详情
+        Route::get('mine_detail', 'authority.adminUser/mine_detail');
         // 管理员添加
         Route::post('create', 'authority.adminUser/create');
         // 管理员编辑
@@ -560,12 +562,12 @@ Route::group('setting', function () {
     // 设置项管理
     Route::group('config', function () {
         // 基础设置
-        Route::get('list', 'setting.config/list');
-        // 基础设置更新
+        Route::get('get_base', 'setting.config/get_base');
+        // 前端后台设置项
+        Route::get('get_admin', 'setting.config/getAdmin');
+        // todo 基础设置更新
         Route::post('save', 'setting.config/save');
-        // 添加
-        Route::post('create', 'setting.config/create');
-        // 编辑
+        // todo 编辑
         Route::post('update', 'setting.config/update');
         // 邮箱服务器设置
         Route::post('save_mail', 'setting.config/saveMail');

@@ -1,11 +1,11 @@
 <?php
-declare(strict_types=1);
+declare (strict_types = 1);
 // 滑块验证器
 return [
     'font_file' => '', //自定义字体包路径， 不填使用默认值
     //文字点击验证码
     'click_world' => [
-        'backgrounds' => []
+        'backgrounds' => [],
     ],
     //滑动验证码
     'block_puzzle' => [
@@ -17,9 +17,9 @@ return [
     'watermark' => [
         'fontsize' => 12,
         'color' => '#ffffff',
-        'text' => 'TigShop'
+        'text' => 'TigShop',
     ],
     'cache' => [
-        'constructor' => [\think\facade\Cache::class, 'instance']
-    ]
+        'constructor' => [\think\facade\Cache::class, 'instance'],
+    ],
 ];

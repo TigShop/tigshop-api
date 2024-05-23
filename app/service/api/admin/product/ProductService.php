@@ -44,7 +44,7 @@ class ProductService extends BaseService
     public function getFilterResult(array $filter): array
     {
         $filter['page'] = !empty($filter['page']) ? intval($filter['page']) : 1;
-        $filter['size'] = !empty($filter['size'] && $filter['size'] < 999) ? intval($filter['size']) : 999;
+        $filter['size'] = !empty($filter['size'] && $filter['size'] < 100) ? intval($filter['size']) : 100;
         $query = $this->filterQuery($filter)
             ->field('category_id,brand_id,product_tsn,market_price,shipping_tpl_id,free_shipping,product_id,pic_thumb,product_name,check_status,store_id,suppliers_id,product_type,product_sn,product_price,product_status,is_best,is_new,is_hot,product_stock,sort_order');
         if (isset($filter['sort_field_raw']) && !empty($filter['sort_field_raw'])) {
@@ -192,7 +192,6 @@ class ProductService extends BaseService
         if (isset($filter["intro_type"]) && !empty($filter["intro_type"])) {
             $query->introType($filter["intro_type"]);
         }
-
 
         // 商品上下架
         if (isset($filter["product_status"]) && $filter["product_status"] != -1) {

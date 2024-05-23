@@ -14,10 +14,8 @@ namespace app\admin\controller\login;
 use app\BaseController;
 use app\service\api\admin\authority\AccessTokenService;
 use app\service\api\admin\authority\AdminUserService;
-use app\service\api\admin\authority\AuthorityService;
 use app\service\api\admin\captcha\CaptchaService;
 use app\service\api\admin\common\sms\SmsService;
-use app\service\api\admin\setting\ConfigService;
 use think\App;
 use think\Response;
 
@@ -75,9 +73,6 @@ class Login extends BaseController
         $token = app(AccessTokenService::class)->setApp('admin')->setId($user->admin_id)->createToken();
 
         return $this->success([
-            'user_info' => $this->adminUserService->getDetail($user->admin_id),
-            'config' => app(ConfigService::class)->getAdminConfig(),
-            'main_menu' => app(AuthorityService::class)->authorityList(0, 0, request()->authList),
             'token' => $token,
         ]);
     }

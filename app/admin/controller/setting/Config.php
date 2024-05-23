@@ -43,7 +43,7 @@ class Config extends AdminBaseController
      * 基础设置
      * @return Response
      */
-    public function list(): Response
+    public function get_base(): Response
     {
         $code = input('code');
         $config = $this->configService->getConfig($code);
@@ -73,6 +73,19 @@ class Config extends AdminBaseController
     }
 
     /**
+     * 后台需要的设置项
+     * @return Response
+     */
+    public function getAdmin(): Response
+    {
+        $config = $this->configService->getAdminConfig();
+        $result = [
+            'item' => $config,
+        ];
+        return $this->success($result);
+    }
+
+    /**
      * 基础设置更新
      * @return Response
      */
@@ -90,19 +103,6 @@ class Config extends AdminBaseController
         } else {
             return $this->error(/** LANG */'设置项更新失败');
         }
-    }
-
-    /**
-     * 添加配置
-     * @return Response
-     * @throws \exceptions\ApiException
-     */
-    public function create(): Response
-    {
-        $code = input('code');
-        $data = input("data/a", []);
-        $result = $this->configService->createConfig($code, $data);
-        return $result ? $this->success(/** LANG */'设置项添加成功') : $this->error(/** LANG */'设置项添加失败');
     }
 
     /**
