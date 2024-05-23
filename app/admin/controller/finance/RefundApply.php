@@ -97,7 +97,7 @@ class RefundApply extends AdminBaseController
     {
         $data = $this->request->only([
             'refund_id/d' => 0,
-            'refund_status/d' => 0,
+            'refund_status/d' => 1,
             'refund_note' => '',
             "online_balance" => "",
             "offline_balance" => "",
