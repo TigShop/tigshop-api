@@ -11,6 +11,7 @@
 
 namespace app\service\api\admin\product;
 
+use app\model\promotion\Coupon;
 use app\service\api\admin\BaseService;
 
 /**
@@ -30,6 +31,7 @@ class ProductSearchService extends BaseService
     protected $sortField = '';
     protected $filterParams;
     protected $pageType;
+    protected $couponId;
 
     public function __construct($params, $pageType = 'search')
     {
@@ -60,6 +62,10 @@ class ProductSearchService extends BaseService
         if (isset($params["intro"])) {
             $this->introType = !empty($params['intro']) ? trim($params['intro']) : '';
         }
+        if (!empty($params['coupon_id'])) {
+            $this->couponId = $params['coupon_id'];
+        }
+
 
         $this->pageType = $pageType;
         $this->filterParams = [
@@ -70,6 +76,7 @@ class ProductSearchService extends BaseService
             'min_price' => $this->minPrice,
             'intro_type' => $this->introType,
             'is_delete' => 0,
+            'coupon_id' => $this->couponId,
         ];
     }
 

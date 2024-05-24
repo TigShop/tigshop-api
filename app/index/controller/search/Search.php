@@ -82,6 +82,7 @@ class Search extends IndexBaseController
             'page' => 1,
             'size' => 25,
             'intro' => "",
+            'coupon_id' => 0
         ]);
         $product_search = new ProductSearchService($params, 'list');
         $product_list = $product_search->getProductList();
