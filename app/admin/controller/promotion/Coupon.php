@@ -55,6 +55,7 @@ class Coupon extends AdminBaseController
             'sort_field' => 'coupon_id',
             'sort_order' => 'desc',
         ], 'get');
+        $filter['shop_id'] = request()->shopId;
 
         $filterResult = $this->couponService->getFilterResult($filter);
         $total = $this->couponService->getFilterCount($filter);
@@ -87,6 +88,10 @@ class Coupon extends AdminBaseController
     {
         $id = input('id/d', 0);
         $item = $this->couponService->getDetail($id);
+        if ($item->shop_id != request()->shopId) {
+            throw new ApiException(/** LANG */'优惠券不存在');
+        }
+
         return $this->success([
             'item' => $item,
         ]);
@@ -140,6 +145,7 @@ class Coupon extends AdminBaseController
         } catch (ValidateException $e) {
             return $this->error($e->getError());
         }
+        $data['shop_id'] = request()->shopId;
 
         $result = $this->couponService->createCoupon($data);
         if ($result) {
@@ -157,9 +163,14 @@ class Coupon extends AdminBaseController
     public function update(): Response
     {
         $id = input('coupon_id/d', 0);
+
+        $item = $this->couponService->getDetail($id);
+        if ($item->shop_id != request()->shopId) {
+            throw new ApiException(/** LANG */'优惠券不存在');
+        }
+
         $data = $this->requestData();
         $data["coupon_id"] = $id;
-
         try {
             validate(CouponValidate::class)
                 ->scene('update')
@@ -186,6 +197,11 @@ class Coupon extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
+        $item = $this->couponService->getDetail($id);
+        if ($item->shop_id != request()->shopId) {
+            throw new ApiException(/** LANG */'优惠券不存在');
+        }
+
         if (!in_array($field, ['coupon_name', 'sort_order', 'is_show', 'coupon_discount', 'min_order_amount'])) {
             return $this->error(/** LANG */'#field 错误');
         }
@@ -208,6 +224,10 @@ class Coupon extends AdminBaseController
     public function del(): Response
     {
         $id = input('id/d', 0);
+        $item = $this->couponService->getDetail($id);
+        if (!$item) {
+            throw new ApiException(/** LANG */'优惠券不存在');
+        }
         $this->couponService->deleteCoupon($id);
         return $this->success(/** LANG */'指定项目已删除');
     }
