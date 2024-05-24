@@ -143,8 +143,6 @@ class Aftersales extends Model
     {
         return in_array($this->status, [
             self::STATUS_IN_REVIEW,
-            self::STATUS_SEND_BACK,
-            self::STATUS_APPROVED_FOR_PROCESSING,
         ]);
     }
 
