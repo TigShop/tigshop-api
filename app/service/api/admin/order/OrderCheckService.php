@@ -663,7 +663,7 @@ class OrderCheckService extends BaseService
             $value['disabled'] = false;
             $value['disable_reason'] = '';
             $value['selected'] = false;
-            $range_ids = $value['send_range_data'];
+            $range_ids = (array)$value['send_range_data'];
             if ($value['coupon']['send_range'] == 1) {
             }
             if ($value['coupon']['send_range'] == 3) {
