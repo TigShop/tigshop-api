@@ -114,7 +114,7 @@ class AftersalesService extends BaseService
     {
         $result = Aftersales::with(["aftersales_items" => ['items'], "aftersales_log", 'orders', 'refund'])
             ->append(['aftersales_type_name', "status_name", 'user_name', 'shipping_time'])->findOrEmpty($id);
-        $result->can_Cancel = $result->canCancel();
+        $result->can_cancel = $result->canCancel();
         $result->step_status = $this->getStepStatus($result);
 
         if (!$result) {
