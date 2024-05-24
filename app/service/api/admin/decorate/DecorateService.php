@@ -321,7 +321,7 @@ class DecorateService extends BaseService
      */
     public function formatModule(string $type, array $module, array $params = null): array
     {
-        $class = 'app\\service\\decorate\\modules\\' . str_replace('_', '', ucwords($type, '_') . 'Service');
+        $class = __NAMESPACE__ . '\\modules\\' . str_replace('_', '', ucwords($type, '_') . 'Service');
         if (class_exists($class)) {
             $moduleClass = new $class();
             $module = $moduleClass->formatData($module, $params);
