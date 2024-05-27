@@ -190,18 +190,18 @@ class AuthorityService extends BaseService
                 {
                     foreach ($auth['children'] as $k2=>$childrens)
                     {
-                        if(!empty($childrens['child_auth']) && is_array($childrens['child_auth'])){
-                            $insert_array = [];
-                            $first_array = array_splice($auth['children'],0,$k2+1);
-                            foreach ($childrens['child_auth'] as $k3=>$children)
-                            {
-                                $insert_array[] = [
-                                    'authority_name' => $children['auth_name'],
-                                    'authority_sn' => $children['auth_sn']
-                                ];
-                            }
-                            $auth['children'] = array_merge($first_array,$insert_array,$auth['children']);
-                        }
+//                        if(!empty($childrens['child_auth']) && is_array($childrens['child_auth'])){
+//                            $insert_array = [];
+//                            $first_array = array_splice($auth['children'],0,$k2+1);
+//                            foreach ($childrens['child_auth'] as $k3=>$children)
+//                            {
+//                                $insert_array[] = [
+//                                    'authority_name' => $children['auth_name'],
+//                                    'authority_sn' => $children['auth_sn']
+//                                ];
+//                            }
+//                            $auth['children'] = array_merge($first_array,$insert_array,$auth['children']);
+//                        }
                     }
                 }
             }
