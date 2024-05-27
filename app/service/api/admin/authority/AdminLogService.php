@@ -97,41 +97,6 @@ class AdminLogService extends BaseService
         return $result;
     }
 
-    /**
-     * 获取名称
-     *
-     * @param int $id
-     * @return string|null
-     */
-    public function getName(int $id): ?string
-    {
-        return AdminLogModel::where('log_id', $id)->value('log_info');
-    }
-
-    /**
-     * 执行管理员日志添加或更新
-     *
-     * @param int $id
-     * @param array $data
-     * @param bool $isAdd
-     * @return int|bool
-     * @throws ApiException
-     */
-    public function updateAdminLog(int $id, array $data, bool $isAdd = false)
-    {
-        validate(AdminLogValidate::class)->only(array_keys($data))->check($data);
-        if ($isAdd) {
-            $result = AdminLogModel::create($data);
-            return $result->getKey();
-        } else {
-            if (!$id) {
-                throw new ApiException('#id错误');
-            }
-            $result = AdminLogModel::where('log_id', $id)->save($data);
-
-            return $result !== false;
-        }
-    }
 
     /**
      * 删除管理员日志
@@ -148,21 +113,4 @@ class AdminLogService extends BaseService
         return $result !== false;
     }
 
-    /**
-     * 更新单个字段
-     *
-     * @param int $id
-     * @param array $data
-     * @return int|bool
-     * @throws ApiException
-     */
-    public function updateAdminLogField(int $id, array $data)
-    {
-        validate(AdminLogValidate::class)->only(array_keys($data))->check($data);
-        if (!$id) {
-            throw new ApiException('#id错误');
-        }
-        $result = AdminLogModel::where('log_id', $id)->save($data);
-        return $result !== false;
-    }
 }
