@@ -12,7 +12,7 @@
 namespace app\model\order;
 
 use app\model\product\Product;
-use app\model\shop\shop;
+use app\model\shop\Shop;
 use think\Model;
 
 class Cart extends Model
