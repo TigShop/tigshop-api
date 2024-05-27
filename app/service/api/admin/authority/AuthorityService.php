@@ -217,9 +217,18 @@ class AuthorityService extends BaseService
                     });
                     if (count($filtered_children) === 0 && !in_array($value['authority_sn'], $auth_list)) {
                         unset($res[$key]);
-                    } else {
-                        $res[$key]['children'] = $filtered_children;
                     }
+                    foreach ($filtered_children as &$child) {
+                        if (!empty($child['child_auth']) && is_array($child['child_auth'])) {
+                            foreach ($child['child_auth'] as $k3 => $children) {
+                                if (!in_array($children, $auth_list)) {
+                                    unset($child['child_auth'][$k3]);
+                                }
+                            }
+                        }
+                    }
+                    $res[$key]['children'] = $filtered_children;
+
                 } else {
                     if (!in_array($value['authority_sn'], $auth_list)) {
                         unset($res[$key]);

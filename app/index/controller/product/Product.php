@@ -174,7 +174,7 @@ class Product extends IndexBaseController
             'category_id/d' => 0,
             'brand_id/d' => 0,
             'ids' => null,
-            'store_id/d' => -2, // 店铺id
+            'shop_id/d' => -2, // 店铺id
             'intro_type' => '', // 商品类型
             'coupon_id' => 0
         ], 'get');
@@ -202,7 +202,7 @@ class Product extends IndexBaseController
         $product = app(ProductService::class)->getDetail($filter['id']);
 
         $coupon = app(CouponService::class)->getProductCouponList($product['product_id'],
-            $product['store_id'], $product['brand_id'], request()->userId, $product['category_id']);
+            $product['shop_id'], $product['brand_id'], request()->userId, $product['category_id']);
         $userCoupon = app(UserCouponService::class)->getFilterResult([
             'size' => 10000,
             'page' => 1,
