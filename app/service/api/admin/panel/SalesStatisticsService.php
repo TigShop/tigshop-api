@@ -177,7 +177,7 @@ class SalesStatisticsService extends BaseService
         $recharge_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($recharge_amount, $prev_recharge_amount);
 
         // 营业额
-        $turnover = $product_payment + $recharge_amount;
+        $turnover = bcadd($product_payment, $recharge_amount, 2);
         $prev_turnover = $prev_product_payment + $prev_recharge_amount;
         $turnover_growth_rate = app(StatisticsUserService::class)->getGrowthRate($turnover, $prev_turnover);
 
@@ -316,6 +316,7 @@ class SalesStatisticsService extends BaseService
         $horizontal_axis = app(StatisticsUserService::class)->getHorizontalAxis(0, $start_date, $end_date);
         // 支付金额
         $payment_amount_list = app(OrderService::class)->getPayMoneyList($start_end_time);
+
         $longitudinal_axis_payment_amount = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $payment_amount_list, 0, 4);
 
         // 退款金额

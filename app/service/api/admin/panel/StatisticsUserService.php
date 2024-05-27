@@ -435,7 +435,7 @@ class StatisticsUserService extends BaseService
                     break;
                 case 4:
                     // 订单金额统计
-                    $range_data[$range] += $total_amount;
+                    $range_data[$range] = bcadd($total_amount, $range_data[$range], 2);
                     break;
                 case 5:
                     // 订单数统计
@@ -443,10 +443,10 @@ class StatisticsUserService extends BaseService
                     break;
                 case 6:
                     // 退款金额统计
-                    $range_data[$range] += $refund_amount;
+                    $range_data[$range] = bcadd($refund_amount, $range_data[$range], 2);
                     break;
                 case 7:
-                    $range_data[$range] += $order_amount;
+                    $range_data[$range] = bcadd($order_amount, $range_data[$range], 2);
                     break;
             }
 

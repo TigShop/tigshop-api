@@ -361,13 +361,19 @@ class RefundApplyService extends BaseService
      */
     public function getRefundList(array $data): array
     {
-        return RefundApply::hasWhere("orderInfo", function ($query) {
+        $list = RefundApply::hasWhere("orderInfo", function ($query) {
             $query->storePlatform();
         })
             ->field("SUM(RefundApply.online_balance + RefundApply.offline_balance + RefundApply.refund_balance) AS refund_amount,RefundApply.add_time")
             ->refundOrderStatus()
             ->addTime($data)
             ->select()->toArray();
+        foreach ($list as $key => $item) {
+            if (empty($item['refund_id'])) {
+                unset($list[$key]);
+            }
+        }
+        return $list;
     }
 
     /**

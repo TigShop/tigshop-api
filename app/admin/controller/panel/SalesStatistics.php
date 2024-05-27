@@ -48,7 +48,6 @@ class SalesStatistics extends AdminBaseController
             'date_type/d' => 1,
             'start_end_time' => "",
         ], 'get');
-
         // 销售统计数据
         $filterResult = $this->salesStatisticsService->getSalesData($filter);
 
@@ -68,6 +67,7 @@ class SalesStatistics extends AdminBaseController
         $filter = $this->request->only([
             "start_time" => "",
             "end_time" => "",
+            'date_type/d' => 1,
         ], 'get');
 
         $filterResult = $this->salesStatisticsService->getSaleDetail($filter);
