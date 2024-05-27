@@ -212,19 +212,19 @@ class BrandService extends BaseService
     public function getBrandWordList(string $word): array
     {
         $where = [['b.is_show', '=', 1]];
-        $brand_list = [];
-        $firstword_list = [];
-
-        if (request()->storeId) {
-            $where[] = ['a.store_id', '=', request()->storeId];
-            $where[] = ['a.check_status', '=', 1];
-        }
+//        $brand_list = [];
+//        $firstword_list = [];
+//
+//        if (request()->storeId) {
+//            $where[] = ['a.store_id', '=', request()->storeId];
+//            $where[] = ['a.check_status', '=', 1];
+//        }
 
         if (!empty($word)) {
             $where[] = ['b.first_word', '=', $word];
         }
 
-        $query = Db::name('brand')->alias('b')->leftJoin('apply_brand a', 'a.brand_id = b.brand_id')->where($where);
+        $query = Db::name('brand')->alias('b')->where($where);
 
         $brand_list = $query->field('b.brand_id,b.brand_name,b.first_word')->select();
         $firstword_list = $query->order('b.first_word')->distinct(true)->column('b.first_word');
