@@ -104,19 +104,17 @@ class CouponService extends BaseService
      * 获取详情
      *
      * @param int $id
-     * @return Coupon
-     * @throws ApiException
+     * @return Coupon | null
      */
-    public function getDetail(int $id, int $user_id = 0): Coupon
+    public function getDetail(int $id, int $user_id = 0): Coupon | null
     {
         $result = Coupon::where('coupon_id', $id)->find();
-        if (!$result) {
-            throw new ApiException(/** LANG */ '优惠券不存在');
-        }
-        if (app(UserCouponService::class)->checkUserHasNormalCoupon($id, $user_id)) {
-            $result['is_receive'] = 1;
-        } else {
-            $result['is_receive'] = 0;
+        if ($result) {
+            if ($user_id > 0) {
+                $result['is_receive'] = app(UserCouponService::class)->checkUserHasNormalCoupon($id, $user_id) ? 1 : 0;
+            } else {
+                $result['is_receive'] = 0;
+            }
         }
         return $result;
     }
@@ -182,7 +180,7 @@ class CouponService extends BaseService
     public function updateCouponField(int $id, array $data)
     {
         if (!$id) {
-            throw new ApiException(/** LANG */ '#id错误');
+            throw new ApiException(/** LANG */'#id错误');
         }
         $result = Coupon::where('coupon_id', $id)->save($data);
         return $result !== false;
@@ -197,7 +195,7 @@ class CouponService extends BaseService
     public function deleteCoupon(int $id): bool
     {
         if (!$id) {
-            throw new ApiException(/** LANG */ '#id错误');
+            throw new ApiException(/** LANG */'#id错误');
         }
         $result = Coupon::where('coupon_id', $id)->save(['is_delete' => 1]);
         return $result !== false;
@@ -216,11 +214,11 @@ class CouponService extends BaseService
     public function claimCoupons(int $coupon_id, int $user_id): bool
     {
         if (app(UserCouponService::class)->checkUserHasNormalCoupon($coupon_id, $user_id)) {
-            throw new ApiException(/** LANG */ '优惠券已领取');
+            throw new ApiException(/** LANG */'优惠券已领取');
         }
         $coupon = Coupon::find($coupon_id);
         if (empty($coupon)) {
-            throw new ApiException(/** LANG */ '优惠券不存在');
+            throw new ApiException(/** LANG */'优惠券不存在');
         }
         $coupon_data = [
             "coupon_id" => $coupon_id,
@@ -236,7 +234,7 @@ class CouponService extends BaseService
      * 获得商品优惠券
      * @return Coupon|array
      */
-    public function getProductCouponList(int $product_id, int $store_id, int $brand_id, int $user_id, int $category_id = 0):Coupon|array
+    public function getProductCouponList(int $product_id, int $store_id, int $brand_id, int $user_id, int $category_id = 0): Coupon | array
     {
         $coupon = Coupon::where('use_start_date', '<', time())->where('use_end_date', '>', time() - 86400);
         if ($store_id) {
