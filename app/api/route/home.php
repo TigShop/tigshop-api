@@ -6,7 +6,7 @@ Route::group('home', function () {
     // 首页
     Route::group('home', function () {
         // 首页
-        Route::get('api', 'home.home/api');
+        Route::get('index', 'home.home/index');
         // PC首页
         Route::get('pc_index', 'home.home/pcIndex');
         // 首页今日推荐
