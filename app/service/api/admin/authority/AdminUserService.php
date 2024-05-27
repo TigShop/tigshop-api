@@ -143,12 +143,7 @@ class AdminUserService extends BaseService
         if ($data["role_id"] > 0) {
             $arr["auth_list"] = AdminRole::find($data["role_id"])->authority_list;
         } else {
-            if ($data["checkall"]) {
-                // 全选
-                $arr["auth_list"] = ["all"];
-            } else {
-                $arr["auth_list"] = $data["auth_list"];
-            }
+            $arr["auth_list"] = $data["auth_list"];
         }
         return $arr;
     }
@@ -156,10 +151,10 @@ class AdminUserService extends BaseService
     /**
      * 执行添加操作
      * @param array $data
-     * @return array
+     * @return int
      * @throws ApiException
      */
-    public function createAdminUser(array $data): array
+    public function createAdminUser(array $data): int
     {
         $arr = $this->getCommunalData($data);
         $result = $this->adminUserModel->save($arr);

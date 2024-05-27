@@ -112,10 +112,6 @@ class AdminRoleService extends BaseService
             'role_desc' => $data['role_desc'],
             'authority_list' => $data["authority_list"],
         ];
-
-        if ($data["checkall"]) {
-            $arr["authority_list"] = ["all"];
-        }
         return $arr;
     }
 

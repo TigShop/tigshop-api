@@ -79,7 +79,7 @@ class Authority extends AdminBaseController
      */
     public function detail(): Response
     {
-        $id = input('id/d');
+        $id = input('id/d',0);
         $item = $this->authorityService->getDetail($id);
         return $this->success([
             'item' => $item,

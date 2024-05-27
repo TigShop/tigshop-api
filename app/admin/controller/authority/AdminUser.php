@@ -99,7 +99,7 @@ class AdminUser extends AdminBaseController
      * 管理员详情
      * @return Response
      */
-    public function mine_detail(): Response
+    public function mineDetail(): Response
     {
         $item = $this->adminUserService->getDetail(request()->adminUid);
         $item['mobile'] = Format::dimMobile($item->mobile);
@@ -125,9 +125,7 @@ class AdminUser extends AdminBaseController
             'auth_list' => [],
             'role_id/d' => 0,
             'parent_id/d' => 0,
-            'checkall/d' => 0, // 是否全选
             'pwd_confirm' => '', // 确认密码
-            'old_password' => '', // 原密码
         ], 'post');
 
         $data["store_id"] = request()->storeId;
@@ -165,9 +163,7 @@ class AdminUser extends AdminBaseController
             'auth_list' => [],
             'role_id/d' => 0,
             'parent_id/d' => 0,
-            'checkall/d' => 0, // 是否全选
             'pwd_confirm' => '', // 确认密码
-            'old_password' => '', // 原密码
         ], 'post');
         $data["store_id"] = request()->storeId;
         try {
@@ -184,30 +180,6 @@ class AdminUser extends AdminBaseController
         } else {
             return $this->error(/** LANG */'管理员更新失败');
         }
-    }
-
-    /**
-     * 更新单个字段
-     *
-     * @return Response
-     */
-    public function updateField(): Response
-    {
-        $id = input('id/d', 0);
-        $field = input('field', '');
-
-        if (!in_array($field, ['sort_order', 'is_show'])) {
-            return $this->error(/** LANG */'#field 错误');
-        }
-
-        $data = [
-            'id' => $id,
-            $field => input('val'),
-        ];
-
-        $this->adminUserService->updateAdminUserField($id, $data);
-
-        return $this->success(/** LANG */'更新成功');
     }
 
     /**

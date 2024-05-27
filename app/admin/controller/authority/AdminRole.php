@@ -90,7 +90,6 @@ class AdminRole extends AdminBaseController
             'role_name' => '',
             'role_desc' => '',
             'authority_list' => [],
-            'checkall' => '', // 是否全选
         ], 'post');
 
         try {
@@ -122,7 +121,6 @@ class AdminRole extends AdminBaseController
             'role_name' => '',
             'role_desc' => '',
             'authority_list' => [],
-            'checkall' => '', // 是否全选
         ], 'post');
 
         try {
@@ -151,7 +149,7 @@ class AdminRole extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field, ['role_name', 'sort_order', 'is_show'])) {
+        if (!in_array($field, ['role_name'])) {
             return $this->error(/** LANG */'#field 错误');
         }
 

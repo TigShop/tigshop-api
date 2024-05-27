@@ -35,7 +35,7 @@ Route::group('authority', function () {
         // 指定管理员详情
         Route::get('detail', 'authority.adminUser/detail');
         // 当前管理员详情
-        Route::get('mine_detail', 'authority.adminUser/mine_detail');
+        Route::get('mine_detail', 'authority.adminUser/mineDetail');
         // 管理员添加
         Route::post('create', 'authority.adminUser/create');
         // 管理员编辑
@@ -44,8 +44,6 @@ Route::group('authority', function () {
         Route::post('del', 'authority.adminUser/del');
         // 配置
         Route::get('config', 'authority.adminUser/config');
-        // 更新字段
-        Route::post('update_field', 'authority.adminUser/updateField');
         // 批量操作
         Route::post('batch', 'authority.adminUser/batch');
         // 账户修改
