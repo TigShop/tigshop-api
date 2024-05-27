@@ -2,7 +2,7 @@
 
 declare (strict_types = 1);
 
-namespace app\admin\middleware;
+namespace app\adminapi\middleware;
 
 use app\service\api\admin\authority\AccessTokenService;
 use app\service\api\admin\authority\AdminUserService;
