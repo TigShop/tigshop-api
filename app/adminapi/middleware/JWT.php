@@ -35,7 +35,7 @@ class JWT
             ]
         )) {
             // 检查token并返回数据
-            $result = app(AccessTokenService::class)->setApp('adminapi')->checkToken();
+            $result = app(AccessTokenService::class)->setApp('admin')->checkToken();
             if ($result) {
                 // 获取adminUid
                 $admin_id = intval($result['data']->adminId);

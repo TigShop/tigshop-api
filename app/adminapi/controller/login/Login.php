@@ -70,7 +70,7 @@ class Login extends BaseController
             return $this->error('账户或密码错误！');
         }
         $this->adminUserService->setLogin($user->admin_id);
-        $token = app(AccessTokenService::class)->setApp('adminapi')->setId($user->admin_id)->createToken();
+        $token = app(AccessTokenService::class)->setApp('admin')->setId($user->admin_id)->createToken();
 
         return $this->success([
             'token' => $token,
