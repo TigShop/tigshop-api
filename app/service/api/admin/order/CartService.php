@@ -134,7 +134,7 @@ class CartService extends BaseService
                 $total['product_amount'] += $row['subtotal'];
             }
             $carts[$row['shop_id']]['shop_id'] = $row['shop_id'];
-            $carts[$row['shop_id']]['store_title'] = $row['shop_id'] > 0 ? $row['store_title'] : '';
+            $carts[$row['shop_id']]['shop_title'] = !empty($row['shop']) ? $row['shop']['shop_title'] : '';
             $carts[$row['shop_id']]['carts'][] = $row;
         }
         // 将结果转换为索引数组
@@ -153,7 +153,7 @@ class CartService extends BaseService
                 $query->where('is_checked', true);
             })
             ->hasWhere('product')
-            ->with(['store', 'product'])
+            ->with(['shop', 'product'])
             ->order('update_time', 'desc')
             ->select();
         return $cart_list ? $cart_list->toArray() : [];
