@@ -50,14 +50,14 @@ class Comment extends Model
     // 查询附带当前店铺ID
     public function scopeThisStore($query)
     {
-        $query->where('store_id', request()->storeId);
+        $query->where('shop_id', request()->shopId);
     }
 
     // 查询平台
     public function scopeStorePlatform($query)
     {
-        if (request()->storeId > 0) {
-            return $query->where('store_id', request()->storeId);
+        if (request()->shopId > 0) {
+            return $query->where('shop_id', request()->shopId);
         } else {
             return $query;
         }

@@ -109,7 +109,7 @@ class Product extends AdminBaseController
                 $item['user_rank_list'][$key]['price'] = -1;
             }
         }
-        if (request()->storeId > 0) {
+        if (request()->shopId > 0) {
             if (Config::get('store_product_need_check') == 1) {
                 $item['check_status'] = 0;
                 $item['product_status'] = 0;
@@ -117,7 +117,7 @@ class Product extends AdminBaseController
                 $item['check_status'] = 1;
                 $item['product_status'] = 1;
             }
-            $item['store_id'] = request()->storeId;
+            $item['store_id'] = request()->shopId;
         }
         $item['product_service_ids'] = Db::name('product_services')->where('default_on',
             1)->column('product_service_id');

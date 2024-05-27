@@ -9,16 +9,16 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\model\store;
+namespace app\model\shop;
 
 use app\model\user\User;
 use think\Model;
 use utils\Time;
 
-class Store extends Model
+class Shop extends Model
 {
-    protected $pk = 'store_id';
-    protected $table = 'store';
+    protected $pk = 'shop_id';
+    protected $table = 'shop';
 
     protected $createTime = 'add_time';
     protected $autoWriteTimestamp = 'int';

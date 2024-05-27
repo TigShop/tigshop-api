@@ -168,7 +168,7 @@ class CommentService extends BaseService
     {
         validate(CommentValidate::class)->only(array_keys($data))->check($data);
         $data["user_id"] = request()->userId ?? 0;
-        $data["store_id"] = request()->storeId ?? 0;
+        $data["shop_id"] = request()->shopId ?? 0;
         if (!empty($data["show_pics"])) {
             $data["is_showed"] = 1;
         }
@@ -510,7 +510,7 @@ class CommentService extends BaseService
 
         foreach ($order_info->items as $item) {
             $item->comment_info = Comment::where(["order_id" => $id, "order_item_id" => $item->item_id, "parent_id" => 0, "user_id" => $item->user_id])
-                ->field("comment_id,comment_rank,comment_tag,content,show_pics,store_id,is_showed")
+                ->field("comment_id,comment_rank,comment_tag,content,show_pics,shop_id,is_showed")
                 ->findOrEmpty()
                 ->toArray();
             $item->comment_info = !empty($item->comment_info) ? $item->comment_info : "";

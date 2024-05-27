@@ -493,7 +493,7 @@ class OrderDetailService extends BaseService
         $stores = [];
         foreach ($order->items as $item) {
             $value = $item->getData();
-            $stores[$value['store_id']][] = $value;
+            $stores[$value['shop_id']][] = $value;
         }
         if (count($stores) === 1) {
             // 所有商品只存在同一个店铺id，直接更新拆分状态
@@ -502,9 +502,9 @@ class OrderDetailService extends BaseService
             Db::commit();
             return false;
         }
-        foreach ($stores as $store_id => $items) {
+        foreach ($stores as $shop_id => $items) {
             // 创建分割的订单
-            $this->creatSpiltOrder($order, $items, true, $store_id);
+            $this->creatSpiltOrder($order, $items, true, $shop_id);
         }
         // 删除父订单和订单商品
         $this->addLog('订单商品来自不同店铺，已拆分');
@@ -515,7 +515,7 @@ class OrderDetailService extends BaseService
     }
 
     // 处理拆单金额
-    private function creatSpiltOrder(Order $order, array $new_items, $is_spilt_store = false, int $store_id = 0): Order
+    private function creatSpiltOrder(Order $order, array $new_items, $is_spilt_store = false, int $shop_id = 0): Order
     {
         // 复制原始数据
         $data = $order->getData();
@@ -540,16 +540,18 @@ class OrderDetailService extends BaseService
             $data['is_store_splited'] = 1;
             $extenxion_data = $order->order_extenxion;
             // 优惠券金额（按店铺）
-            $data['coupon_amount'] = isset($extenxion_data['coupon_money'][$store_id]) ?? 0;
+            $data['coupon_amount'] = isset($extenxion_data['coupon_money'][$shop_id]) ?? 0;
             // 全局优惠券金额（平摊）
             $data['coupon_amount'] += isset($extenxion_data['coupon_money'][-1]) ? $this->allocatedAmount($order->product_amount, $product_amount, $extenxion_data['coupon_money'][-1]) : 0;
             // 运费（按店铺）
-            $data['shipping_fee'] = isset($extenxion_data['shipping_fee'][$store_id]) ? $this->allocatedAmount($order->product_amount, $product_amount, $extenxion_data['shipping_fee'][$store_id]) : 0;
+            $data['shipping_fee'] = isset($extenxion_data['shipping_fee'][$shop_id]) ? $this->allocatedAmount($order->product_amount,
+                $product_amount, $extenxion_data['shipping_fee'][$shop_id]) : 0;
             // 优惠/折扣（按店铺）
-            $data['discount_amount'] = isset($extenxion_data['discount_amount'][$store_id]) ? $this->allocatedAmount($order->product_amount, $product_amount, $extenxion_data['discount_amount'][$store_id]) : 0;
+            $data['discount_amount'] = isset($extenxion_data['discount_amount'][$shop_id]) ? $this->allocatedAmount($order->product_amount,
+                $product_amount, $extenxion_data['discount_amount'][$shop_id]) : 0;
             // 配送类型
-            $data['shipping_type_id'] = isset($extenxion_data['shipping_type'][$store_id]) ? $extenxion_data['shipping_type'][$store_id]['type_id'] : 0;
-            $data['shipping_type_name'] = isset($extenxion_data['shipping_type'][$store_id]) ? $extenxion_data['shipping_type'][$store_id]['type_name'] : '';
+            $data['shipping_type_id'] = isset($extenxion_data['shipping_type'][$shop_id]) ? $extenxion_data['shipping_type'][$shop_id]['type_id'] : 0;
+            $data['shipping_type_name'] = isset($extenxion_data['shipping_type'][$shop_id]) ? $extenxion_data['shipping_type'][$shop_id]['type_name'] : '';
 
         } else {
             // 优惠券金额（平摊）

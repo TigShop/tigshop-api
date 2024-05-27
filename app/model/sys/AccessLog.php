@@ -35,16 +35,16 @@ class AccessLog extends Model
     }
 
     // 根据店铺检索
-    public function scopeStoreId($query)
+    public function scopeshopId($query)
     {
-        return $query->where('store_id', request()->storeId);
+        return $query->where('shop_id', request()->shopId);
     }
 
     // 平台访问检索
     public function scopeStorePlatform($query)
     {
-        if (request()->storeId > 0) {
-            return $query->where('store_id', request()->storeId);
+        if (request()->shopId > 0) {
+            return $query->where('shop_id', request()->shopId);
         } else {
             return $query;
         }

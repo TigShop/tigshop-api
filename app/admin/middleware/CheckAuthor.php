@@ -12,7 +12,7 @@ class CheckAuthor
     public function handle($request, \Closure $next)
     {
         if (false) {
-            app(AuthorityService::class)->checkAuthor($author,request()->storeId,request()->authList);
+            app(AuthorityService::class)->checkAuthor($author, request()->shopId, request()->authList);
         }
         return $next($request);
     }

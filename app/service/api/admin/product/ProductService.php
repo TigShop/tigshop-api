@@ -46,7 +46,7 @@ class ProductService extends BaseService
         $filter['page'] = !empty($filter['page']) ? intval($filter['page']) : 1;
         $filter['size'] = !empty($filter['size'] && $filter['size'] < 100) ? intval($filter['size']) : 100;
         $query = $this->filterQuery($filter)
-            ->field('category_id,brand_id,product_tsn,market_price,shipping_tpl_id,free_shipping,product_id,pic_thumb,product_name,check_status,store_id,suppliers_id,product_type,product_sn,product_price,product_status,is_best,is_new,is_hot,product_stock,sort_order');
+            ->field('category_id,brand_id,product_tsn,market_price,shipping_tpl_id,free_shipping,product_id,pic_thumb,product_name,check_status,shop_id,suppliers_id,product_type,product_sn,product_price,product_status,is_best,is_new,is_hot,product_stock,sort_order');
         if (isset($filter['sort_field_raw']) && !empty($filter['sort_field_raw'])) {
             $query->orderRaw($filter['sort_field_raw']);
         } elseif (isset($filter['sort_field']) && !empty($filter['sort_field'])) {
@@ -85,7 +85,7 @@ class ProductService extends BaseService
         $filter['size'] = !empty($filter['size'] && $filter['size'] < 999) ? intval($filter['size']) : 999;
         $filter['product_status'] = 1;
         $query = $this->filterQuery($filter)->with(['seckillMinPrice', "product_sku"])
-            ->field('product_id,pic_thumb,pic_url,product_name,check_status,store_id,suppliers_id,product_type,product_sn,product_price,market_price,product_status,is_best,is_new,is_hot,product_stock,sort_order');
+            ->field('product_id,pic_thumb,pic_url,product_name,check_status,shop_id,suppliers_id,product_type,product_sn,product_price,market_price,product_status,is_best,is_new,is_hot,product_stock,sort_order');
         if (isset($filter['sort_field']) && !empty($filter['sort_field'])) {
             $query->order($filter['sort_field'], $filter['sort_order'] ?? 'desc');
         } else {
@@ -179,12 +179,12 @@ class ProductService extends BaseService
         }
 
         // 店铺id
-        if (isset($filter["store_id"]) && $filter["store_id"] != -2) {
-            if ($filter["store_id"] == -1) {
+        if (isset($filter["shop_id"]) && $filter["shop_id"] != -2) {
+            if ($filter["shop_id"] == -1) {
                 // 店铺商品列表
-                $query->where('store_id', ">", 0);
+                $query->where('shop_id', ">", 0);
             } else {
-                $query->where('store_id', $filter["store_id"]);
+                $query->where('shop_id', $filter["shop_id"]);
             }
         }
 
@@ -315,7 +315,7 @@ class ProductService extends BaseService
         $data['product_desc'] = $this->getProductDesc($data['product_desc_arr']);
         unset($data['product_desc_arr']);
         if ($isAdd) {
-            if (request()->storeId > 0) {
+            if (request()->shopId > 0) {
                 if (Config::get('store_goods_need_check') == 1) {
                     $data['check_status'] = 0;
                     $data['product_status'] = 0;
@@ -323,7 +323,7 @@ class ProductService extends BaseService
                     $data['check_status'] = 1;
                     $data['product_status'] = 1;
                 }
-                $data['store_id'] = request()->storeId;
+                $data['shop_id'] = request()->shopId;
             }
             $data['add_time'] = Time::now();
             if (empty($data['product_sn'])) {
@@ -349,7 +349,7 @@ class ProductService extends BaseService
         } else {
             $item = $this->getDetail($id);
 
-            if (request()->storeId > 0) {
+            if (request()->shopId > 0) {
                 // 店铺
                 unset($data['is_best']);
                 unset($data['is_new']);

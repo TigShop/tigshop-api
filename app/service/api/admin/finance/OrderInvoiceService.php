@@ -91,16 +91,16 @@ class OrderInvoiceService extends BaseService
         }
 
         // 店铺检索
-        if (isset($filter['store_id']) && $filter["store_id"] != -1) {
-            $query->where('order.store_id', $filter["store_id"]);
+        if (isset($filter['shop_id']) && $filter["shop_id"] != -1) {
+            $query->where('order.shop_id', $filter["shop_id"]);
         }
 
         // 店铺分类
         if (isset($filter["store_type"])) {
             if ($filter['store_type']) {
-                $query->where('order.store_id', ">", 0);
+                $query->where('order.shop_id', ">", 0);
             } else {
-                $query->where('order.store_id', 0);
+                $query->where('order.shop_id', 0);
             }
         }
 

@@ -178,7 +178,8 @@ class ShippingTplService extends BaseService
     }
     public function getShippingTplList(): array
     {
-        $result = $this->shippingTplModel->field('shipping_tpl_id, shipping_tpl_name ,is_default')->where('store_id', request()->storeId)->select();
+        $result = $this->shippingTplModel->field('shipping_tpl_id, shipping_tpl_name ,is_default')->where('shop_id',
+            request()->shopId)->select();
         return $result->toArray();
     }
 }

@@ -46,7 +46,7 @@ class FeedbackService extends BaseService
                 $query->field('order_id,order_sn');
             },
             'store' => function ($query) {
-                $query->field('store_id,store_title');
+                $query->field('shop_id,store_title');
             },
         ])->append(["status_name", "type_name"]);
         $result = $query->page($filter['page'], $filter['size'])->select();
@@ -127,7 +127,7 @@ class FeedbackService extends BaseService
                 $query->field('order_id,order_sn');
             },
             'store' => function ($query) {
-                $query->field('store_id,store_title');
+                $query->field('shop_id,store_title');
             },
             'reply' => function ($query) {
                 $query->field("id,parent_id,username,email,mobile,content,status,type");

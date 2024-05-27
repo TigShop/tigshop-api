@@ -124,7 +124,7 @@ class AdminUserService extends BaseService
             "mobile" => $data["mobile"],
             "email" => $data["email"],
             "role_id" => $data["role_id"],
-            "store_id" => $data["store_id"],
+            "shop_id" => $data["shop_id"],
             'avatar' => $data['avatar'],
         ];
         if (empty($arr['avatar'])) {
@@ -260,7 +260,7 @@ class AdminUserService extends BaseService
         }
         $user = $this->getDetail($admin_id);
         request()->adminUid = $user['admin_id'];
-        request()->storeId = $user['store_id'];
+        request()->shopId = $user['shop_id'];
         request()->suppliersId = $user['suppliers_id'];
         request()->authList = $user['auth_list'] ?? [];
         if ($form_login) {

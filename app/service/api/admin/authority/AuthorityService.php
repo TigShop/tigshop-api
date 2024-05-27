@@ -316,9 +316,9 @@ class AuthorityService extends BaseService
      * @param string $authority_sn
      * @return bool
      */
-    public function checkAuthor(string $authority_sn,int $store_id = 0,array $auth_list = []): bool
+    public function checkAuthor(string $authority_sn, int $shop_id = 0, array $auth_list = []): bool
     {
-        if ($store_id == 0) {
+        if ($shop_id == 0) {
             if (in_array('all', $auth_list)) {
                 return true;
             }

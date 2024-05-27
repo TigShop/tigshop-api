@@ -20,6 +20,6 @@ abstract class AdminBaseController extends BaseController
     public function checkAuthor($author = ''): bool
     {
         return true;
-//         return app(AuthorityService::class)->checkAuthor($author,request()->storeId,request()->authList);
+//         return app(AuthorityService::class)->checkAuthor($author,request()->shopId,request()->authList);
     }
 }

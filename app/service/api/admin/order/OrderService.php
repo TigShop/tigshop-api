@@ -116,8 +116,8 @@ class OrderService extends BaseService
         }
 
         // 店铺检索
-        if (isset($filter["store_id"]) && !empty($filter['store_id'])) {
-            $query->where('store_id', $filter['store_id']);
+        if (isset($filter["shop_id"]) && !empty($filter['shop_id'])) {
+            $query->where('shop_id', $filter['shop_id']);
         }
 
         // 支付状态

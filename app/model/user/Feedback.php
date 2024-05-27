@@ -13,7 +13,7 @@ namespace app\model\user;
 
 use app\model\order\Order;
 use app\model\product\Product;
-use app\model\store\Store;
+use app\model\shop\shop;
 use think\Model;
 use utils\Time;
 
@@ -41,7 +41,7 @@ class Feedback extends Model
     // 关联店铺
     public function store()
     {
-        return $this->hasOne(Store::class, 'store_id', 'store_id');
+        return $this->hasOne(shop::class, 'shop_id', 'shop_id');
     }
 
     // 关联回复

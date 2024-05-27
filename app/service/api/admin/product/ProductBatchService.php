@@ -204,7 +204,7 @@ class ProductBatchService extends BaseService
                     "product_desc" => mb_convert_encoding($row[10], 'GBK', 'UTF-8') ?? "",
                     "product_weight" => $row[11] ?? 0,
                     "product_stock" => $row[12] ?? 0,
-                    "store_id" => (request()->storeId) > 0 ? request()->storeId : 0,
+                    "shop_id" => (request()->shopId) > 0 ? request()->shopId : 0,
                 ];
                 $result[] = $res;
 

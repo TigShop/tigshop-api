@@ -130,11 +130,11 @@ class ShippingTplService extends BaseService
         unset($data["shipping_tpl_info"]);
         //处理运费模板信息
         if ($data["is_default"] != 0) {
-            ShippingTpl::where("store_id", request()->storeId)->update(["is_default" => 0]);
+            ShippingTpl::where("shop_id", request()->shopId)->update(["is_default" => 0]);
         }
         $shipping_tpl_arr = $this->getCommonShippingData($data);
 
-        $shipping_tpl_arr["store_id"] = $data["store_id"];
+        $shipping_tpl_arr["shop_id"] = $data["shop_id"];
         $shipping_tpl = ShippingTpl::createAll($shipping_tpl_arr);
         $id = $shipping_tpl->shipping_tpl_id;
         // 保存运费模板信息
@@ -298,11 +298,11 @@ class ShippingTplService extends BaseService
 
     /**
      * 获取店铺下商品的所有运费模板
-     * @param $store_id
+     * @param $shop_id
      * @return int
      */
-    public function getDefaultShippingTplId($store_id = 0): int
+    public function getDefaultShippingTplId($shop_id = 0): int
     {
-        return ShippingTpl::where('store_id', $store_id)->where('is_default', 1)->value('shipping_tpl_id') || 0;
+        return ShippingTpl::where('shop_id', $shop_id)->where('is_default', 1)->value('shipping_tpl_id') || 0;
     }
 }

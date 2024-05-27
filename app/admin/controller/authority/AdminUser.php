@@ -130,7 +130,7 @@ class AdminUser extends AdminBaseController
             'old_password' => '', // 原密码
         ], 'post');
 
-        $data["store_id"] = request()->storeId;
+        $data["store_id"] = request()->shopId;
         try {
             validate(AdminUserValidate::class)
                 ->scene('create')
@@ -169,7 +169,7 @@ class AdminUser extends AdminBaseController
             'pwd_confirm' => '', // 确认密码
             'old_password' => '', // 原密码
         ], 'post');
-        $data["store_id"] = request()->storeId;
+        $data["store_id"] = request()->shopId;
         try {
             validate(AdminUserValidate::class)
                 ->scene('update')
