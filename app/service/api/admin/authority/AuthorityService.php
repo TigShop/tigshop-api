@@ -61,7 +61,9 @@ class AuthorityService extends BaseService
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->where('c.authority_name', 'like', '%' . $filter['keyword'] . '%');
         }
-
+        if (isset($filter['type']) && $filter['type'] != -1) {
+            $query->whereIn('c.type', explode(',', $filter['type']));
+        }
         $query->where('c.parent_id', $filter['parent_id']);
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
