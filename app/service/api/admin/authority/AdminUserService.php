@@ -177,6 +177,11 @@ class AdminUserService extends BaseService
         if (!$id) {
             throw new ApiException(/** LANG */'#id错误');
         }
+        // 判断电话号码中是否存在*号
+        if (strpos($arr["mobile"], '*') !== false) {
+            // 存在
+            $arr["mobile"] = AdminUser::findOrEmpty($id)->mobile;
+        }
         $result = $this->adminUserModel->where('admin_id', $id)->save($arr);
         AdminLog::add('更新管理员:' . $this->getName($id));
 

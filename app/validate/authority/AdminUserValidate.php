@@ -38,7 +38,7 @@ class AdminUserValidate extends Validate
     protected function checkUnique($value, $rule, $data = [], $field = ''):bool
     {
         $id = isset($data['admin_id']) ? $data['admin_id'] : 0;
-        $query = Db::name('admin_user')->where('username', $value)->where('admin_id', '<>', $id)->where('store_id', request()->storeId);
+        $query = Db::name('admin_user')->where('username', $value)->where('admin_id', '<>', $id)->where('shop_id', request()->storeId);
         return $query->count() === 0;
     }
 }

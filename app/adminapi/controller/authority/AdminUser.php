@@ -165,7 +165,7 @@ class AdminUser extends AdminBaseController
             'parent_id/d' => 0,
             'pwd_confirm' => '', // 确认密码
         ], 'post');
-        $data["store_id"] = request()->shopId;
+        $data["shop_id"] = request()->shopId;
         try {
             validate(AdminUserValidate::class)
                 ->scene('update')
