@@ -92,9 +92,10 @@ class Article extends AdminBaseController
     {
         $data = $this->request->only([
             'article_title' => '',
-            'article_category_id' => 0,
+            'article_category_id/a' => [],
             'article_sn' => '',
             'article_thumb' => '',
+            'article_author' => '',
             'article_tag' => '',
             'article_type' => 0,
             'content' => '',
@@ -104,7 +105,7 @@ class Article extends AdminBaseController
             'is_hot' => 0,
             'is_top' => 0,
             'click_count' => 0,
-            'product_ids' => [],
+            'product_ids/a' => [],
             'link' => '',
         ], 'post');
 
@@ -128,9 +129,9 @@ class Article extends AdminBaseController
 
         $result = $this->articleService->createArticle($data);
         if ($result) {
-            return $this->success(/** LANG */'文章标题添加成功');
+            return $this->success(/** LANG */'文章添加成功');
         } else {
-            return $this->error(/** LANG */'文章标题更新失败');
+            return $this->error(/** LANG */'文章添加失败');
         }
     }
 
@@ -153,9 +154,9 @@ class Article extends AdminBaseController
 
         $result = $this->articleService->updateArticle($id, $data);
         if ($result) {
-            return $this->success(/** LANG */'文章标题更新成功');
+            return $this->success(/** LANG */'文章更新成功');
         } else {
-            return $this->error(/** LANG */'文章标题更新失败');
+            return $this->error(/** LANG */'文章更新失败');
         }
     }
 

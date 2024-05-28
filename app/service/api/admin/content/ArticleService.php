@@ -115,6 +115,11 @@ class ArticleService extends BaseService
             throw new ApiException('文章标题不存在');
         }
 
+        if(!empty($result->article_category_id)){
+            // 获取子类上的所有父类id
+            $result->article_category_id = app(ArticleCategoryService::class)->getParents($result->article_category_id);
+        }
+
         return $result;
     }
 
@@ -204,6 +209,7 @@ class ArticleService extends BaseService
      */
     public function createArticle(array $data):int
     {
+        $data["article_category_id"] = !empty($data["article_category_id"]) ? end($data["article_category_id"]) : 0;
         $result = $this->articleModel->save($data);
         $lastId = $this->articleModel->getKey();
         // 关联商品
@@ -234,7 +240,7 @@ class ArticleService extends BaseService
 
         $product_ids = $data['product_ids'];
         unset($data['product_ids']);
-
+        $data["article_category_id"] = !empty($data["article_category_id"]) ? end($data["article_category_id"]) : 0;
         $result = $this->articleModel->where('article_id', $id)->save($data);
 
         // 关联商品
