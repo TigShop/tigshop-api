@@ -23,7 +23,7 @@ class UserCoupon extends Model
     {
         return $this->hasOne(Coupon::class, 'coupon_id', 'coupon_id')->bind([
             'coupon_name',
-            'store_id',
+            'shop_id',
             'min_order_amount',
             'send_range_data',
             'coupon_money',

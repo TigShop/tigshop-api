@@ -61,7 +61,9 @@ class AuthorityService extends BaseService
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->where('c.authority_name', 'like', '%' . $filter['keyword'] . '%');
         }
-
+        if (isset($filter['type']) && $filter['type'] != -1) {
+            $query->whereIn('c.type', explode(',', $filter['type']));
+        }
         $query->where('c.parent_id', $filter['parent_id']);
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
@@ -217,9 +219,18 @@ class AuthorityService extends BaseService
                     });
                     if (count($filtered_children) === 0 && !in_array($value['authority_sn'], $auth_list)) {
                         unset($res[$key]);
-                    } else {
-                        $res[$key]['children'] = $filtered_children;
                     }
+                    foreach ($filtered_children as &$child) {
+                        if (!empty($child['child_auth']) && is_array($child['child_auth'])) {
+                            foreach ($child['child_auth'] as $k3 => $children) {
+                                if (!in_array($children, $auth_list)) {
+                                    unset($child['child_auth'][$k3]);
+                                }
+                            }
+                        }
+                    }
+                    $res[$key]['children'] = $filtered_children;
+
                 } else {
                     if (!in_array($value['authority_sn'], $auth_list)) {
                         unset($res[$key]);
@@ -316,9 +327,9 @@ class AuthorityService extends BaseService
      * @param string $authority_sn
      * @return bool
      */
-    public function checkAuthor(string $authority_sn,int $store_id = 0,array $auth_list = []): bool
+    public function checkAuthor(string $authority_sn, int $shop_id = 0, array $auth_list = []): bool
     {
-        if ($store_id == 0) {
+        if ($shop_id == 0) {
             if (in_array('all', $auth_list)) {
                 return true;
             }

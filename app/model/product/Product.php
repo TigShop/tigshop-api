@@ -81,8 +81,8 @@ class Product extends Model
     // 查询店铺平台订单
     public function scopeStorePlatform($query)
     {
-        if (request()->storeId > 0) {
-            return $query->where('store_id', request()->storeId);
+        if (request()->shopId > 0) {
+            return $query->where('shop_id', request()->shopId);
         } else {
             return $query;
         }

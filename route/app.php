@@ -10,4 +10,4 @@
 // +----------------------------------------------------------------------
 use think\facade\Route;
 
-// Route::get('hello/:name', 'index/hello');
+// Route::get('hello/:name', 'api/hello');

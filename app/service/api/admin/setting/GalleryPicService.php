@@ -64,7 +64,7 @@ class GalleryPicService extends BaseService
     {
         $query = $this->galleryPicModel->query();
         // 处理筛选条件
-        $query->where('store_id', request()->storeId);
+        $query->where('shop_id', request()->shopId);
 
         if (isset($filter['gallery_id']) && $filter['gallery_id'] !== null && $filter['gallery_id'] > 0) {
             $query->where('gallery_id', $filter['gallery_id']);

@@ -389,8 +389,8 @@ class RefundApplyService extends BaseService
             ->where("aftersales.status", Aftersales::STATUS_COMPLETE)
             ->whereBetween("aftersales.add_time", [Time::toTime($star), Time::toTime($end)])
             ->field("SUM(ai.number) as total");
-        if (request()->storeId > 0) {
-            $rows->where("o.store_id", request()->storeId);
+        if (request()->shopId > 0) {
+            $rows->where("o.shop_id", request()->shopId);
         }
         $count = $rows->find()->total ?? 0;
         $count = intval($count);

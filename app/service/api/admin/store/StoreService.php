@@ -11,7 +11,7 @@
 
 namespace app\service\api\admin\store;
 
-use app\model\store\Store;
+use app\model\shop\shop;
 use app\service\api\admin\BaseService;
 use app\validate\store\StoreValidate;
 use exceptions\ApiException;
@@ -22,10 +22,10 @@ use log\AdminLog;
  */
 class StoreService extends BaseService
 {
-    protected Store $storeModel;
+    protected shop $storeModel;
     protected StoreValidate $storeValidate;
 
-    public function __construct(Store $storeModel)
+    public function __construct(shop $storeModel)
     {
         $this->storeModel = $storeModel;
     }
@@ -71,8 +71,8 @@ class StoreService extends BaseService
             $query->where('store_title', 'like', '%' . $filter['keyword'] . '%');
         }
 
-        if (isset($filter['store_id']) && $filter['store_id'] > 0) {
-            $query->where('store_id', $filter['store_id']);
+        if (isset($filter['shop_id']) && $filter['shop_id'] > 0) {
+            $query->where('shop_id', $filter['shop_id']);
         }
 
         if (isset($filter['is_self']) && $filter['is_self'] > -1) {
@@ -94,7 +94,7 @@ class StoreService extends BaseService
      */
     public function getDetail(int $id): array
     {
-        $result = $this->storeModel->where('store_id', $id)->find();
+        $result = $this->storeModel->where('shop_id', $id)->find();
 
         if (!$result) {
             throw new ApiException('店铺不存在');
@@ -111,7 +111,7 @@ class StoreService extends BaseService
      */
     public function getAllStore(): array
     {
-        $result = $this->storeModel->field('store_id,store_title')->select();
+        $result = $this->storeModel->field('shop_id,store_title')->select();
         return $result->toArray();
     }
 
@@ -123,7 +123,7 @@ class StoreService extends BaseService
      */
     public function getName(int $id): ?string
     {
-        return $this->storeModel->where('store_id', $id)->value('store_title');
+        return $this->storeModel->where('shop_id', $id)->value('store_title');
     }
 
     /**
@@ -146,7 +146,7 @@ class StoreService extends BaseService
             if (!$id) {
                 throw new ApiException('#id错误');
             }
-            $result = $this->storeModel->where('store_id', $id)->save($data);
+            $result = $this->storeModel->where('shop_id', $id)->save($data);
             AdminLog::add('更新店铺:' . $this->getName($id));
 
             return $result !== false;
@@ -167,7 +167,7 @@ class StoreService extends BaseService
         if (!$id) {
             throw new ApiException('#id错误');
         }
-        $result = $this->storeModel::where('store_id', $id)->save($data);
+        $result = $this->storeModel::where('shop_id', $id)->save($data);
         AdminLog::add('更新店铺:' . $this->getName($id));
         return $result !== false;
     }

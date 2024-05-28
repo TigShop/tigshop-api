@@ -97,7 +97,7 @@ class OrderCheckService extends BaseService
         return $this;
     }
     // 设置配送方式
-    // data : {type_id:类型id，store_id:店铺id}
+    // data : {type_id:类型id，shop_id:店铺id}
     public function setSelectedShippingType($data)
     {
         $this->selectedShippingType = $data;
@@ -211,7 +211,7 @@ class OrderCheckService extends BaseService
                 if (isset($value[0])) {
                     // 默认第一个
                     $this->selectedShippingType[$key]['type_id'] = isset($value[0]) ? $value[0]['shipping_type_id'] : 0;
-                    $this->selectedShippingType[$key]['store_id'] = isset($value[0]) ? $value[0]['store_id'] : 0;
+                    $this->selectedShippingType[$key]['shop_id'] = isset($value[0]) ? $value[0]['shop_id'] : 0;
                     $this->selectedShippingType[$key]['type_name'] = isset($value[0]) ? $value[0]['shipping_type_name'] : '';
                 }
             }
@@ -228,7 +228,7 @@ class OrderCheckService extends BaseService
             $region_ids = $this->getRegionIds();
             foreach ($cart['carts'] as $key => $store) {
                 $product_ids = array_unique(array_column($store['carts'], 'product_id'));
-                $tpl_ids = $this->getShippingTplIds($store['store_id'], $product_ids);
+                $tpl_ids = $this->getShippingTplIds($store['shop_id'], $product_ids);
                 $shipping_type[] = $this->getAvailableShippingType($tpl_ids, $region_ids);
             }
             $this->shippingType = $shipping_type;
@@ -265,9 +265,9 @@ class OrderCheckService extends BaseService
     }
 
     // 获取店铺下商品的所有运费模板
-    public function getShippingTplIds($store_id, $product_ids): array
+    public function getShippingTplIds($shop_id, $product_ids): array
     {
-        $default_id = app(ShippingTplService::class)->getDefaultShippingTplId($store_id);
+        $default_id = app(ShippingTplService::class)->getDefaultShippingTplId($shop_id);
         $tpl_ids = Product::whereIn('product_id', $product_ids)->column('shipping_tpl_id');
         if (in_array(0, $tpl_ids)) {
             $tpl_ids[] = $default_id;
@@ -413,12 +413,12 @@ class OrderCheckService extends BaseService
                 if ($row['selected']) {
                     $coupon_amount = bcadd($row['coupon_money'], $coupon_amount, 2);
                     if ($row['is_global']) {
-                        $row['store_id'] = -1;
+                        $row['shop_id'] = -1;
                     }
-                    //全局优惠券store_id用-1表达
+                    //全局优惠券shop_id用-1表达
                     // 用于在订单中记录优惠券的信息
-                    $this->extension['coupon_money'][$row['store_id']] = ($this->extension['coupon_money'][$row['store_id']] ?? 0) + $row['coupon_money'];
-                    $this->extension['coupon'][$row['store_id']][] = $row['id'];
+                    $this->extension['coupon_money'][$row['shop_id']] = ($this->extension['coupon_money'][$row['shop_id']] ?? 0) + $row['coupon_money'];
+                    $this->extension['coupon'][$row['shop_id']][] = $row['id'];
                 }
             }
         }
@@ -449,7 +449,7 @@ class OrderCheckService extends BaseService
 
         // 配送方式
         foreach ($this->getSelectedShippingType() as $value) {
-            $this->extension['shipping_type'][$value['store_id']] = [
+            $this->extension['shipping_type'][$value['shop_id']] = [
                 'type_id' => $value['type_id'],
                 'type_name' => $value['type_name'],
             ];
@@ -482,11 +482,11 @@ class OrderCheckService extends BaseService
         $cart_total = $cart['total'];
         $data = [];
         foreach ($carts as $key => $store) {
-            $default_tpl_id = app(ShippingTplService::class)->getDefaultShippingTplId($store['store_id']);
+            $default_tpl_id = app(ShippingTplService::class)->getDefaultShippingTplId($store['shop_id']);
             foreach ($store['carts'] as $_key => $value) {
                 $shipping_tpl_id = $value['shipping_tpl_id'] > 0 ? $value['shipping_tpl_id'] : $default_tpl_id;
-                if (!isset($data[$value['store_id']][$shipping_tpl_id])) {
-                    $data[$value['store_id']][$shipping_tpl_id] = [
+                if (!isset($data[$value['shop_id']][$shipping_tpl_id])) {
+                    $data[$value['shop_id']][$shipping_tpl_id] = [
                         'weight' => 0,
                         'count' => 0,
                         'fee' => 0,
@@ -494,21 +494,21 @@ class OrderCheckService extends BaseService
                 }
                 if (!$value['free_shipping']) {
                     // 不计算包邮的商品数量和重量
-                    $data[$value['store_id']][$shipping_tpl_id]['weight'] += $value['product_weight'];
-                    $data[$value['store_id']][$shipping_tpl_id]['count'] += $value['quantity'];
+                    $data[$value['shop_id']][$shipping_tpl_id]['weight'] += $value['product_weight'];
+                    $data[$value['shop_id']][$shipping_tpl_id]['count'] += $value['quantity'];
                 }
             }
         }
         $selected_type_ids = [];
         foreach ($this->getSelectedShippingType() as $key => $value) {
-            $selected_type_ids[$value['store_id']] = $value['type_id'];
+            $selected_type_ids[$value['shop_id']] = $value['type_id'];
         }
         $result = [
             'total' => 0,
             'store_shipping_fee' => [],
         ];
-        foreach ($data as $store_id => $row) {
-            $type_id = $selected_type_ids[$store_id] ?? 0;
+        foreach ($data as $shop_id => $row) {
+            $type_id = $selected_type_ids[$shop_id] ?? 0;
             $tpl_info = [];
             $all_tpl_info = ShippingTplInfo::where('shipping_type_id', $type_id)->select();
             $all_tpl_info = $all_tpl_info ? $all_tpl_info->toArray() : [];
@@ -524,25 +524,25 @@ class OrderCheckService extends BaseService
             foreach ($row as $shipping_tpl_id => $value) {
                 if ($tpl_info) {
                     // 首件或首重金额
-                    $data[$store_id][$shipping_tpl_id]['fee'] = $value['count'] > 0 ? $tpl_info['start_price'] : 0;
+                    $data[$shop_id][$shipping_tpl_id]['fee'] = $value['count'] > 0 ? $tpl_info['start_price'] : 0;
                     if ($tpl_info['pricing_type'] == 1) {
                         //按件计费
                         if ($value['count'] - $tpl_info['start_number'] > 0) {
                             $count = @intval(($value['count'] - $tpl_info['start_number']) / $tpl_info['add_number']); //取整，不四舍五入
-                            $data[$store_id][$shipping_tpl_id]['fee'] += $count * $tpl_info['add_price'];
+                            $data[$shop_id][$shipping_tpl_id]['fee'] += $count * $tpl_info['add_price'];
                         }
                     } elseif ($tpl_info['pricing_type'] == 2) {
                         //按重量计费
                         if ($value['weight'] - $tpl_info['start_number'] > 0) {
                             $weight = @intval(($value['weight'] - $tpl_info['start_number']) / $tpl_info['add_number']) + 1; //取整，不四舍五入
-                            $data[$store_id][$shipping_tpl_id]['fee'] += $weight * $tpl_info['add_price'];
+                            $data[$shop_id][$shipping_tpl_id]['fee'] += $weight * $tpl_info['add_price'];
                         }
                     }
-                    $result['total'] += $data[$store_id][$shipping_tpl_id]['fee'];
-                    if (!isset($result['store_shipping_fee'][$store_id])) {
-                        $result['store_shipping_fee'][$store_id] = 0;
+                    $result['total'] += $data[$shop_id][$shipping_tpl_id]['fee'];
+                    if (!isset($result['store_shipping_fee'][$shop_id])) {
+                        $result['store_shipping_fee'][$shop_id] = 0;
                     }
-                    $result['store_shipping_fee'][$store_id] += $data[$store_id][$shipping_tpl_id]['fee'];
+                    $result['store_shipping_fee'][$shop_id] += $data[$shop_id][$shipping_tpl_id]['fee'];
                 }
             }
 
@@ -596,7 +596,8 @@ class OrderCheckService extends BaseService
                         $product_id_amounts[$value['product_id']] = 0;
                     }
                 }
-                $coupons[] = $this->getStoreCouponList(request()->userId, $store['store_id'], $product_amount, false, $product_ids, $product_id_amounts);
+                $coupons[] = $this->getStoreCouponList(request()->userId, $store['shop_id'], $product_amount, false,
+                    $product_ids, $product_id_amounts);
                 $all_product_id_amounts = array_merge($all_product_id_amounts, $product_id_amounts);
                 $all_product_ids = array_merge($all_product_ids, $product_ids);
             }
@@ -635,21 +636,28 @@ class OrderCheckService extends BaseService
      * 获取店铺的优惠券
      *
      * @param [type] $user_id
-     * @param integer $store_id
+     * @param integer $shop_id
      * @param integer $product_amount 商品总金额
      * @param boolean $is_global 是否全局
      * @param array $product_ids 商品id
      * @param array $product_id_amounts 商品金额 [[id=>amount]]
      * @return array
      */
-    protected function getStoreCouponList($user_id, $store_id = 0, $product_amount = 0, $is_global = false, $product_ids = [], $product_id_amounts = []): array
+    protected function getStoreCouponList(
+        $user_id,
+        $shop_id = 0,
+        $product_amount = 0,
+        $is_global = false,
+        $product_ids = [],
+        $product_id_amounts = []
+    ): array
     {
 
         $now = Time::now();
         $selected = false; //该店铺是否有已选择的优惠券
         $coupon = UserCoupon::withJoin('coupon')
             ->where('user_id', request()->userId)
-            ->where('store_id', $store_id)
+            ->where('shop_id', $shop_id)
             ->where('is_global', $is_global)
             ->where('start_date', '<=', $now)
             ->where('end_date', '>=', $now)
@@ -731,7 +739,7 @@ class OrderCheckService extends BaseService
                 'coupon_money' => $value['coupon_money'],
                 'is_global' => $value['is_global'],
                 'coupon_discount' => $value['coupon_discount'],
-                'store_id' => $value['coupon']['store_id'],
+                'shop_id' => $value['coupon']['shop_id'],
                 'end_date' => $value['end_date'],
                 'coupon_id' => $value['coupon_id'],
                 'disable_reason' => $value['disable_reason'],
@@ -777,7 +785,7 @@ class OrderCheckService extends BaseService
                     'sku_id' => $value['sku_id'], //规格ID
                     'sku_data' => $value['sku_data'], //购买该商品时所选择的属性
                     'product_type' => $value['product_type'], // 是否是实物
-                    'store_id' => $value['store_id'], //店铺id
+                    'shop_id' => $value['shop_id'], //店铺id
                     'type' => $value['type'], //商品类型
                     // 'prepay_price' => $value['prepay_price'], // 预售价格todo
                 ];
@@ -805,7 +813,7 @@ class OrderCheckService extends BaseService
             'pay_type_id' => $this->getSelectedPayTypeId(), //支付类型
             'use_points' => $this->usePoint, //使用的积分的数量
             'promoter_user_id' => 0, //推广人userId
-            'store_id' => 0, //店铺id
+            'shop_id' => 0, //店铺id
             'store_title' => '', //店铺名称
             'is_store_splited' => 0, //是否已按店铺拆分:0,否;1,是
             'total_amount' => $total['total_amount'], //订单总金额（商品总价 + 运费等 - 优惠券 - 各种优惠活动）
@@ -825,7 +833,7 @@ class OrderCheckService extends BaseService
         if (count($carts) === 1) {
             // 所有商品都是来自同一店铺时
             $data['is_store_splited'] = 1;
-            $data['store_id'] = $carts[0]['store_id'];
+            $data['shop_id'] = $carts[0]['shop_id'];
             // 更新订单配送类型
             $shipping_type = $this->getSelectedShippingType();
             $data['shipping_type_id'] = $shipping_type[0]['type_id'];

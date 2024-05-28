@@ -234,12 +234,18 @@ class CouponService extends BaseService
      * 获得商品优惠券
      * @return Coupon|array
      */
-    public function getProductCouponList(int $product_id, int $store_id, int $brand_id, int $user_id, int $category_id = 0): Coupon | array
+    public function getProductCouponList(
+        int $product_id,
+        int $shop_id,
+        int $brand_id,
+        int $user_id,
+        int $category_id = 0
+    ): Coupon|array
     {
         $coupon = Coupon::where('use_start_date', '<', time())->where('use_end_date', '>', time() - 86400);
-        if ($store_id) {
-            $coupon->where(function ($query) use ($store_id) {
-                $query->where('store_id', 0)->whereOr('store_id', $store_id);
+        if ($shop_id) {
+            $coupon->where(function ($query) use ($shop_id) {
+                $query->where('shop_id', 0)->whereOr('shop_id', $shop_id);
             });
         }
         $coupon->where('is_show', 1);

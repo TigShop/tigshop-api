@@ -215,8 +215,8 @@ class BrandService extends BaseService
 //        $brand_list = [];
 //        $firstword_list = [];
 //
-//        if (request()->storeId) {
-//            $where[] = ['a.store_id', '=', request()->storeId];
+//        if (request()->shopId) {
+//            $where[] = ['a.shop_id', '=', request()->shopId];
 //            $where[] = ['a.check_status', '=', 1];
 //        }
 

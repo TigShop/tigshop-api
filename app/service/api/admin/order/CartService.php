@@ -71,7 +71,7 @@ class CartService extends BaseService
             'product_type' => $product['product_type'],
             'is_checked' => 1,
             'type' => $type,
-            'store_id' => $product['store_id'],
+            'shop_id' => $product['shop_id'],
             'update_time' => Time::now(),
         ];
         // 检查库存
@@ -133,9 +133,9 @@ class CartService extends BaseService
                 $total['checked_count'] += $row['quantity'];
                 $total['product_amount'] += $row['subtotal'];
             }
-            $carts[$row['store_id']]['store_id'] = $row['store_id'];
-            $carts[$row['store_id']]['store_title'] = $row['store_id'] > 0 ? $row['store_title'] : '';
-            $carts[$row['store_id']]['carts'][] = $row;
+            $carts[$row['shop_id']]['shop_id'] = $row['shop_id'];
+            $carts[$row['shop_id']]['shop_title'] = !empty($row['shop']) ? $row['shop']['shop_title'] : '';
+            $carts[$row['shop_id']]['carts'][] = $row;
         }
         // 将结果转换为索引数组
         $carts = array_values($carts);
@@ -153,7 +153,7 @@ class CartService extends BaseService
                 $query->where('is_checked', true);
             })
             ->hasWhere('product')
-            ->with(['store', 'product'])
+            ->with(['shop', 'product'])
             ->order('update_time', 'desc')
             ->select();
         return $cart_list ? $cart_list->toArray() : [];

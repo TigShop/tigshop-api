@@ -12,7 +12,7 @@
 namespace app\model\order;
 
 use app\model\product\Product;
-use app\model\store\Store;
+use app\model\shop\Shop;
 use think\Model;
 
 class Cart extends Model
@@ -24,10 +24,11 @@ class Cart extends Model
     const TYPE_NORMAL = 1; //普通商品
     const TYPE_PIN = 2; //拼团商品
     const TYPE_EXCHANGE = 3; //兑换商品
-    // 关联 Store 表
-    public function store()
+
+    // 关联 shop 表
+    public function shop()
     {
-        return $this->hasOne(Store::class, 'store_id', 'store_id')->bind(['store_title']);
+        return $this->hasOne(Shop::class, 'shop_id', 'shop_id');
     }
 
     public function product()
