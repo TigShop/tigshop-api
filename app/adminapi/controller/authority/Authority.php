@@ -53,7 +53,7 @@ class Authority extends AdminBaseController
             'size' => 15,
             'sort_field' => 'c.authority_id',
             'sort_order' => 'asc',
-            'type' => -1
+            'admin_type' => -1
         ], 'get');
 
         $filterResult = $this->authorityService->getFilterResult($filter);
@@ -103,7 +103,7 @@ class Authority extends AdminBaseController
             'parent_id' => 0,
             'is_show' => 0,
             'sort_order' => 50,
-            'type' => 0
+            'admin_type' => 'all'
         ], 'post');
 
         try {
@@ -140,7 +140,7 @@ class Authority extends AdminBaseController
             'parent_id' => 0,
             'is_show' => 0,
             'sort_order' => 50,
-            'type' => 0
+            'admin_type' => 'all'
         ], 'post');
         try {
             validate(AuthorityValidate::class)

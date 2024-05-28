@@ -51,6 +51,9 @@ class AllowCrossDomain
                 $header['Access-Control-Allow-Origin'] = '*';
             }
         }
+        if ($request->method() == 'OPTIONS') {
+            header("HTTP/1.1 200 OK");
+        }
 
         return $next($request)->header($header);
     }

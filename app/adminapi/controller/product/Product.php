@@ -117,7 +117,7 @@ class Product extends AdminBaseController
                 $item['check_status'] = 1;
                 $item['product_status'] = 1;
             }
-            $item['store_id'] = request()->shopId;
+            $item['shop_id'] = request()->shopId;
         }
         $item['product_service_ids'] = Db::name('product_services')->where('default_on',
             1)->column('product_service_id');

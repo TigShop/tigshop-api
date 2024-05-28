@@ -61,7 +61,7 @@ Route::group('authority', function () {
         // 权限详情
         Route::get('detail', 'authority.authority/detail');
         // 权限添加
-        Route::post('create', 'authority/create');
+        Route::post('create', 'authority.authority/create');
         // 权限编辑
         Route::post('update', 'authority.authority/update');
         // 获取所有权限
