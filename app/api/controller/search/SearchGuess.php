@@ -40,7 +40,7 @@ class SearchGuess extends IndexBaseController
      */
     public function index(): Response
     {
-        $keyword = input('keyword');
+        $keyword = input('keyword',"");
         // 去掉空格
         $keyword = htmlspecialchars(str_replace(' ', '', trim($keyword)));
         $keyword_list = [];
