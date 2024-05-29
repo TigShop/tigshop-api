@@ -35,7 +35,7 @@ class ApplyService extends BaseService
      */
     public function getFilterResult(array $filter): array
     {
-        $query = $this->filterQuery($filter)->with(['userName']);
+        $query = $this->filterQuery($filter)->with(['user']);
         $result = $query->page($filter['page'], $filter['size'])->select();
         return $result->toArray();
     }

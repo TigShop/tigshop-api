@@ -79,6 +79,8 @@ Route::group('promotion', function () {
     Route::group('seckill', function () {
         // 列表
         Route::get('list', 'promotion.seckill/list');
+        // 装修秒杀列表
+        Route::get('list_for_decorate', 'promotion.seckill/listForDecorate');
         // 详情
         Route::get('detail', 'promotion.seckill/detail');
         // 添加

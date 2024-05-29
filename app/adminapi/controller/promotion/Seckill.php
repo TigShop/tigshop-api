@@ -66,6 +66,29 @@ class Seckill extends AdminBaseController
     }
 
     /**
+     * 列表页面
+     *
+     * @return Response
+     */
+    public function listForDecorate(): Response
+    {
+        $filter = $this->request->only([
+            'keyword' => '',
+            'page/d' => 1,
+            'size/d' => 15,
+            'sort_field' => 'seckill_id',
+            'sort_order' => 'desc',
+            ''
+        ], 'get');
+
+        $filterResult = $this->seckillService->getSeckillProductList($filter);
+
+        return $this->success([
+            'filter_result' => $filterResult['list'],
+        ]);
+    }
+
+    /**
      * 详情
      * @return Response
      */
