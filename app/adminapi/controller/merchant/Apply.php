@@ -15,6 +15,8 @@ use app\adminapi\AdminBaseController;
 use app\service\api\admin\authority\AdminUserService;
 use app\service\api\admin\merchant\ApplyService;
 use app\service\api\admin\merchant\MerchantService;
+use app\service\api\admin\shop\ShopService;
+use app\service\api\admin\user\UserService;
 use think\App;
 use think\facade\Db;
 
@@ -46,8 +48,6 @@ class Apply extends AdminBaseController
     public function list(): \think\Response
     {
         $filter = $this->request->only([
-            'keyword' => '',
-            'store_id' => 0,
             'page/d' => 1,
             'size/d' => 15,
             'sort_field' => 'add_time',
@@ -108,17 +108,35 @@ class Apply extends AdminBaseController
      */
     public function audit(): \think\Response
     {
-        $id = input('id/d', 0);
-        $data = $this->request->only([
-            'merchant_apply_id' => $id,
+        $params = $this->request->only([
+            'merchant_apply_id' => 0,
             'status/d' => 1,
         ], 'post');
         try {
             Db::startTrans();
-            $result = $this->applyService->audit($id, $data['status']);
-            if ($result && $data['status'] == 10) {
-                app(MerchantService::class)->create([]);
-                app(AdminUserService::class)->createAdminUser([]);
+            $item = $this->applyService->getDetail($params['merchant_apply_id']);
+            $userInfo = app(UserService::class)->getDetail($item['user_id']);
+            $result = $this->applyService->audit($params['merchant_apply_id'], $params['status']);
+            if ($result && $params['status'] == 10) {
+                $merchantDetail = app(MerchantService::class)->create([
+                    'merchant_apply_id' => $item['merchant_apply_id'],
+                    'user_id' => $item['user_id'],
+                ]);
+                app(AdminUserService::class)->createAdminUser([
+                    'username' => $userInfo['mobile'],
+                    'mobile' => $userInfo['mobile'],
+                    'email' => $userInfo['email'],
+                    'password' => '',
+                    'admin_type' => 'shop',
+                    'role_id' => 1,
+                    'avatar' => '',
+                    'pwd_confirm' => '',
+                    'merchant_id' => $merchantDetail->merchant_id,
+                ]);
+                app(ShopService::class)->create([
+                    'merchant_id' => $merchantDetail->merchant_id,
+                    'shop_title' => $item['shop_title']
+                ]);
             }
             Db::commit();
         } catch (\Exception $e) {
@@ -127,9 +145,9 @@ class Apply extends AdminBaseController
         }
 
         if ($result) {
-            return $this->success('商户入驻申请更新成功');
+            return $this->success('商户入驻申请审核成功');
         } else {
-            return $this->error('商户入驻申请更新失败');
+            return $this->error('商户入驻申请审核失败');
         }
     }
 

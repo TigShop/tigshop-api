@@ -11,7 +11,7 @@
 
 namespace app\service\api\admin\shop;
 
-use app\model\shop\Shop;
+use app\model\merchant\Shop;
 use app\service\api\admin\BaseService;
 use app\validate\store\StoreValidate;
 use exceptions\ApiException;
@@ -37,7 +37,7 @@ class ShopService extends BaseService
      */
     public function getFilterResult(array $filter): array
     {
-        $query = $this->filterQuery($filter)->with(['userName']);
+        $query = $this->filterQuery($filter);
         $result = $query->page($filter['page'], $filter['size'])->select();
         return $result->toArray();
     }

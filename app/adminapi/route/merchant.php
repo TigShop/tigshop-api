@@ -21,4 +21,16 @@ Route::group('merchant', function () {
         // batch批量操作
         Route::post('batch', 'merchant.apply/batch');
     });
+    // 商户管理
+    Route::group('merchant', function () {
+        // 列表
+        Route::get('list', 'list');
+
+    })->prefix('merchant.merchant/');
+    // 店铺管理
+    Route::group('shop', function () {
+        // 列表
+        Route::get('list', 'list');
+
+    })->prefix('merchant.shop/');
 });

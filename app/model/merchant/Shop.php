@@ -9,7 +9,7 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\model\shop;
+namespace app\model\merchant;
 
 use app\model\user\User;
 use think\Model;
@@ -29,9 +29,4 @@ class Shop extends Model
         return Time::format($value);
     }
 
-    // 用户名
-    public function userName()
-    {
-        return $this->hasOne(User::class, "user_id", "user_id")->bind(['user_name']);
-    }
 }

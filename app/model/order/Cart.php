@@ -11,8 +11,8 @@
 
 namespace app\model\order;
 
+use app\model\merchant\Shop;
 use app\model\product\Product;
-use app\model\shop\Shop;
 use think\Model;
 
 class Cart extends Model

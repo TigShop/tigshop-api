@@ -22,7 +22,7 @@ class Apply extends Model
 
     protected $createTime = 'add_time';
     protected $autoWriteTimestamp = 'int';
-    protected $json = ['apply_data'];
+    protected $json = ['merchant_data', 'base_data', 'merchant_data'];
     protected $jsonAssoc = true;
 
     // 字段处理
@@ -32,8 +32,8 @@ class Apply extends Model
     }
 
     // 用户名
-    public function userName()
+    public function user()
     {
-        return $this->hasOne(User::class, "user_id", "user_id");
+        return $this->hasOne(User::class, "user_id", "user_id")->field(["user_id", 'username']);
     }
 }

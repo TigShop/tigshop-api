@@ -199,4 +199,14 @@ return [
         'offline_pay_bank' => '',
         'offline_pay_company' => '',
     ],
+    //商户的设置
+    'merchant' => [
+        'person_apply_enabled' => 1,
+        'shop_goods_need_check' => 0,
+        'max_recommend_goods_count' => '',
+        'shop_rank_date_rage' => '',
+        'enabled_commission_order' => '',
+        'shop_agreement' => '',
+        'merchant_apply_need_check' => 1,
+    ]
 ];

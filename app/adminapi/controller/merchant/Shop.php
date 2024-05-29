@@ -9,7 +9,7 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\adminapi\controller\store;
+namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
 use app\service\api\admin\shop\ShopService;
@@ -18,20 +18,20 @@ use think\App;
 /**
  * 店铺控制器
  */
-class Store extends AdminBaseController
+class Shop extends AdminBaseController
 {
-    protected ShopService $storeService;
+    protected ShopService $shopService;
 
     /**
      * 构造函数
      *
      * @param App $app
-     * @param ShopService $storeService
+     * @param ShopService $shopService
      */
-    public function __construct(App $app, ShopService $storeService)
+    public function __construct(App $app, ShopService $shopService)
     {
         parent::__construct($app);
-        $this->storeService = $storeService;
+        $this->shopService = $shopService;
         $this->checkAuthor('storeManage'); //权限检查
     }
 
@@ -44,16 +44,16 @@ class Store extends AdminBaseController
     {
         $filter = $this->request->only([
             'keyword' => '',
-            'store_id' => 0,
+            'shop_id' => 0,
             'is_self' => -1,
             'page/d' => 1,
             'size/d' => 15,
-            'sort_field' => 'store_id',
+            'sort_field' => 'shop_id',
             'sort_order' => 'desc',
         ], 'get');
 
-        $filterResult = $this->storeService->getFilterResult($filter);
-        $total = $this->storeService->getFilterCount($filter);
+        $filterResult = $this->shopService->getFilterResult($filter);
+        $total = $this->shopService->getFilterCount($filter);
 
         return $this->success([
             'filter_result' => $filterResult,
@@ -69,7 +69,7 @@ class Store extends AdminBaseController
      */
     public function all(): \think\Response
     {
-        $store = $this->storeService->getAllStore();
+        $store = $this->shopService->getAllStore();
         return $this->success([
             'store' => $store,
         ]);
@@ -84,7 +84,7 @@ class Store extends AdminBaseController
     {
 
         $id = input('id/d', 0);
-        $item = $this->storeService->getDetail($id);
+        $item = $this->shopService->getDetail($id);
         return $this->success([
             'item' => $item,
         ]);
@@ -102,7 +102,7 @@ class Store extends AdminBaseController
             'sort_order/d' => 50,
         ], 'post');
 
-        $result = $this->storeService->updateStore(0, $data, true);
+        $result = $this->shopService->updateStore(0, $data, true);
         if ($result) {
             return $this->success('店铺添加成功');
         } else {
@@ -124,7 +124,7 @@ class Store extends AdminBaseController
             'sort_order/d' => 50,
         ], 'post');
 
-        $result = $this->storeService->updateStore($id, $data, false);
+        $result = $this->shopService->updateStore($id, $data, false);
         if ($result) {
             return $this->success('店铺更新成功');
         } else {
@@ -151,7 +151,7 @@ class Store extends AdminBaseController
             $field => input('val'),
         ];
 
-        $this->storeService->updateStoreField($id, $data);
+        $this->shopService->updateStoreField($id, $data);
 
         return $this->success('更新成功');
     }
@@ -164,7 +164,7 @@ class Store extends AdminBaseController
     public function del(): \think\Response
     {
         $id = input('id/d', 0);
-        $this->storeService->deleteStore($id);
+        $this->shopService->deleteStore($id);
         return $this->success('指定项目已删除');
     }
 
@@ -182,7 +182,7 @@ class Store extends AdminBaseController
         if (input('type') == 'del') {
             foreach (input('ids') as $key => $id) {
                 $id = intval($id);
-                $this->storeService->deleteStore($id);
+                $this->shopService->deleteStore($id);
             }
             return $this->success('批量操作执行成功！');
         } else {

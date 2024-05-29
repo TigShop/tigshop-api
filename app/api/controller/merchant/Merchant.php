@@ -30,7 +30,9 @@ class Merchant extends IndexBaseController
     {
         $data = $this->request->only([
             'shop_name' => '',
-            'apply_data' => '',
+            'merchant_data' => '',
+            'base_data' => '',
+            'shop_data' => '',
             'type' => 1,
         ], 'post');
         $data['user_id'] = request()->userId;

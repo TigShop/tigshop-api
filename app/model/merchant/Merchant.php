@@ -29,5 +29,10 @@ class Merchant extends Model
         return Time::format($value);
     }
 
+    public function user()
+    {
+        return $this->hasOne(User::class, 'user_id', 'user_id')->field(["user_id", 'username']);
+    }
+
 
 }

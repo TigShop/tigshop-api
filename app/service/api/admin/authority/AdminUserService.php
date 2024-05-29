@@ -124,8 +124,9 @@ class AdminUserService extends BaseService
             "mobile" => $data["mobile"],
             "email" => $data["email"],
             "role_id" => $data["role_id"],
-            "shop_id" => $data["shop_id"],
+            "merchant_id" => $data["merchant_id"] ?? 0,
             'avatar' => $data['avatar'],
+            'admin_type' => !empty($data['admin_type']) ? $data['admin_type'] : 'admin',
         ];
         if (empty($arr['avatar'])) {
             $rand = rand(1, 34);
@@ -159,7 +160,7 @@ class AdminUserService extends BaseService
      * @return array
      * @throws ApiException
      */
-    public function createAdminUser(array $data): array
+    public function createAdminUser(array $data): array|int
     {
         $arr = $this->getCommunalData($data);
         $result = $this->adminUserModel->save($arr);

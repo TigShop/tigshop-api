@@ -12,11 +12,8 @@
 namespace app\service\api\admin\merchant;
 
 use app\model\merchant\Apply;
-use app\model\shop\Shop;
 use app\service\api\admin\BaseService;
-use app\validate\store\StoreValidate;
 use exceptions\ApiException;
-use log\AdminLog;
 
 /**
  * 商户申请服务类
@@ -97,7 +94,7 @@ class ApplyService extends BaseService
         $result = $this->merchantApplyModel->find($id);
 
         if (!$result) {
-            throw new ApiException('店铺不存在');
+            throw new ApiException('商户入驻申请信息不存在');
         }
 
         return $result;
