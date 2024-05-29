@@ -1,4 +1,5 @@
 <?php
+
 namespace app\job;
 
 
@@ -19,6 +20,7 @@ class SmsJob extends BaseJob
 
         try {
             $smsService = new SmsService();
+            if (empty($data['mobile'])) return false;
             $smsService->createSmsService()->sendSms($data['mobile'], $data['template_code'], $data['content']);
             return true;
         } catch (\Exception $e) {
