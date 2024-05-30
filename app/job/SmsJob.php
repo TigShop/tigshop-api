@@ -17,7 +17,6 @@ class SmsJob extends BaseJob
      */
     public function doJob($data): bool
     {
-
         try {
             $smsService = new SmsService();
             if (empty($data['mobile'])) return false;
