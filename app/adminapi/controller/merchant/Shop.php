@@ -13,6 +13,7 @@ namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
 use app\service\api\admin\shop\ShopService;
+use app\validate\store\StoreValidate;
 use think\App;
 
 /**
@@ -45,9 +46,34 @@ class Shop extends AdminBaseController
         $filter = $this->request->only([
             'keyword' => '',
             'shop_id' => 0,
-            'is_self' => -1,
             'page/d' => 1,
             'size/d' => 15,
+            'sort_field' => 'shop_id',
+            'sort_order' => 'desc',
+        ], 'get');
+
+        $filterResult = $this->shopService->getFilterResult($filter);
+        $total = $this->shopService->getFilterCount($filter);
+
+        return $this->success([
+            'filter_result' => $filterResult,
+            'filter' => $filter,
+            'total' => $total,
+        ]);
+    }
+
+    /**
+     * 我的店铺 商户端专用
+     * @return \think\Response
+     */
+    public function my_shop()
+    {
+        $filter = $this->request->only([
+            'keyword' => '',
+            'shop_id' => 0,
+            'page/d' => 1,
+            'size/d' => 15,
+            'merchant_id' => request()->merchantId,
             'sort_field' => 'shop_id',
             'sort_order' => 'desc',
         ], 'get');
@@ -98,11 +124,12 @@ class Shop extends AdminBaseController
     public function create(): \think\Response
     {
         $data = $this->request->only([
-            'store_title' => '',
-            'sort_order/d' => 50,
-        ], 'post');
+            'shop_title' => '',
+            'shop_logo' => '',
 
-        $result = $this->shopService->updateStore(0, $data, true);
+        ], 'post');
+        validate(StoreValidate::class)->only(array_keys($data))->check($data);
+        $result = $this->shopService->updateShop(0, $data, true);
         if ($result) {
             return $this->success('店铺添加成功');
         } else {
@@ -120,11 +147,11 @@ class Shop extends AdminBaseController
         $id = input('id/d', 0);
         $data = $this->request->only([
             'store_id' => $id,
-            'store_title' => '',
+            'shop_title' => '',
             'sort_order/d' => 50,
         ], 'post');
 
-        $result = $this->shopService->updateStore($id, $data, false);
+        $result = $this->shopService->updateShop($id, $data, false);
         if ($result) {
             return $this->success('店铺更新成功');
         } else {
@@ -151,7 +178,7 @@ class Shop extends AdminBaseController
             $field => input('val'),
         ];
 
-        $this->shopService->updateStoreField($id, $data);
+        $this->shopService->updateShopField($id, $data);
 
         return $this->success('更新成功');
     }
@@ -164,7 +191,7 @@ class Shop extends AdminBaseController
     public function del(): \think\Response
     {
         $id = input('id/d', 0);
-        $this->shopService->deleteStore($id);
+        $this->shopService->deleteShop($id);
         return $this->success('指定项目已删除');
     }
 
@@ -182,7 +209,7 @@ class Shop extends AdminBaseController
         if (input('type') == 'del') {
             foreach (input('ids') as $key => $id) {
                 $id = intval($id);
-                $this->shopService->deleteStore($id);
+                $this->shopService->deleteShop($id);
             }
             return $this->success('批量操作执行成功！');
         } else {

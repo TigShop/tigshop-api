@@ -55,6 +55,7 @@ class ProductService extends BaseService
             $query->order('sort_order', 'asc')->order('product_id', 'desc');
         }
         $result = $query->page($filter['page'], $filter['size'])->select();
+        $result->load(['productSku']);
         return $result->toArray();
     }
 
@@ -418,6 +419,18 @@ class ProductService extends BaseService
         AdminLog::add('更新商品:' . $this->getName($id));
         return $result !== false;
     }
+
+    /**
+     * @param int $sku_id
+     * @param int $stock
+     * @return ProductSku
+     */
+    public function updateSkuStock(int $sku_id, int $stock): ProductSku
+    {
+        return ProductSku::where('sku_id', $sku_id)->update(['stock' => $stock]);
+    }
+
+
 
     /**
      * 移至回收站
