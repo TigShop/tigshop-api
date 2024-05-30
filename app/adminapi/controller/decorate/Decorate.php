@@ -47,7 +47,6 @@ class Decorate extends AdminBaseController
     public function list(): Response
     {
         $filter = $this->request->only([
-            'is_show/d' => -1,
             'keyword' => '',
             'decorate_type/d' => 0,
             'page/d' => 1,
