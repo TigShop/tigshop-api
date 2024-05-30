@@ -86,7 +86,7 @@ class MessageTypeService extends BaseService
     {
         $result = MessageType::with(['template_message'])->where('message_id', $id)->find();
         if (!$result) {
-            throw new ApiException(/** LANG */'消息设置不存在');
+            throw new ApiException(/** LANG */ '消息设置不存在');
         }
 
         $templateMessageInfo = $templateMessage = [];
@@ -99,7 +99,7 @@ class MessageTypeService extends BaseService
             }
             for ($i = 1; $i <= 6; $i++) {
                 if (!isset($templateMessageInfo[$i])) {
-                    $templateMessageInfo[$i] = (object) [];
+                    $templateMessageInfo[$i] = (object)[];
                 }
                 switch ($i) {
                     case 1:
@@ -159,7 +159,7 @@ class MessageTypeService extends BaseService
     public function updateMessageType(int $id, array $data): bool
     {
         if (!$id) {
-            throw new ApiException(/** LANG */'#id错误');
+            throw new ApiException(/** LANG */ '#id错误');
         }
         $info = MessageType::find($id)->toArray();
 
@@ -261,7 +261,7 @@ class MessageTypeService extends BaseService
     public function deleteMessageType(int $id): bool
     {
         if (!$id) {
-            throw new ApiException(/** LANG */'#id错误');
+            throw new ApiException(/** LANG */ '#id错误');
         }
         $get_name = $this->getName($id);
         $result = MessageType::destroy($id);
@@ -289,7 +289,7 @@ class MessageTypeService extends BaseService
             $template_list = $res['data'];
             $url = "https://api.weixin.qq.com/wxaapi/newtmpl/deltemplate?access_token=" . $access_token;
             foreach ($template_list as $k => $v) {
-                if ($v['title'] == '支付成功通知' || $v['title'] == '订单发货通知') {
+                if ($v['title'] == '订单支付通知' || $v['title'] == '订单发货通知') {
                     $data = ['priTmplId' => $v['priTmplId']];
                     $this->getMiniApplication()->getClient()->postJson($url, $data);
                 }
@@ -299,8 +299,8 @@ class MessageTypeService extends BaseService
         //添加模板
         $url = 'https://api.weixin.qq.com/wxaapi/newtmpl/addtemplate?access_token=' . $access_token;
         $data = [
-            'tid' => "1081",
-            "kidList" => [2, 1, 8, 4, 5],
+            'tid' => "31570",
+            "kidList" => [2, 1, 4],
             'sceneDesc' => '订单支付成功通知',
         ];
         $res = $this->getMiniApplication()->getClient()->postJson($url, $data);
@@ -308,8 +308,8 @@ class MessageTypeService extends BaseService
             throw new ApiException($res['errmsg']);
         }
         $data = [
-            'tid' => "1138",
-            "kidList" => [1, 2, 3, 4],
+            'tid' => "30766",
+            "kidList" => [4, 5, 3, 8, 2],
             'sceneDesc' => '订单发货通知',
         ];
         $res = $this->getMiniApplication()->getClient()->postJson($url, $data);
@@ -336,7 +336,7 @@ class MessageTypeService extends BaseService
             $template_list = $res['data'];
             foreach ($template_list as $k => $v) {
                 //重置本地模板列表
-                if ($v['title'] == '支付成功通知') {
+                if ($v['title'] == '订单支付通知') {
                     $data = [
                         'template_id' => $v['priTmplId'],
                         'content' => $v['content'],
@@ -390,7 +390,7 @@ class MessageTypeService extends BaseService
     public function updateMessageTypeField(int $id, array $data)
     {
         if (!$id) {
-            throw new ApiException(/** LANG */'#id错误');
+            throw new ApiException(/** LANG */ '#id错误');
         }
         $result = MessageType::where('message_id', $id)->save($data);
         AdminLog::add('更新消息设置:' . $this->getName($id));

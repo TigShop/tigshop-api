@@ -9,9 +9,34 @@ use utils\Util;
 
 class WechatOAuthService extends BaseService
 {
+    protected string|null $platformType = null;
+
+    /**
+     *获取平台类型
+     * @return string
+     */
+    public function getPlatformType(): string
+    {
+        if ($this->platformType === null) {
+            return Util::getClientType();
+        } else {
+            return $this->platformType;
+        }
+    }
+
+    /**
+     * 设置平台类型
+     * @param string $platformType
+     * @return void
+     */
+    public function setPlatformType(string $platformType): void
+    {
+        $this->platformType = $platformType;
+    }
+
     public function webpage_auth(string $code): array
     {
-        $user = self::getApplication()->getOAuth()->userFromCode($code);
+        $user = $this->getApplication()->getOAuth()->userFromCode($code);
         $user->getId();//对应微信的 openid
         $user->getNickname();//对应微信的 nickname
         $user->getName(); //对应微信的 nickname
@@ -34,7 +59,7 @@ class WechatOAuthService extends BaseService
      */
     public function auth(string $code): array
     {
-        $user = self::getApplication()->getOAuth()->userFromCode($code)->getRaw();
+        $user = $this->getApplication()->getOAuth()->userFromCode($code)->getRaw();
         //根据不同的授权方式输出不同的用户信息
 
         return $user;
@@ -48,7 +73,7 @@ class WechatOAuthService extends BaseService
      */
     public function getOAuthUrl(string $url): string
     {
-        return self::getApplication()->getOAuth()->scopes(['snsapi_userinfo'])->redirect($url);
+        return $this->getApplication()->getOAuth()->scopes(['snsapi_userinfo'])->redirect($url);
     }
 
     /**
@@ -59,9 +84,56 @@ class WechatOAuthService extends BaseService
      */
     public function getQrOAuthUrl(string $url): string
     {
-        return self::getApplication()->getOAuth()->scopes(['snsapi_login'])->redirect($url);
+        return $this->getApplication()->getOAuth()->scopes(['snsapi_login'])->redirect($url);
     }
 
+    /**
+     * 发送公众号模板消息
+     * @param array $data
+     * @return bool
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function sendWechatTemplateMessage(array $data = []): bool
+    {
+        try {
+            $this->setPlatformType('wechat');
+            $accessToken = $this->getApplication()->getAccessToken()->getToken();
+            $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $accessToken;
+            $response = $this->getApplication()->getClient()->postJson($url, $data);
+            $res = $response->toArray(false);
+            return true;
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            return false;
+        }
+    }
+
+    /**
+     * 发送小程序订阅消息
+     * @param array $data
+     * @return bool
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function sendMiniTemplateMessage(array $data = []): bool
+    {
+        try {
+            $this->setPlatformType('miniProgram');
+            $accessToken = $this->getApplication()->getAccessToken()->getToken();
+            echo $accessToken;
+            die;
+            $url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" . $accessToken;
+            $response = $this->getApplication()->getClient()->postJson($url, $data);
+            $res = $response->toArray(false);
+            return true;
+        } catch (\Exception $exception) {
+            echo $exception->getMessage();
+            return false;
+        }
+    }
 
     /**
      * 获取基础配置并返回application对象
@@ -69,12 +141,12 @@ class WechatOAuthService extends BaseService
      * @return object|Application
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
-    public static function getApplication(): object
+    public function getApplication(): object
     {
         $app_id = '';
         $secret = '';
         $callback = '';
-        switch (Util::getUserAgent()) {
+        switch ($this->getPlatformType()) {
             case 'pc':
                 $app_id = Config::get('lyecs_wechat_open_appId');
                 $secret = Config::get('lyecs_wechat_open_appSecret');
