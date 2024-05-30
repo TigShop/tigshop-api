@@ -14,7 +14,7 @@ namespace app\service\api\admin\setting;
 use app\model\setting\MessageTemplate;
 use app\model\setting\MessageType;
 use app\service\api\admin\BaseService;
-use app\service\api\admin\oauth\MiniWechatService;
+use app\service\api\admin\oauth\WechatOAuthService;
 use exceptions\ApiException;
 use log\AdminLog;
 use think\Exception;
@@ -274,24 +274,84 @@ class MessageTypeService extends BaseService
     }
 
     /**
-     * 生成小程序消息模板
-     * @return true
+     * 生成公众号模板
+     * @return bool
      * @throws ApiException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function generateMiniProgramMessageTemplate()
+    public function generateWechatMessageTemplate(): bool
     {
         // 获取token
-        $access_token = $this->getWxAccessToken();
+        $app = new WechatOAuthService();
+        $access_token = $app->setPlatformType('wechat')->getApplication()->getAccessToken()->getToken();
+        //删除指定模板
+        $url = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=" . $access_token;
+        $result = $app->getApplication()->getClient()->get($url);
+        $res = $result->toArray();
+        if (isset($res['template_list'])) {
+            $template_list = $res['template_list'];
+            $url = "https://api.weixin.qq.com/cgi-bin/template/del_private_template?access_token=" . $access_token;
+            foreach ($template_list as $k => $v) {
+                $data = ['template_id' => $v['template_id']];
+                $app->getApplication()->getClient()->postJson($url, $data);
+            }
+        }
+        //添加模板
+        $url = 'https://api.weixin.qq.com/wxaapi/newtmpl/addtemplate?access_token=' . $access_token;
+        $data = [
+            'tid' => "51617",
+            "kidList" => [3, 7, 4],
+            'sceneDesc' => '订单支付成功通知',
+        ];
+        $res = $app->getApplication()->getClient()->postJson($url, $data);
+        if (!$res['priTmplId']) {
+            throw new ApiException($res['errmsg']);
+        }
+        $data = [
+            'tid' => "48233",
+            "kidList" => [21, 18, 3, 17, 2],
+            'sceneDesc' => '订单发货通知',
+        ];
+        $res = $app->getApplication()->getClient()->postJson($url, $data);
+        if (!$res['priTmplId']) {
+            throw new ApiException($res['errmsg']);
+        }
+        $data = [
+            'tid' => "48058",
+            "kidList" => [5, 2],
+            'sceneDesc' => '退款成功通知',
+        ];
+        $res = $app->getApplication()->getClient()->postJson($url, $data);
+        if (!$res['priTmplId']) {
+            throw new ApiException($res['errmsg']);
+        }
+
+        return true;
+    }
+
+    /**
+     * 生成小程序消息模板
+     * @return bool
+     * @throws ApiException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
+     */
+    public function generateMiniProgramMessageTemplate(): bool
+    {
+        // 获取token
+        $app = new WechatOAuthService();
+        $access_token = $app->setPlatformType('miniProgram')->getApplication()->getAccessToken()->getToken();
         //删除指定模板
         $url = "https://api.weixin.qq.com/wxaapi/newtmpl/gettemplate?access_token=" . $access_token;
-        $res = $this->getMiniApplication()->getClient()->get($url);
+        $res = $app->getApplication()->getClient()->get($url);
         if (isset($res['data']) && $res['errmsg'] == 'ok' && $res['errcode'] == 0) {
             $template_list = $res['data'];
             $url = "https://api.weixin.qq.com/wxaapi/newtmpl/deltemplate?access_token=" . $access_token;
             foreach ($template_list as $k => $v) {
                 if ($v['title'] == '订单支付通知' || $v['title'] == '订单发货通知') {
                     $data = ['priTmplId' => $v['priTmplId']];
-                    $this->getMiniApplication()->getClient()->postJson($url, $data);
+                    $app->getApplication()->getClient()->postJson($url, $data);
                 }
             }
         }
@@ -303,7 +363,7 @@ class MessageTypeService extends BaseService
             "kidList" => [2, 1, 4],
             'sceneDesc' => '订单支付成功通知',
         ];
-        $res = $this->getMiniApplication()->getClient()->postJson($url, $data);
+        $res = $app->getApplication()->getClient()->postJson($url, $data);
         if (!$res['priTmplId']) {
             throw new ApiException($res['errmsg']);
         }
@@ -312,7 +372,7 @@ class MessageTypeService extends BaseService
             "kidList" => [4, 5, 3, 8, 2],
             'sceneDesc' => '订单发货通知',
         ];
-        $res = $this->getMiniApplication()->getClient()->postJson($url, $data);
+        $res = $app->getApplication()->getClient()->postJson($url, $data);
         if (!$res['priTmplId']) {
             throw new ApiException($res['errmsg']);
         }
@@ -322,15 +382,18 @@ class MessageTypeService extends BaseService
 
     /**
      * 同步小程序消息模板
-     * @return true
+     * @return bool
      * @throws ApiException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function generateMiniProgramMessageTemplateSync()
+    public function generateMiniProgramMessageTemplateSync(): bool
     {
         // 获取token
-        $access_token = $this->getWxAccessToken();
+        $app = new WechatOAuthService();
+        $access_token = $app->setPlatformType('miniProgram')->getApplication()->getAccessToken()->getToken();
         $url = "https://api.weixin.qq.com/wxaapi/newtmpl/gettemplate?access_token=" . $access_token;
-        $res = $this->getMiniApplication()->getClient()->get($url);
+        $res = $app->getApplication()->getClient()->get($url);
         // 修改模板
         if (isset($res['data']) && $res['errmsg'] == 'ok' && $res['errcode'] == 0) {
             $template_list = $res['data'];
@@ -358,25 +421,51 @@ class MessageTypeService extends BaseService
     }
 
     /**
-     * 获取小程序access_token
-     * @return string
+     * 同步小程序消息模板
+     * @return bool
      * @throws ApiException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function getWxAccessToken(): string
+    public function generateWechatMessageTemplateSync(): bool
     {
-        try {
-            $app = $this->getMiniApplication();
-            $access_token = $app->getAccessToken()->getToken();
-        } catch (\Exception $exception) {
-            throw new ApiException($exception->getMessage());
+        // 获取token
+        $app = new WechatOAuthService();
+        $access_token = $app->setPlatformType('wechat')->getApplication()->getAccessToken()->getToken();
+        $url = "https://api.weixin.qq.com/cgi-bin/template/get_all_private_template?access_token=" . $access_token;
+        $result = $app->getApplication()->getClient()->get($url);
+        $res = $result->toArray();
+        // 修改模板
+        if (isset($res['template_list'])) {
+            $template_list = $res['template_list'];
+            foreach ($template_list as $k => $v) {
+                //重置本地模板列表
+                if ($v['title'] == '订单支付成功提醒') {
+                    $data = [
+                        'template_id' => $v['template_id'],
+                        'content' => $v['content'],
+                    ];
+                    MessageTemplate::where(['message_id' => 2, 'type' => 1])->update($data);
+                }
+                if ($v['title'] == '订单发货通知') {
+                    $data = [
+                        'template_id' => $v['template_id'],
+                        'content' => $v['content'],
+                    ];
+                    MessageTemplate::where(['message_id' => 3, 'type' => 1])->update($data);
+                }
+                if ($v['title'] == '退款成功通知') {
+                    $data = [
+                        'template_id' => $v['template_id'],
+                        'content' => $v['content'],
+                    ];
+                    MessageTemplate::where(['message_id' => 4, 'type' => 1])->update($data);
+                }
+            }
+            return true;
+        } else {
+            throw new ApiException($res['errmsg']);
         }
-
-        return $access_token;
-    }
-
-    public function getMiniApplication(): object
-    {
-        return app(MiniWechatService::class)->getApplication();
     }
 
     /**
