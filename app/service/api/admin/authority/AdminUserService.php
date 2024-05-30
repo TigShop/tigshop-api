@@ -4,6 +4,7 @@ namespace app\service\api\admin\authority;
 
 use app\model\authority\AdminRole;
 use app\model\authority\AdminUser;
+use app\model\merchant\Shop;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\common\sms\SmsService;
 use exceptions\ApiException;
@@ -261,9 +262,13 @@ class AdminUserService extends BaseService
         }
         $user = $this->getDetail($admin_id);
         request()->adminUid = $user['admin_id'];
-        request()->shopId = $user['shop_id'];
+        request()->merchantId = $user['merchant_id'];
+        request()->adminType = $user['admin_type'];
         request()->suppliersId = $user['suppliers_id'];
         request()->authList = $user['auth_list'] ?? [];
+        if ($user['admin_type'] == 'shop') {
+            request()->shopIds = Shop::where('merchant_id', $user['merchant_id'])->column('shop_id');
+        }
         if ($form_login) {
             AdminLog::add('管理员登录:' . $user['username']);
         }

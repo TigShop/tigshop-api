@@ -19,7 +19,7 @@ use think\App;
 /**
  * 店铺控制器
  */
-class Shop extends AdminBaseController
+class ShopAccount extends AdminBaseController
 {
     protected ShopService $shopService;
 

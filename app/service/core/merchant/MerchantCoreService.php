@@ -33,7 +33,7 @@ class MerchantCoreService
      * @param array $data
      * @return Merchant|\think\Model
      */
-    public function create(array $data)
+    public function create(array $data): Merchant|\think\Model
     {
         $data['add_time'] = time();
         return $this->merchantModel->create($data);

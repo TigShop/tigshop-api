@@ -398,16 +398,23 @@ class Product extends AdminBaseController
             'sort_order',
             'product_status',
             'is_delete',
+            'product_stock',
+            'productSku'
         ])) {
             return $this->error('#field 错误');
         }
-
+        $val = input('val');
         $data = [
             'product_id' => $id,
-            $field => input('val'),
+            $field => $val,
         ];
-
-        $this->productService->updateProductField($id, $data);
+        if ($field == 'productSku') {
+            foreach ($val as $k => $v) {
+                $this->productService->updateSkuStock($v['sku_id'], $v['sku_stock']);
+            }
+        } else {
+            $this->productService->updateProductField($id, $data);
+        }
 
         return $this->success('更新成功');
     }

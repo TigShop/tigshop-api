@@ -67,15 +67,15 @@ class ShopService extends BaseService
         // 处理筛选条件
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
-            $query->where('store_title', 'like', '%' . $filter['keyword'] . '%');
+            $query->where('shop_title', 'like', '%' . $filter['keyword'] . '%');
         }
 
         if (isset($filter['shop_id']) && $filter['shop_id'] > 0) {
             $query->where('shop_id', $filter['shop_id']);
         }
 
-        if (isset($filter['is_self']) && $filter['is_self'] > -1) {
-            $query->where('is_self', $filter['is_self']);
+        if (isset($filter['merchant_id']) && $filter['merchant_id'] > -1) {
+            $query->where('merchant_id', $filter['merchant_id']);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
@@ -130,7 +130,7 @@ class ShopService extends BaseService
      * @param array $data
      * @return Shop|\think\Model
      */
-    public function create(array $data)
+    public function create(array $data): Shop|\think\Model
     {
         $result = $this->shopModel->create($data);
         return $result;
@@ -144,20 +144,17 @@ class ShopService extends BaseService
      * @return int|bool
      * @throws ApiException
      */
-    public function updateStore(int $id, array $data, bool $isAdd = false)
+    public function updateShop(int $id, array $data, bool $isAdd = false): bool|int
     {
-        validate(StoreValidate::class)->only(array_keys($data))->check($data);
+
         if ($isAdd) {
             $result = $this->shopModel->create($data);
-            AdminLog::add('新增店铺:' . $data['store_title']);
             return $this->shopModel->getKey();
         } else {
             if (!$id) {
                 throw new ApiException('#id错误');
             }
             $result = $this->shopModel->where('shop_id', $id)->save($data);
-            AdminLog::add('更新店铺:' . $this->getName($id));
-
             return $result !== false;
         }
     }
@@ -170,7 +167,7 @@ class ShopService extends BaseService
      * @return int|bool
      * @throws ApiException
      */
-    public function updateStoreField(int $id, array $data)
+    public function updateShopField(int $id, array $data): bool|int
     {
         validate(StoreValidate::class)->only(array_keys($data))->check($data);
         if (!$id) {
@@ -187,7 +184,7 @@ class ShopService extends BaseService
      * @param int $id
      * @return bool
      */
-    public function deleteStore(int $id): bool
+    public function deleteShop(int $id): bool
     {
         if (!$id) {
             throw new ApiException('#id错误');
