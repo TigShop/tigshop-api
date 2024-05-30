@@ -91,7 +91,11 @@ class MessageCenterService extends BaseService
             if (empty($openid)) return false;
             $template_id = $template_info['wechat']['template_id'];
             if (empty($template_id)) return false;
-            $url = '';
+            $h5_domain = Config::get('h5_domain');
+            if (empty($h5_domain)) {
+                $h5_domain = Config::get('pc_domain');
+            }
+            $url = $h5_domain . '/pages/user/order/info?id=' . $order_id;;
             $message = [
                 'touser' => $openid,
                 'template_id' => $template_id,
@@ -130,7 +134,7 @@ class MessageCenterService extends BaseService
             if (empty($openid)) return false;
             $template_id = $template_info['mini_program']['template_id'];
             if (empty($template_id)) return false;
-            $page = '/pages/index/index';
+            $page = '/pages/user/order/info?id=' . $order_id;
             $message = [
                 'touser' => $openid,
                 'template_id' => $template_id,
