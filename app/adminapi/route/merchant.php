@@ -33,4 +33,12 @@ Route::group('merchant', function () {
         Route::get('list', 'list');
 
     })->prefix('merchant.shop/');
+
+    Route::group('shop_account', function () {
+        // 列表
+        Route::get('list', 'list');
+        // 列表
+        Route::get('log_list', 'logList');
+
+    })->prefix('merchant.shopAccount/');
 });

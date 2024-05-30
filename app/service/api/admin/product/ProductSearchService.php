@@ -128,7 +128,9 @@ class ProductSearchService extends BaseService
                 }
             }
         }
-        $filter['brand'] = app(ProductService::class)->getProductBrands($this->filterParams);
+        $params = $this->filterParams;
+        unset($params['brand_ids']);
+        $filter['brand'] = app(ProductService::class)->getProductBrands($params);
 
         return $filter;
     }
