@@ -12,7 +12,7 @@ use utils\TigQueue;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\order\OrderService;
 
-class MessageCenter extends BaseService
+class MessageCenterService extends BaseService
 {
 
     const NEW_ORDER = 1; //会员下单
@@ -31,8 +31,15 @@ class MessageCenter extends BaseService
         self::ORDER_PAY_SHOP,
         self::ORDER_INVOICE,
     ];
-    protected array $sendType = ['message', 'wechat', 'mini_program', 'msg'];
 
+    /**
+     * 发送消息
+     * @param int $user_id
+     * @param int $order_id
+     * @param int $type
+     * @return bool|array
+     * @throws \exceptions\ApiException
+     */
     public function sendUserMessage(int $user_id, int $order_id, int $type): bool|array
     {
         if (!in_array($type, $this->messageTypeList)) return false;
