@@ -81,6 +81,7 @@ class Address extends IndexBaseController
             'postcode' => '',
             'email' => '',
             'address_tag' => '',
+            'is_default' => 0,
         ]);
         return $data;
     }
