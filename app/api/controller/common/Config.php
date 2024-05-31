@@ -52,6 +52,7 @@ class Config extends IndexBaseController
             'storage_url' => app(Image::class)->getStorageUrl(),
             'dollar_sign' => UtilsConfig::get('dollar_sign') ?? '¥',
             'dollar_sign_cn' => UtilsConfig::get('dollar_sign_cn') ?? '元',
+            'ico_img' => UtilsConfig::get('ico_img') ?? '',
         ]);
     }
 
