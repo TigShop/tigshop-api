@@ -218,7 +218,7 @@ class RefundApplyService extends BaseService
                     }
                 }
                 if ($data["offline_balance"] > 0) {
-                    RefundLog::create([
+                    RefundLog::create(
                         [
                             "order_id" => $apply->order_id,
                             "refund_apply_id" => $apply->refund_id,
@@ -226,7 +226,7 @@ class RefundApplyService extends BaseService
                             "refund_amount" => $data["offline_balance"],
                             "user_id" => $apply->user_id,
                         ],
-                    ]);
+                    );
                     $data["is_offline"] = 1;
                 }
             }

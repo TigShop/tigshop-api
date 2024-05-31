@@ -18,6 +18,6 @@ class RefundLog extends Model
     protected $pk = 'log_id';
     protected $table = 'refund_log';
     protected $createTime = "add_time";
-    protected $autoWriteTimestamp = true;
+    protected $autoWriteTimestamp = 'int';
 
 }
