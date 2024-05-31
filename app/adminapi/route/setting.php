@@ -162,6 +162,10 @@ Route::group('setting', function () {
         Route::post('mini_program_message_template', 'setting.messageType/miniProgramMessageTemplate');
         // 同步小程序消息模板
         Route::post('mini_program_message_template_sync', 'setting.messageType/miniProgramMessageTemplateSync');
+        // 生成公众号消息模板
+        Route::post('wechat_message_template', 'setting.messageType/wechatMessageTemplate');
+        // 同步公众号消息模板
+        Route::post('wechat_message_template_sync', 'setting.messageType/wechatMessageTemplateSync');
     });
     // 地区管理
     Route::group('region', function () {

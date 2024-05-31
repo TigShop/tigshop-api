@@ -91,7 +91,11 @@ class MessageCenterService extends BaseService
             if (empty($openid)) return false;
             $template_id = $template_info['wechat']['template_id'];
             if (empty($template_id)) return false;
-            $url = '';
+            $h5_domain = Config::get('h5_domain');
+            if (empty($h5_domain)) {
+                $h5_domain = Config::get('pc_domain');
+            }
+            $url = $h5_domain . '/pages/user/order/info?id=' . $order_id;;
             $message = [
                 'touser' => $openid,
                 'template_id' => $template_id,
@@ -100,26 +104,24 @@ class MessageCenterService extends BaseService
             $data = [];
             if ($type == self::ORDER_PAY) {
                 $data = [
-                    'first' => ['value' => '订单支付成功'],
-                    'keyword1' => ['value' => $order->order_sn],
-                    'keyword2' => ['value' => $order->add_time],
-                    'keyword3' => ['value' => $order->total_amount],
+                    'character_string3' => ['value' => $order->order_sn],
+                    'time7' => ['value' => $order->add_time],
+                    'amount4' => ['value' => $order->total_amount],
                 ];
             }
             if ($type == self::ORDER_SHIPPING) {
                 $data = [
-                    'first' => ['value' => '您的订单已发货'],
-                    'keyword1' => ['value' => $order->logistics_name],
-                    'keyword2' => ['value' => $order->tracking_no],
-                    'keyword3' => ['value' => $order->shipping_time],
-                    'keyword4' => ['value' => $order->consignee . ' ' . $order->mobile],
-                    'keyword5' => ['value' => $order->order_sn],
+                    'thing21' => ['value' => $order->logistics_name],
+                    'character_string18' => ['value' => $order->tracking_no],
+                    'time3' => ['value' => $order->shipping_time],
+                    'thing17' => ['value' => $order->consignee . ' ' . $order->mobile],
+                    'character_string2' => ['value' => $order->order_sn],
                 ];
             }
             if ($type == self::ORDER_REFUND) {
                 $data = [
-                    'first' => ['value' => '您的订单已完成退款'],
-                    'keyword1' => ['value' => $order->order_sn],
+                    'character_string5' => ['value' => $order->order_sn],
+                    'amount2' => ['value' => $order->refund_money],
                 ];
             }
             $message['data'] = $data;
@@ -132,7 +134,7 @@ class MessageCenterService extends BaseService
             if (empty($openid)) return false;
             $template_id = $template_info['mini_program']['template_id'];
             if (empty($template_id)) return false;
-            $page = '/pages/index/index';
+            $page = '/pages/user/order/info?id=' . $order_id;
             $message = [
                 'touser' => $openid,
                 'template_id' => $template_id,
@@ -155,6 +157,7 @@ class MessageCenterService extends BaseService
                     'character_string2' => ['value' => $order->order_sn],
                 ];
             }
+            $message['data'] = $data;
             app(TigQueue::class)->push(MiniProgramJob::class, $message);
             return true;
         }

@@ -29,9 +29,10 @@ class WechatOAuthService extends BaseService
      * @param string $platformType
      * @return void
      */
-    public function setPlatformType(string $platformType): void
+    public function setPlatformType(string $platformType): self
     {
         $this->platformType = $platformType;
+        return $this;
     }
 
     public function webpage_auth(string $code): array
@@ -96,11 +97,10 @@ class WechatOAuthService extends BaseService
     public function sendWechatTemplateMessage(array $data = []): bool
     {
         try {
-            $this->setPlatformType('wechat');
-            $accessToken = $this->getApplication()->getAccessToken()->getToken();
+            $accessToken = $this->setPlatformType('wechat')->getApplication()->getAccessToken()->getToken();
             $url = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=" . $accessToken;
             $response = $this->getApplication()->getClient()->postJson($url, $data);
-            $res = $response->toArray(false);
+            $response->toArray(false);
             return true;
         } catch (\Exception $exception) {
             echo $exception->getMessage();
@@ -121,13 +121,10 @@ class WechatOAuthService extends BaseService
     public function sendMiniTemplateMessage(array $data = []): bool
     {
         try {
-            $this->setPlatformType('miniProgram');
-            $accessToken = $this->getApplication()->getAccessToken()->getToken();
-            echo $accessToken;
-            die;
+            $accessToken = $this->setPlatformType('miniProgram')->getApplication()->getAccessToken()->getToken();
             $url = "https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=" . $accessToken;
             $response = $this->getApplication()->getClient()->postJson($url, $data);
-            $res = $response->toArray(false);
+            $response->toArray(false);
             return true;
         } catch (\Exception $exception) {
             echo $exception->getMessage();

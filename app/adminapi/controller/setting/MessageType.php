@@ -104,9 +104,9 @@ class MessageType extends AdminBaseController
         $data = $this->requestData();
         $result = $this->messageTypeService->createMessageType($data);
         if ($result) {
-            return $this->success(/** LANG */'消息设置添加成功');
+            return $this->success(/** LANG */ '消息设置添加成功');
         } else {
-            return $this->error(/** LANG */'消息设置添加失败');
+            return $this->error(/** LANG */ '消息设置添加失败');
         }
     }
 
@@ -121,9 +121,9 @@ class MessageType extends AdminBaseController
         $data["message_id"] = $id;
         $result = $this->messageTypeService->updateMessageType($id, $data);
         if ($result) {
-            return $this->success(/** LANG */'消息设置更新成功');
+            return $this->success(/** LANG */ '消息设置更新成功');
         } else {
-            return $this->error(/** LANG */'消息设置更新失败');
+            return $this->error(/** LANG */ '消息设置更新失败');
         }
     }
 
@@ -139,7 +139,7 @@ class MessageType extends AdminBaseController
 
         if (!in_array($field,
             ['name', 'is_wechat', 'is_mini_program', 'is_message', 'is_msg', 'is_app', 'is_ding', 'add_time'])) {
-            return $this->error(/** LANG */'#field 错误');
+            return $this->error(/** LANG */ '#field 错误');
         }
 
         $data = [
@@ -149,7 +149,7 @@ class MessageType extends AdminBaseController
 
         $this->messageTypeService->updateMessageTypeField($id, $data);
 
-        return $this->success(/** LANG */'更新成功');
+        return $this->success(/** LANG */ '更新成功');
     }
 
     /**
@@ -161,7 +161,7 @@ class MessageType extends AdminBaseController
     {
         $id = input('id/d', 0);
         $this->messageTypeService->deleteMessageType($id);
-        return $this->success(/** LANG */'指定项目已删除');
+        return $this->success(/** LANG */ '指定项目已删除');
     }
 
     /**
@@ -172,7 +172,7 @@ class MessageType extends AdminBaseController
     public function batch(): Response
     {
         if (empty(input('ids')) || !is_array(input('ids'))) {
-            return $this->error(/** LANG */'未选择项目');
+            return $this->error(/** LANG */ '未选择项目');
         }
 
         if (input('type') == 'del') {
@@ -189,9 +189,9 @@ class MessageType extends AdminBaseController
                 throw new ApiException($exception->getMessage());
             }
 
-            return $this->success(/** LANG */'批量操作执行成功！');
+            return $this->success(/** LANG */ '批量操作执行成功！');
         } else {
-            return $this->error(/** LANG */'#type 错误');
+            return $this->error(/** LANG */ '#type 错误');
         }
     }
 
@@ -203,7 +203,7 @@ class MessageType extends AdminBaseController
     public function miniProgramMessageTemplate()
     {
         $this->messageTypeService->generateMiniProgramMessageTemplate();
-        return $this->success(/** LANG */'消息模板更新成功');
+        return $this->success(/** LANG */ '消息模板更新成功');
     }
 
     /**
@@ -214,6 +214,30 @@ class MessageType extends AdminBaseController
     public function miniProgramMessageTemplateSync()
     {
         $this->messageTypeService->generateMiniProgramMessageTemplateSync();
-        return $this->success(/** LANG */'消息模板同步成功');
+        return $this->success(/** LANG */ '消息模板同步成功');
     }
+
+    /**
+     * 生成公众号消息模板
+     * @return \think\Response
+     * @throws \exceptions\ApiException
+     */
+    public function wechatMessageTemplate(): Response
+    {
+        $this->messageTypeService->generateWechatMessageTemplate();
+        return $this->success(/** LANG */ '消息模板更新成功');
+    }
+
+    /**
+     * 同步公众号消息模板
+     * @return \think\Response
+     * @throws \exceptions\ApiException
+     */
+    public function wechatMessageTemplateSync()
+    {
+        $this->messageTypeService->generateWechatMessageTemplateSync();
+        return $this->success(/** LANG */ '消息模板同步成功');
+    }
+
+
 }
