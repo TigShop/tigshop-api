@@ -107,7 +107,7 @@ class UserRegistService extends BaseService
     {
         while (true) {
             $username = Config::get('username_prefix') . rand(100000, 999999);
-            if (!User::where('username', $username)->exists()) {
+            if (!User::where('username', $username)->count()) {
                 return $username;
             }
         }
