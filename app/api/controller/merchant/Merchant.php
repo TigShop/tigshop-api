@@ -34,10 +34,12 @@ class Merchant extends IndexBaseController
             'base_data' => '',
             'shop_data' => '',
         ], 'post');
-        $data['type'] = $data['shop_data']['type'];
+        $data['type'] = $data['base_data']['type'];
         $data['user_id'] = request()->userId;
-        $this->applyService->createApply($data);
-        return $this->success(/** LANG */ '入驻申请成功，请等待审核结果！');
+        $result = $this->applyService->createApply($data);
+        return $this->success([
+            'item' => $result
+        ]);
     }
 
 
