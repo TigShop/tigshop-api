@@ -185,7 +185,7 @@ class PcNavigation extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field, ['title', 'sort_order', 'is_show', 'is_blank'])) {
+        if (!in_array($field, ['sort_order', 'is_show', 'is_blank'])) {
             return $this->error(/** LANG */'#field 错误');
         }
 
