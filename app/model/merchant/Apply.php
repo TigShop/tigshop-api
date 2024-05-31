@@ -22,7 +22,7 @@ class Apply extends Model
 
     protected $createTime = 'add_time';
     protected $autoWriteTimestamp = 'int';
-    protected $json = ['merchant_data', 'base_data', 'merchant_data'];
+    protected $json = ['merchant_data', 'base_data', 'shop_data'];
     protected $jsonAssoc = true;
 
     // 字段处理

@@ -22,7 +22,8 @@ class Merchant extends Model
 
     protected $createTime = 'add_time';
     protected $autoWriteTimestamp = 'int';
-
+    protected $json = ['merchant_data', 'base_data', 'shop_data'];
+    protected $jsonAssoc = true;
     // 字段处理
     public function getAddTimeAttr($value): string
     {
