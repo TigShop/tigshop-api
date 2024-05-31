@@ -44,7 +44,7 @@ class ApplyService extends BaseService
     public function getApplyByUserId(int $user_id)
     {
         return $this->merchantApplyModel->where('user_id', $user_id)->order('merchant_apply_id',
-            'desc')->field(['merchant_apply_id,status'])->findOrEmpty();
+            'desc')->field(['merchant_apply_id,status,type'])->findOrEmpty();
     }
 
 

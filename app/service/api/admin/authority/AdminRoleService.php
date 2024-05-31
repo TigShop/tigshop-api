@@ -65,6 +65,10 @@ class AdminRoleService extends BaseService
             $query->where('role_name', 'like', '%' . $filter['keyword'] . '%');
         }
 
+        if (!empty($filter['admin_type'])) {
+            $query->where('admin_type', $filter['admin_type']);
+        }
+
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }

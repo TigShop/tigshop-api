@@ -53,6 +53,7 @@ class AdminRole extends AdminBaseController
             'size/d' => 15,
             'sort_field' => 'role_id',
             'sort_order' => 'desc',
+            'admin_type' => request()->adminType
         ], 'get');
 
         $filterResult = $this->adminRoleService->getFilterResult($filter);
@@ -91,6 +92,7 @@ class AdminRole extends AdminBaseController
             'role_desc' => '',
             'authority_list' => [],
             'checkall' => '', // 是否全选
+            'admin_type' => request()->adminType
         ], 'post');
 
         try {
@@ -123,6 +125,7 @@ class AdminRole extends AdminBaseController
             'role_desc' => '',
             'authority_list' => [],
             'checkall' => '', // 是否全选
+            'admin_type' => request()->adminType
         ], 'post');
 
         try {

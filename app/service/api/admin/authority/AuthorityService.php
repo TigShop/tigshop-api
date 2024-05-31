@@ -177,9 +177,15 @@ class AuthorityService extends BaseService
      * @param bool $return_ids 是否返回权限id列表
      * @return array
      */
-    public function authorityList(int $authority_id = 0, int $type = 0, array $auth_list = []): array
+    public function authorityList(
+        int $authority_id = 0,
+        int $type = 0,
+        array $auth_list = [],
+        string $adminType = 'admin'
+    ): array
     {
-        $cat_list = Authority::alias('c')->field('c.authority_id, c.is_show,c.authority_sn,c.authority_name, c.parent_id, c.parent_id,c.authority_ico,c.route_link,c.child_auth')
+        $cat_list = Authority::alias('c')->where('admin_type',
+            $adminType)->field('c.authority_id, c.is_show,c.authority_sn,c.authority_name, c.parent_id, c.parent_id,c.authority_ico,c.route_link,c.child_auth')
             ->order('c.parent_id, c.sort_order ASC, c.authority_id ASC')->select();
         $cat_list = $cat_list ? $cat_list->toArray() : [];
         $res = $this->xmsbGetDataTree($cat_list, $authority_id);

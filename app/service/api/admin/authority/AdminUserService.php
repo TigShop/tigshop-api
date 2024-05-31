@@ -64,7 +64,9 @@ class AdminUserService extends BaseService
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->where('c.username', 'like', '%' . $filter['keyword'] . '%');
         }
-
+        if (!empty($filter['admin_type'])) {
+            $query->where('admin_type', $filter['admin_type']);
+        }
         // 供应商查询
         if (isset($filter['suppliers_id']) && $filter['suppliers_id'] > 0) {
             $query->where('c.suppliers_id', $filter['suppliers_id']);
@@ -268,6 +270,7 @@ class AdminUserService extends BaseService
         request()->authList = $user['auth_list'] ?? [];
         if ($user['admin_type'] == 'shop') {
             request()->shopIds = Shop::where('merchant_id', $user['merchant_id'])->column('shop_id');
+            request()->shopId = request()->header('X-Shop-Id');
         }
         if ($form_login) {
             AdminLog::add('管理员登录:' . $user['username']);
