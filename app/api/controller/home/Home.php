@@ -128,6 +128,7 @@ class Home extends IndexBaseController
             'size' => 5,
             'valid_date' => 1,
             'is_show' => 1,
+            'receive_date' => 1
         ];
 
         $filterResult = app(CouponService::class)->getFilterResult($data);

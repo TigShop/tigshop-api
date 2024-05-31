@@ -46,7 +46,7 @@ class CouponService extends BaseService
             array_multisort(array_column($list, 'is_receive'), SORT_ASC, $list);
             $result = array_slice($list, (($filter["page"] ?? 1) - 1) * ($filter["size"] ?? 15), ($filter["size"] ?? 15));
         } else {
-            $result = $query->page($filter['page'], $filter['size'])->select()->toArray();
+            $result = $query->order('coupon_id', 'desc')->page($filter['page'], $filter['size'])->select()->toArray();
         }
 
         return $result;

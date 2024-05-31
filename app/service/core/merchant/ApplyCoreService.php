@@ -26,7 +26,7 @@ class ApplyCoreService
      */
     public function getDetail(int $merchant_id, string $field = '*'): mixed
     {
-        return $this->applyModel->field($field)->findOrEmpty($merchant_id);
+        return $this->applyModel->field($field)->find($merchant_id);
     }
 
     /**
