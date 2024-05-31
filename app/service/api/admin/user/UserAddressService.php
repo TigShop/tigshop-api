@@ -190,7 +190,7 @@ class UserAddressService extends BaseService
     {
         $query = UserAddress::where('user_id', request()->userId)
             ->append(["region_name"])
-            ->field("address_id,user_id,consignee,email,region_names,address,telephone,mobile,is_selected");
+            ->field("address_id,user_id,consignee,email,region_names,address,telephone,mobile,is_selected,is_default");
 
         $count = $query->count();
         $list = $query->page($filter["page"], $filter["size"])->select();
