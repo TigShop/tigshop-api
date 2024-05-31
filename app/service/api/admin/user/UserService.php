@@ -263,7 +263,7 @@ class UserService extends BaseService
      * @param string $mobile_code
      * @return array
      */
-    public function getUserByMobile(string $mobile, string $mobile_code): array
+    public function getUserByMobileCode(string $mobile, string $mobile_code): array
     {
         if (empty($mobile)) {
             throw new ApiException('手机号不能为空');
@@ -277,6 +277,24 @@ class UserService extends BaseService
         $item = $this->userModel->where('mobile', $mobile)->find();
         if (!$item) {
             throw new ApiException('不存在此管理员账号，请重试');
+        }
+        return $this->getDetail($item['user_id']);
+    }
+
+    /**
+     * 根据手机号获取会员
+     * @param string $mobile
+     * @return array
+     * @throws ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getUserByMobile(string $mobile): array
+    {
+        $item = $this->userModel->where('mobile', $mobile)->find();
+        if (!$item) {
+            return [];
         }
         return $this->getDetail($item['user_id']);
     }

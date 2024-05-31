@@ -4,6 +4,8 @@ namespace app\service\api\admin\oauth;
 
 use app\service\api\admin\BaseService;
 use EasyWeChat\OfficialAccount\Application;
+use exceptions\ApiException;
+use think\Exception;
 use utils\Config;
 use utils\Util;
 
@@ -53,39 +55,39 @@ class WechatOAuthService extends BaseService
 
     /**
      * 授权获取用户信息
-     * @param string $type
      * @param string $code
      * @return array
+     * @throws Exception
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
     public function auth(string $code): array
     {
-        $user = $this->getApplication()->getOAuth()->userFromCode($code)->getRaw();
-        //根据不同的授权方式输出不同的用户信息
-
+        try {
+            $user = $this->getApplication()->getOAuth()->userFromCode($code)->getRaw();
+        } catch (Exception $exception) {
+            throw new ApiException($exception->getMessage());
+        }
         return $user;
     }
 
     /**
      * 获取网页授权地址
-     * @param string $url
      * @return string
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
      */
-    public function getOAuthUrl(string $url): string
+    public function getOAuthUrl(): string
     {
-        return $this->getApplication()->getOAuth()->scopes(['snsapi_userinfo'])->redirect($url);
-    }
-
-    /**
-     * 获取开放平台网页授权地址
-     * @param string $url
-     * @return string
-     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
-     */
-    public function getQrOAuthUrl(string $url): string
-    {
-        return $this->getApplication()->getOAuth()->scopes(['snsapi_login'])->redirect($url);
+        switch ($this->getPlatformType()) {
+            case 'wechat':
+                $url = Config::get('h5_domain') . '/pages/login/index';
+                $url = 'http://test.tigshop.com/api/user/login/get_wx_login_info_by_code';
+                return $this->getApplication()->getOAuth()->scopes(['snsapi_userinfo'])->redirect($url);
+            case 'pc':
+                $url = Config::get('pc_domain') . '/member/login';
+                return $this->getApplication()->getOAuth()->scopes(['snsapi_login'])->redirect($url);
+            default:
+                return '';
+        }
     }
 
     /**

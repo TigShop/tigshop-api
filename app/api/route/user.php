@@ -104,9 +104,11 @@ Route::group('user', function () {
         // 获取验证码
         Route::post('send_mobile_code', 'user.login/sendMobileCode');
         // 获得pc端微信登录跳转的url
-        Route::get('get_wx_login_url', 'user.login/getWxLoginUrl');
+        Route::get('get_wx_login_url', 'user.login/getWechatLoginUrl');
         // 通过微信code获得微信用户信息
-        Route::get('get_wx_login_info_by_code', 'user.login/getWxLoginInfoByCode');
+        Route::get('get_wx_login_info_by_code', 'user.login/getWechatLoginInfoByCode');
+        //第三方绑定手机号
+        Route::post('bind_mobile', 'user.login/bindMobile');
     });
     // 站内信
     Route::group('message', function () {
