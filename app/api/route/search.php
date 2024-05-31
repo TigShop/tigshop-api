@@ -13,6 +13,6 @@ Route::group('search', function () {
     // 关键词搜索
     Route::group('search_guess', function () {
         // 获取关键词搜索列表
-        Route::get('api', 'search.searchGuess/api');
+        Route::get('index', 'search.searchGuess/index');
     });
 });

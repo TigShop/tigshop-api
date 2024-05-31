@@ -40,4 +40,22 @@ class Merchant extends IndexBaseController
         return $this->success(/** LANG */ '入驻申请成功，请等待审核结果！');
     }
 
+
+    public function myApply(): \think\Response
+    {
+        $item = $this->applyService->getApplyByUserId(request()->userId);
+        return $this->success([
+            'item' => $item,
+        ]);
+    }
+
+    public function applyDetail(): \think\Response
+    {
+        $id = input('id/d', 0);
+        $item = $this->applyService->getDetail($id);
+        return $this->success([
+            'item' => $item,
+        ]);
+    }
+
 }

@@ -55,7 +55,9 @@ class Authority extends AdminBaseController
             'sort_order' => 'asc',
             'admin_type' => -1
         ], 'get');
-
+        if (request()->adminType == 'shop') {
+            $filter['admin_type'] = 'shop,all';
+        }
         $filterResult = $this->authorityService->getFilterResult($filter);
         $total = $this->authorityService->getFilterCount($filter);
 

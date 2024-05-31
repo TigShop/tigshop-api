@@ -423,11 +423,11 @@ class ProductService extends BaseService
     /**
      * @param int $sku_id
      * @param int $stock
-     * @return ProductSku
+     * @return mixed
      */
-    public function updateSkuStock(int $sku_id, int $stock): ProductSku
+    public function updateSkuStock(int $sku_id, int $stock): mixed
     {
-        return ProductSku::where('sku_id', $sku_id)->update(['stock' => $stock]);
+        return ProductSku::where('sku_id', $sku_id)->update(['sku_stock' => $stock]);
     }
 
 

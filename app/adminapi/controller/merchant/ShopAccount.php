@@ -12,6 +12,7 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
+use app\service\api\admin\shop\ShopAccountLogService;
 use app\service\api\admin\shop\ShopService;
 use app\validate\store\StoreValidate;
 use think\App;
@@ -63,41 +64,23 @@ class ShopAccount extends AdminBaseController
     }
 
     /**
-     * 我的店铺 商户端专用
+     * 资金明细
      * @return \think\Response
      */
-    public function my_shop()
+    public function logList(): \think\Response
     {
         $filter = $this->request->only([
-            'keyword' => '',
+            'page' => 1,
+            'size' => 15,
             'shop_id' => 0,
-            'page/d' => 1,
-            'size/d' => 15,
-            'merchant_id' => request()->merchantId,
-            'sort_field' => 'shop_id',
-            'sort_order' => 'desc',
-        ], 'get');
-
-        $filterResult = $this->shopService->getFilterResult($filter);
-        $total = $this->shopService->getFilterCount($filter);
-
+        ]);
+        $shopAccountLogService = app(ShopAccountLogService::class);
+        $filterResult = $shopAccountLogService->getFilterResult($filter);
+        $total = $shopAccountLogService->getFilterCount($filter);
         return $this->success([
             'filter_result' => $filterResult,
             'filter' => $filter,
             'total' => $total,
-        ]);
-    }
-
-    /**
-     * 列表页面
-     *
-     * @return \think\Response
-     */
-    public function all(): \think\Response
-    {
-        $store = $this->shopService->getAllStore();
-        return $this->success([
-            'store' => $store,
         ]);
     }
 
@@ -116,26 +99,7 @@ class ShopAccount extends AdminBaseController
         ]);
     }
 
-    /**
-     * 执行添加操作
-     *
-     * @return \think\Response
-     */
-    public function create(): \think\Response
-    {
-        $data = $this->request->only([
-            'shop_title' => '',
-            'shop_logo' => '',
 
-        ], 'post');
-        validate(StoreValidate::class)->only(array_keys($data))->check($data);
-        $result = $this->shopService->updateShop(0, $data, true);
-        if ($result) {
-            return $this->success('店铺添加成功');
-        } else {
-            return $this->error('店铺更新失败');
-        }
-    }
 
     /**
      * 执行更新操作
@@ -159,61 +123,5 @@ class ShopAccount extends AdminBaseController
         }
     }
 
-    /**
-     * 更新单个字段
-     *
-     * @return \think\Response
-     */
-    public function updateField(): \think\Response
-    {
-        $id = input('id/d', 0);
-        $field = input('field', '');
 
-        if (!in_array($field, ['store_title', 'sort_order'])) {
-            return $this->error('#field 错误');
-        }
-
-        $data = [
-            'store_id' => $id,
-            $field => input('val'),
-        ];
-
-        $this->shopService->updateShopField($id, $data);
-
-        return $this->success('更新成功');
-    }
-
-    /**
-     * 删除
-     *
-     * @return \think\Response
-     */
-    public function del(): \think\Response
-    {
-        $id = input('id/d', 0);
-        $this->shopService->deleteShop($id);
-        return $this->success('指定项目已删除');
-    }
-
-    /**
-     * 批量操作
-     *
-     * @return \think\Response
-     */
-    public function batch(): \think\Response
-    {
-        if (empty(input('ids')) || !is_array(input('ids'))) {
-            return $this->error('未选择项目');
-        }
-
-        if (input('type') == 'del') {
-            foreach (input('ids') as $key => $id) {
-                $id = intval($id);
-                $this->shopService->deleteShop($id);
-            }
-            return $this->success('批量操作执行成功！');
-        } else {
-            return $this->error('#type 错误');
-        }
-    }
 }
