@@ -52,12 +52,9 @@ class Regist extends IndexBaseController
         ], 'post');
 
         $regist_type = input('regist_type', 'mobile');
-        $username = input('username', '');
         $password = input('password', '');
         $referrer_user_id = input('referrer_user_id/d', 0);
-        if (empty($username)) {
-            return $this->error('用户名不能为空');
-        }
+        $username = app(UserRegistService::class)->generateUsername();
         if ($regist_type == 'mobile') {
             // 手机号注册
             $mobile = input('mobile', '');

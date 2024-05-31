@@ -15,6 +15,7 @@ namespace app\service\api\admin\user;
 
 use app\model\user\User;
 use app\service\api\admin\BaseService;
+use app\service\api\admin\setting\ConfigService;
 use exceptions\ApiException;
 use utils\Config;
 use utils\Time;
@@ -96,6 +97,20 @@ class UserRegistService extends BaseService
     {
         $count = User::where('email', $email)->count();
         return $count > 0;
+    }
+
+    /**
+     * 生成用户名
+     * @return string
+     */
+    public function generateUsername(): string
+    {
+        while (true) {
+            $username = Config::get('username_prefix') . rand(100000, 999999);
+            if (!User::where('username', $username)->exists()) {
+                return $username;
+            }
+        }
     }
 
 }
