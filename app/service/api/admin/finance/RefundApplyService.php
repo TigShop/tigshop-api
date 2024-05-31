@@ -180,9 +180,9 @@ class RefundApplyService extends BaseService
 
         try {
             Db::startTrans();
-            if ($data[""] == 1) {
+            if ($data["refund_status"] == 1) {
                 if ($data["online_balance"] > 0) {
-                    // 执行退款流refund_status程
+                    // 执行退款流程
                     $pay_params = [
                         "order_id" => $apply->order_id,
                         'refund_id' => $apply->refund_id,
