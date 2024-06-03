@@ -26,7 +26,7 @@ class Merchant extends IndexBaseController
      * 申请入驻
      * @return \think\Response
      */
-    public function apply()
+    public function apply(): \think\Response
     {
         $data = $this->request->only([
             'shop_name' => '',

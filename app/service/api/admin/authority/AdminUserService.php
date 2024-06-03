@@ -65,7 +65,7 @@ class AdminUserService extends BaseService
             $query->where('c.username', 'like', '%' . $filter['keyword'] . '%');
         }
         if (!empty($filter['admin_type'])) {
-            $query->where('admin_type', $filter['admin_type']);
+            $query->where('c.admin_type', $filter['admin_type']);
         }
         // 供应商查询
         if (isset($filter['suppliers_id']) && $filter['suppliers_id'] > 0) {
