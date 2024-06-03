@@ -44,7 +44,6 @@ class AccountPanel extends AdminBaseController
     public function list(): Json
     {
         $filter = $this->request->only([
-            'keyword' => '',
             'search_start_date' => "",
             'search_end_date' => "",
         ], 'get');
