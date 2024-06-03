@@ -108,6 +108,6 @@ class Cart extends IndexBaseController
     public function clear(): Response
     {
         app(CartService::class)->clearCart();
-        return $this->success(/** LANG */'购物车已清空');
+        return $this->success(/** LANG */ lang('购物车已清空'));
     }
 }

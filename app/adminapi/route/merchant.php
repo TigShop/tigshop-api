@@ -10,6 +10,8 @@ Route::group('merchant', function () {
         Route::get('list', 'merchant.apply/list');
         // 详情
         Route::get('detail', 'merchant.apply/detail');
+        // 详情
+        Route::get('config', 'merchant.apply/config');
         // 编辑
         Route::post('update', 'merchant.apply/update');
         // 审核

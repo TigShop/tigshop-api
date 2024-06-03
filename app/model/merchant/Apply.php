@@ -25,6 +25,18 @@ class Apply extends Model
     protected $json = ['merchant_data', 'base_data', 'shop_data'];
     protected $jsonAssoc = true;
 
+    protected $append = ['status_text'];
+
+    public final function getStatusTextAttr($value, $data): string
+    {
+        return isset($data['status']) && self::STATUS_LIST[$data['status']] ? self::STATUS_LIST[$data['status']] : '';
+    }
+
+    const STATUS_LIST = [
+        1 => '待审核',
+        10 => '审核通过',
+        20 => '审核未通过'
+    ];
     // 字段处理
     public function getAddTimeAttr($value): string
     {

@@ -35,7 +35,7 @@ class ApplyService extends BaseService
      */
     public function getFilterResult(array $filter): array
     {
-        $query = $this->filterQuery($filter)->with(['user']);
+        $query = $this->filterQuery($filter);
         $result = $query->page($filter['page'], $filter['size'])->select();
         return $result->toArray();
     }
@@ -61,20 +61,17 @@ class ApplyService extends BaseService
      */
     protected function filterQuery(array $filter): object
     {
-        $query = $this->merchantApplyModel->query();
+        $query = $this->merchantApplyModel->query()->withJoin(['user']);
         // 处理筛选条件
 
-        if (isset($filter['keyword']) && !empty($filter['keyword'])) {
-            $query->where('store_title', 'like', '%' . $filter['keyword'] . '%');
+        if (isset($filter['username']) && !empty($filter['username'])) {
+            $query->where('username', 'like', '%' . $filter['username'] . '%');
         }
 
-        if (isset($filter['shop_id']) && $filter['shop_id'] > 0) {
-            $query->where('shop_id', $filter['shop_id']);
+        if (isset($filter['status']) && $filter['status'] > 0) {
+            $query->where('status', $filter['status']);
         }
 
-        if (isset($filter['is_self']) && $filter['is_self'] > -1) {
-            $query->where('is_self', $filter['is_self']);
-        }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);

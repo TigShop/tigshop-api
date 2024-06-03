@@ -270,7 +270,7 @@ class AdminUserService extends BaseService
         request()->authList = $user['auth_list'] ?? [];
         if ($user['admin_type'] == 'shop') {
             request()->shopIds = Shop::where('merchant_id', $user['merchant_id'])->column('shop_id');
-            request()->shopId = request()->header('X-Shop-Id');
+            request()->shopId = request()->header('X-Shop-Id', 0);
         }
         if ($form_login) {
             AdminLog::add('管理员登录:' . $user['username']);

@@ -19,6 +19,7 @@ use app\service\api\admin\shop\ShopService;
 use app\service\api\admin\user\UserService;
 use think\App;
 use think\facade\Db;
+use think\Response;
 
 /**
  * 商户申请控制器
@@ -52,6 +53,8 @@ class Apply extends AdminBaseController
             'size/d' => 15,
             'sort_field' => 'add_time',
             'sort_order' => 'desc',
+            'status' => -1,
+            'username' => ''
         ], 'get');
 
         $filterResult = $this->applyService->getFilterResult($filter);
@@ -61,6 +64,25 @@ class Apply extends AdminBaseController
             'filter_result' => $filterResult,
             'filter' => $filter,
             'total' => $total,
+        ]);
+    }
+
+    /**
+     * 配置型
+     * @return Response
+     */
+    public function config(): Response
+    {
+        $list = \app\model\merchant\Apply::STATUS_LIST;
+        $status_list = [];
+        foreach ($list as $k => $v) {
+            $status_list[] = [
+                'status' => $k,
+                'status_text' => $v,
+            ];
+        }
+        return $this->success([
+            'status_list' => $status_list
         ]);
     }
 
@@ -95,7 +117,7 @@ class Apply extends AdminBaseController
 
         $result = $this->applyService->update($id, $data, false);
         if ($result) {
-            return $this->success('商户入驻申请更新成功');
+            return $this->success(lang('商户入驻申请更新成功'));
         } else {
             return $this->error('商户入驻申请更新失败');
         }
