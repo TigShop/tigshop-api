@@ -118,11 +118,12 @@ class Apply extends AdminBaseController
             $userInfo = app(UserService::class)->getDetail($item['user_id']);
             $result = $this->applyService->audit($params['merchant_apply_id'], $params['status']);
             if ($result && $params['status'] == 10) {
-                $merchantDetail = app(MerchantService::class)->create([
+                $merchantService = app(MerchantService::class);
+                $merchantDetail = $merchantService->create([
                     'merchant_apply_id' => $item['merchant_apply_id'],
                     'user_id' => $item['user_id'],
                 ]);
-                app(AdminUserService::class)->createAdminUser([
+                $adminId = app(AdminUserService::class)->createAdminUser([
                     'username' => $userInfo['mobile'],
                     'mobile' => $userInfo['mobile'],
                     'email' => $userInfo['email'],
@@ -132,6 +133,11 @@ class Apply extends AdminBaseController
                     'avatar' => '',
                     'pwd_confirm' => '',
                     'merchant_id' => $merchantDetail->merchant_id,
+                ]);
+                $merchantService->createUser([
+                    'merchant_id' => $merchantDetail->merchant_id,
+                    'user_id' => $item['user_id'],
+                    'admin_user_id' => $adminId,
                 ]);
                 app(ShopService::class)->create([
                     'merchant_id' => $merchantDetail->merchant_id,

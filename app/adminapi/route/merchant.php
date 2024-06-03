@@ -31,6 +31,8 @@ Route::group('merchant', function () {
     Route::group('shop', function () {
         // 列表
         Route::get('list', 'list');
+        // 列表
+        Route::get('my_shop', 'myShop');
 
     })->prefix('merchant.shop/');
 

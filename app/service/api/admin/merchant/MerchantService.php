@@ -12,6 +12,7 @@
 namespace app\service\api\admin\merchant;
 
 use app\model\merchant\Merchant;
+use app\model\merchant\MerchantUser;
 use app\service\api\admin\BaseService;
 use app\service\core\merchant\MerchantCoreService;
 use exceptions\ApiException;
@@ -183,5 +184,10 @@ class MerchantService extends BaseService
         }
         $result = $this->merchantModel->destroy($id);
         return $result !== false;
+    }
+
+    public function createUser(array $data)
+    {
+        return MerchantUser::create($data);
     }
 }

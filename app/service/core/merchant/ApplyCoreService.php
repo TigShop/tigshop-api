@@ -4,6 +4,7 @@ namespace app\service\core\merchant;
 
 use app\model\merchant\Apply;
 use app\model\merchant\Merchant;
+use app\model\setting\Region;
 
 /**
  * 商户管理核心服务
@@ -26,7 +27,24 @@ class ApplyCoreService
      */
     public function getDetail(int $merchant_id, string $field = '*'): mixed
     {
-        return $this->applyModel->field($field)->find($merchant_id);
+        $result = $this->applyModel->field($field)->findOrEmpty($merchant_id)->toArray();
+        if (!empty($result['base_data']['license_addr_province'])) {
+            $regionList = Region::whereIn('region_id',
+                $result['base_data']['license_addr_province'])->column('region_name', 'region_id');
+            $result['base_data']['license_addr_province_name'] = '';
+            foreach ($result['base_data']['license_addr_province'] as $regionId) {
+                $result['base_data']['license_addr_province_name'] .= $regionList[$regionId] ?? '';
+            }
+        }
+        if (!empty($result['shop_data']['business_address'])) {
+            $regionList = Region::whereIn('region_id', $result['shop_data']['business_address'])->column('region_name',
+                'region_id');
+            $result['shop_data']['business_address_name'] = '';
+            foreach ($result['shop_data']['business_address'] as $regionId) {
+                $result['shop_data']['business_address_name'] .= $regionList[$regionId] ?? '';
+            }
+        }
+        return $result ?: null;
     }
 
     /**

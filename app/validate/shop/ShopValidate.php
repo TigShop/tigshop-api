@@ -9,11 +9,11 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\validate\store;
+namespace app\validate\shop;
 
 use think\Validate;
 
-class StoreValidate extends Validate
+class ShopValidate extends Validate
 {
     protected $rule = [
         'store_title' => 'require|max:100',

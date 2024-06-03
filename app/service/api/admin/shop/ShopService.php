@@ -13,7 +13,7 @@ namespace app\service\api\admin\shop;
 
 use app\model\merchant\Shop;
 use app\service\api\admin\BaseService;
-use app\validate\store\StoreValidate;
+use app\validate\shop\ShopValidate;
 use exceptions\ApiException;
 use log\AdminLog;
 
@@ -169,7 +169,7 @@ class ShopService extends BaseService
      */
     public function updateShopField(int $id, array $data): bool|int
     {
-        validate(StoreValidate::class)->only(array_keys($data))->check($data);
+        validate(ShopValidate::class)->only(array_keys($data))->check($data);
         if (!$id) {
             throw new ApiException('#id错误');
         }

@@ -13,7 +13,7 @@ namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
 use app\service\api\admin\shop\ShopService;
-use app\validate\store\StoreValidate;
+use app\validate\shop\ShopValidate;
 use think\App;
 
 /**
@@ -66,7 +66,7 @@ class Shop extends AdminBaseController
      * 我的店铺 商户端专用
      * @return \think\Response
      */
-    public function my_shop()
+    public function myShop(): \think\Response
     {
         $filter = $this->request->only([
             'keyword' => '',
@@ -126,9 +126,8 @@ class Shop extends AdminBaseController
         $data = $this->request->only([
             'shop_title' => '',
             'shop_logo' => '',
-
         ], 'post');
-        validate(StoreValidate::class)->only(array_keys($data))->check($data);
+        validate(ShopValidate::class)->only(array_keys($data))->check($data);
         $result = $this->shopService->updateShop(0, $data, true);
         if ($result) {
             return $this->success('店铺添加成功');
