@@ -25,7 +25,7 @@ abstract class IndexBaseController extends BaseController
     public function checkLogin(): void
     {
         if (request()->userId == 0) {
-            throw new ApiException('请登录');
+            throw new ApiException('请登录', 401);
         }
     }
 }
