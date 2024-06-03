@@ -48,6 +48,11 @@ Route::group('finance', function () {
         // 确认线下转账
         Route::post('offline_audit', 'finance.refundApply/offlineAudit');
     });
+    // 退款记录
+    Route::group('refund_log', function () {
+        // 退款记录
+        Route::get('list', 'finance.refundLog/list');
+    });
     // 余额日志
     Route::group('user_balance_log', function () {
         // 余额日志列表
