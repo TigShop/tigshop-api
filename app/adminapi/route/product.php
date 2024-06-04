@@ -91,6 +91,21 @@ Route::group('product', function () {
         // 批量操作
         Route::post('batch', 'product.product/batch');
     });
+    // 商品分组
+    Route::group('product_group', function () {
+        // 列表
+        Route::get('list', 'list');
+        // 编辑
+        Route::post('create', 'create');
+        // 编辑
+        Route::post('update', 'update');
+        // 删除
+        Route::post('del', 'del');
+        // batch批量操作
+        Route::post('batch', 'batch');
+        // 详情
+        Route::get('detail', 'detail');
+    })->prefix('product.productGroup/');
     // 商品属性
     Route::group('product_attributes', function () {
         // 列表

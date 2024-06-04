@@ -4,6 +4,7 @@ namespace app\service\api\admin\authority;
 
 use app\model\authority\AdminRole;
 use app\model\authority\AdminUser;
+use app\model\merchant\MerchantUser;
 use app\model\merchant\Shop;
 use app\service\api\admin\BaseService;
 use app\service\api\admin\common\sms\SmsService;
@@ -166,8 +167,10 @@ class AdminUserService extends BaseService
     public function createAdminUser(array $data): array|int
     {
         $arr = $this->getCommunalData($data);
-        $result = $this->adminUserModel->save($arr);
+        $userId = $data['user_id'] ?? 0;
+        $result = $this->adminUserModel->create($arr);
         AdminLog::add('新增管理员:' . $data['username']);
+        $this->updateMerchantUser($data, $result->admin_id);
         return $this->adminUserModel->getKey();
     }
 
@@ -187,9 +190,34 @@ class AdminUserService extends BaseService
             throw new ApiException(/** LANG */'#id错误');
         }
         $result = $this->adminUserModel->where('admin_id', $id)->save($arr);
-        AdminLog::add('更新管理员:' . $this->getName($id));
-
+        $this->updateMerchantUser($data, $id);
         return $result !== false;
+    }
+
+    /**
+     * 更新商户用户
+     * @param array $data
+     * @param int $id
+     * @return bool
+     * @throws \think\db\exception\DbException
+     */
+    public function updateMerchantUser(array $data, int $id): bool
+    {
+        if (empty($data['merchant_id']) || empty($data['user_id'])) {
+            return true;
+        }
+        if (MerchantUser::where('merchant_id', $data['merchant_id'])->where('admin_user_id', $id)->count() == 0) {
+            MerchantUser::where('merchant_id', $data['merchant_id'])->where('admin_user_id', $id)->update([
+                'user_id' => $data['user_id'],
+            ]);
+        } else {
+            MerchantUser::create([
+                'user_id' => $data['user_id'],
+                'merchant_id' => $data['merchant_id'],
+                'admin_user_id' => $id,
+            ]);
+        }
+        return true;
     }
 
     /**
@@ -271,6 +299,11 @@ class AdminUserService extends BaseService
         if ($user['admin_type'] == 'shop') {
             request()->shopIds = Shop::where('merchant_id', $user['merchant_id'])->column('shop_id');
             request()->shopId = request()->header('X-Shop-Id', 0);
+            if (!in_array(request()->shopId, request()->shopIds)) {
+                throw new ApiException('非法请求');
+            }
+        } elseif ($user['admin_type'] == 'admin') {
+            request()->shopIds = 0;
         }
         if ($form_login) {
             AdminLog::add('管理员登录:' . $user['username']);

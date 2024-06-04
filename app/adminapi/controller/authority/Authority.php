@@ -56,7 +56,7 @@ class Authority extends AdminBaseController
             'admin_type' => -1
         ], 'get');
         if (request()->adminType == 'shop') {
-            $filter['admin_type'] = 'shop';
+            $filter['admin_type'] = request()->adminType;
         }
         $filterResult = $this->authorityService->getFilterResult($filter);
         $total = $this->authorityService->getFilterCount($filter);
@@ -105,7 +105,7 @@ class Authority extends AdminBaseController
             'parent_id' => 0,
             'is_show' => 0,
             'sort_order' => 50,
-            'admin_type' => 'all'
+            'admin_type' => 'admin'
         ], 'post');
 
         try {
@@ -142,7 +142,7 @@ class Authority extends AdminBaseController
             'parent_id' => 0,
             'is_show' => 0,
             'sort_order' => 50,
-            'admin_type' => 'all'
+            'admin_type' => 'admin'
         ], 'post');
         try {
             validate(AuthorityValidate::class)

@@ -132,7 +132,13 @@ class AdminUser extends AdminBaseController
             'admin_type' => request()->adminType
         ], 'post');
 
-        $data["store_id"] = request()->shopId;
+        $data["merchant_id"] = request()->merchantId;
+        if (request()->adminType == 'shop') {
+            $data['user_id'] = input('user_id/d', 0);
+            if (empty($data['user_id'])) {
+                return $this->error(lang('商户关联的用户必填'));
+            }
+        }
         try {
             validate(AdminUserValidate::class)
                 ->scene('create')
@@ -172,7 +178,6 @@ class AdminUser extends AdminBaseController
             'old_password' => '', // 原密码
             'admin_type' => request()->adminType
         ], 'post');
-        $data["store_id"] = request()->shopId;
         try {
             validate(AdminUserValidate::class)
                 ->scene('update')
@@ -180,7 +185,13 @@ class AdminUser extends AdminBaseController
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }
-
+        $data["merchant_id"] = request()->merchantId;
+        if (request()->adminType == 'shop') {
+            $data['user_id'] = input('user_id/d', 0);
+            if (empty($data['user_id'])) {
+                return $this->error(lang('商户关联的用户必填'));
+            }
+        }
         $result = $this->adminUserService->updateAdminUser($data, $id);
         if ($result) {
             return $this->success(/** LANG */'管理员更新成功');

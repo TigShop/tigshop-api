@@ -53,7 +53,8 @@ class AdminRole extends AdminBaseController
             'size/d' => 15,
             'sort_field' => 'role_id',
             'sort_order' => 'desc',
-            'admin_type' => request()->adminType
+            'admin_type' => request()->adminType,
+            'merchant_id' => request()->merchantId
         ], 'get');
 
         $filterResult = $this->adminRoleService->getFilterResult($filter);

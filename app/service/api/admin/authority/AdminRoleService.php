@@ -68,6 +68,9 @@ class AdminRoleService extends BaseService
         if (!empty($filter['admin_type'])) {
             $query->where('admin_type', $filter['admin_type']);
         }
+        if (isset($filter['merchant_id'])) {
+            $query->where('merchant_id', $filter['merchant_id']);
+        }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);

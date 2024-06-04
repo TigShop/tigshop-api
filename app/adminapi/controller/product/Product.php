@@ -68,11 +68,14 @@ class Product extends AdminBaseController
             'category_id/d' => 0,
             'brand_id/d' => 0,
             'ids' => null,
-            'store_id/d' => -2, // 店铺id
+            'shop_id/d' => -2, // 店铺id
             'intro_type' => '', // 商品类型
             'product_status/d' => -1, // 上下架状态
             'check_status/d' => -1, // 审核状态
         ], 'get');
+        if (request()->adminType == 'shop') {
+            $filter['shop_id'] = request()->shopId;
+        }
         $filterResult = $this->productService->getFilterResult($filter);
         $total = $this->productService->getFilterCount($filter);
         $waiting_checked_count = $this->productService->getWaitingCheckedCount();
