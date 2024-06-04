@@ -115,6 +115,8 @@ Route::group('user', function () {
     ]);
     // 登录
     Route::group('login', function () {
+        //快捷登录设置项目
+        Route::get('get_quick_login_setting', 'user.login/getQuickLoginSetting');
         // 登录
         Route::post('signin', 'user.login/signin');
         // 获取验证码

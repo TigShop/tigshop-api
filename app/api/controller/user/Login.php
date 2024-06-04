@@ -21,6 +21,8 @@ use app\service\api\admin\user\UserService;
 use Fastknife\Utils\RandomUtils;
 use think\App;
 use think\Response;
+use utils\Config;
+use utils\Util;
 
 /**
  * 会员登录控制器
@@ -38,9 +40,36 @@ class Login extends IndexBaseController
     }
 
     /**
-     * 会员登录操作
-     *
+     * 获取快捷登录的选项--目前只有微信快捷登录
      * @return Response
+     */
+    public function getQuickLoginSetting(): Response
+    {
+        $wechat_login = 0;
+        switch (Util::getClientType()) {
+            case 'pc':
+                $wechat_login = Config::get("lyecs_wechat_open_scan");
+                break;
+            case 'wechat':
+                $wechat_login = Config::get("lyecs_wechat_oauth");
+                break;
+            case 'miniProgram':
+                $wechat_login = 1;
+                break;
+            default:
+                break;
+        }
+        $show_oauth = $wechat_login ? 1 : 0;
+        return $this->success([
+            'wechat_login' => $wechat_login,
+            'show_oauth' => $show_oauth,
+        ]);
+    }
+
+    /**
+     * 会员登录操作
+     * @return Response
+     * @throws \exceptions\ApiException
      */
     public function signin(): Response
     {
@@ -178,7 +207,7 @@ class Login extends IndexBaseController
                 return $this->error($e->getMessage());
             }
         }
-        if (isset($data['open_data']['openid'])){
+        if (isset($data['open_data']['openid'])) {
             app(UserAuthorizeService::class)->addUserAuthorizeInfo($user['user_id'], $data['open_data']['openid'] ?? '', $data['open_data'], $data['open_data']['unionid'] ?? '');
         }
         app(UserService::class)->setLogin($user['user_id']);
