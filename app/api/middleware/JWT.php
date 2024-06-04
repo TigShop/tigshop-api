@@ -6,7 +6,7 @@ namespace app\api\middleware;
 
 use app\service\api\admin\authority\AccessTokenService;
 use app\service\api\admin\user\UserService;
-use think\Exception;
+use exceptions\ApiException;
 
 /**
  * JWT验证刷新token机制
@@ -17,9 +17,8 @@ class JWT
      * 登录中间件
      * @param $request
      * @param \Closure $next
-     * @return object|mixed
-     * @throws Exception
-     * @throws \exceptions\ApiException
+     * @return object
+     * @throws ApiException
      */
     public function handle($request, \Closure $next): object
     {
@@ -31,11 +30,11 @@ class JWT
             // 获取appUid
             $user_id = intval($result['data']->appId);
             if (!$user_id) {
-                throw new Exception('token数据验证失败', 401);
+                throw new ApiException('token数据验证失败', 401);
             }
             app(UserService::class)->setLogin($user_id);
         } else {
-            throw new Exception('token数据验证失败', 401);
+            throw new ApiException('token数据验证失败', 401);
         }
         // 测试
         //app(UserService::class)->setLogin(1);
