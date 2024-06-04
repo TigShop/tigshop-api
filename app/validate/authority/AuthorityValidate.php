@@ -21,7 +21,8 @@ class AuthorityValidate extends Validate
     protected function checkUnique($value, $rule, $data = [], $field = '')
     {
         $id = isset($data['authority_id']) ? $data['authority_id'] : 0;
-        $query = \think\facade\Db::name('authority')->where('authority_sn', $value)->where('authority_id', '<>', $id);
+        $query = \think\facade\Db::name('authority')->where('authority_sn', $value)->where('admin_type',
+            $data['admin_type'])->where('authority_id', '<>', $id);
         return $query->count() === 0;
     }
 

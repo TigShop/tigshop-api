@@ -167,11 +167,11 @@ class AdminUserService extends BaseService
     public function createAdminUser(array $data): array|int
     {
         $arr = $this->getCommunalData($data);
-        $userId = $data['user_id'] ?? 0;
         $result = $this->adminUserModel->create($arr);
         AdminLog::add('新增管理员:' . $data['username']);
-        $this->updateMerchantUser($data, $result->admin_id);
-        return $this->adminUserModel->getKey();
+        $admin_id = $result->admin_id;
+        $this->updateMerchantUser($data, $admin_id);
+        return $admin_id;
     }
 
 

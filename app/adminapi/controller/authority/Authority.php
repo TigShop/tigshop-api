@@ -171,7 +171,8 @@ class Authority extends AdminBaseController
     public function getAllAuthority(): Response
     {
         $type = input('type/d', 0);
-        $cat_list = $this->authorityService->authorityList(0, $type, request()->authList, request()->adminType);
+        $admin_type = input('admin_type/d', 'admin');
+        $cat_list = $this->authorityService->authorityList(0, $type, request()->authList, $admin_type);
 
         return $this->success([
             'item' => $cat_list,

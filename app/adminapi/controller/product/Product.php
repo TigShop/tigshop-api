@@ -281,6 +281,7 @@ class Product extends AdminBaseController
             'check_reason' => '',
             'product_article_list' => [],
             'img_list' => [],
+            'shop_id' => request()->shopId
         ], 'post');
         validate(ProductValidate::class)->only(array_keys($data))->check($data);
         $result = $this->productService->updateProduct($id, $data, true);
