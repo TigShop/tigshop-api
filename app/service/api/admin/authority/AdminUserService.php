@@ -303,7 +303,7 @@ class AdminUserService extends BaseService
                 throw new ApiException('非法请求');
             }
         } elseif ($user['admin_type'] == 'admin') {
-            request()->shopIds = 0;
+            request()->shopId = 0;
         }
         if ($form_login) {
             AdminLog::add('管理员登录:' . $user['username']);
