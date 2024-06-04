@@ -31,7 +31,6 @@ class Coupon extends IndexBaseController
     public function __construct(App $app, UserCouponService $userCouponService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->userCouponService = $userCouponService;
     }
 

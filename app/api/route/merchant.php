@@ -13,4 +13,6 @@ Route::group('merchant', function () {
         //申请详情
         Route::get('apply_detail', 'merchant.merchant/applyDetail');
     });
-});
+})->middleware([
+    \app\api\middleware\JWT::class,
+]);

@@ -31,7 +31,6 @@ class OrderInvoice extends IndexBaseController
     public function __construct(App $app, OrderInvoiceService $orderInvoiceService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->orderInvoiceService = $orderInvoiceService;
     }
 

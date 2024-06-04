@@ -7,7 +7,9 @@ Route::group('user', function () {
     Route::group('account', function () {
         // 账户金额变动列表
         Route::get('list', 'user.account/list');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 收货地址
     Route::group('address', function () {
         // 收货地址列表
@@ -22,7 +24,9 @@ Route::group('user', function () {
         Route::post('del', 'user.address/del');
         // 设为选中
         Route::post('set_selected', 'user.address/setSelected');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 售后
     Route::group('aftersales', function () {
         // 可售后订单列表
@@ -43,7 +47,9 @@ Route::group('user', function () {
         Route::post('feedback', 'user.aftersales/feedback');
         // 撤销申请售后
         Route::post('cancel', 'user.aftersales/cancel');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 商品收藏
     Route::group('collect_product', function () {
         // 商品收藏列表
@@ -52,7 +58,9 @@ Route::group('user', function () {
         Route::post('save', 'user.collectProduct/save');
         // 取消收藏
         Route::post('cancel', 'user.collectProduct/cancel');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 评论晒单
     Route::group('comment', function () {
         // 评论晒单数量
@@ -65,7 +73,9 @@ Route::group('user', function () {
         Route::post('evaluate', 'user.comment/evaluate');
         // 评价/晒单详情
         Route::get('detail', 'user.comment/detail');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 优惠券
     Route::group('coupon', function () {
         // 会员优惠券列表
@@ -78,14 +88,18 @@ Route::group('user', function () {
         Route::post('claim', 'user.coupon/claim');
         // 优惠券详情
         Route::get('detail', 'user.coupon/detail');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 留言咨询
     Route::group('feedback', function () {
         // 订单咨询/留言列表
         Route::get('list', 'user.feedback/list');
         // 提交留言
         Route::post('submit', 'user.feedback/submit');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 增票资质发票
     Route::group('invoice', function () {
         // 详情
@@ -96,7 +110,9 @@ Route::group('user', function () {
         Route::post('update', 'user.invoice/update');
         // 判断当前用户的增票资质是否审核通过
         Route::get('get_status', 'user.invoice/getStatus');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 登录
     Route::group('login', function () {
         // 登录
@@ -120,7 +136,9 @@ Route::group('user', function () {
         Route::post('update_message_read', 'user.message/updateMessageRead');
         // 删除站内信
         Route::post('del', 'user.message/del');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
 
     // 订单
     Route::group('order', function () {
@@ -140,7 +158,9 @@ Route::group('user', function () {
         Route::get('shipping_info', 'user.order/shippingInfo');
         // 再次购买
         Route::post('buy_again', 'user.order/buyAgain');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 订单发票
     Route::group('order_invoice', function () {
         //详情
@@ -149,12 +169,16 @@ Route::group('user', function () {
         Route::post('create', 'user.order_invoice/create');
         // 编辑
         Route::post('update', 'user.order_invoice/update');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 积分
     Route::group('points_log', function () {
         // 列表
         Route::get('list', 'user.pointsLog/list');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 充值
     Route::group('recharge_order', function () {
         // 列表
@@ -171,7 +195,9 @@ Route::group('user', function () {
         Route::post('create', 'user.rechargeOrder/create');
         // 获取充值支付状态
         Route::get('check_status', 'user.rechargeOrder/checkStatus');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 会员登录
     Route::group('regist', function () {
         // 会员登录操作
@@ -211,7 +237,9 @@ Route::group('user', function () {
         Route::post('upload_img', 'user.user/uploadImg');
         // 修改头像
         Route::post('modify_avatar', 'user.user/modifyAvatar');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
     // 提现
     Route::group('withdraw_apply', function () {
         // 列表
@@ -226,5 +254,7 @@ Route::group('user', function () {
         Route::post('del_account', 'user.withdrawApply/delAccount');
         // 提现申请
         Route::post('apply', 'user.withdrawApply/apply');
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
 });

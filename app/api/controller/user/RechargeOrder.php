@@ -38,7 +38,6 @@ class RechargeOrder extends IndexBaseController
     public function __construct(App $app, UserRechargeOrderService $userRechargeOrderService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->userRechargeOrderService = $userRechargeOrderService;
     }
 

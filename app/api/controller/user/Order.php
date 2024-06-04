@@ -32,7 +32,6 @@ class Order extends IndexBaseController
     public function __construct(App $app, OrderService $orderService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->orderService = $orderService;
     }
 

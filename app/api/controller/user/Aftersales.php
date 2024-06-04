@@ -30,7 +30,6 @@ class Aftersales extends IndexBaseController
     public function __construct(App $app, AftersalesService $aftersalesService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->aftersalesService = $aftersalesService;
     }
 

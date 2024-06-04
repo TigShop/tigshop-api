@@ -29,7 +29,6 @@ class Feedback extends IndexBaseController
     public function __construct(App $app, FeedbackService $feedbackService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->feedbackService = $feedbackService;
     }
 

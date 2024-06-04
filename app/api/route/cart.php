@@ -18,4 +18,6 @@ Route::group('cart', function () {
         // 清空购物车
         Route::post('clear', 'cart.cart/clear');
     });
-});
+})->middleware([
+    \app\api\middleware\JWT::class,
+]);

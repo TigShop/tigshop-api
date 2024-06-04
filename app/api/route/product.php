@@ -32,7 +32,9 @@ Route::group('product', function () {
         // 是否收藏
         Route::get('is_collect', 'product.product/isCollect');
         //加入购物车
-        Route::post('add_to_cart', 'product.product/addToCart');
+        Route::post('add_to_cart', 'product.product/addToCart')->middleware([
+            \app\api\middleware\JWT::class,
+        ]);
 
     });
 });

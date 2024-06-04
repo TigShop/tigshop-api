@@ -19,7 +19,6 @@ class Merchant extends IndexBaseController
     {
         $this->applyService = $applyService;
         parent::__construct($app);
-        $this->checkLogin();
     }
 
     /**

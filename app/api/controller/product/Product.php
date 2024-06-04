@@ -146,7 +146,6 @@ class Product extends IndexBaseController
 
     public function addToCart(): \think\Response
     {
-        $this->checkLogin();
         $id = input('id/d', 0);
         $number = input('number/d', 0);
         $sku_id = input('sku_id/d', 0);

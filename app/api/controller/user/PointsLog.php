@@ -29,7 +29,6 @@ class PointsLog extends IndexBaseController
     public function __construct(App $app, UserPointsLogService $userPointsLogService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->userPointsLogService = $userPointsLogService;
     }
 

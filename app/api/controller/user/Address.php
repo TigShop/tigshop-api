@@ -31,7 +31,6 @@ class Address extends IndexBaseController
     public function __construct(App $app)
     {
         parent::__construct($app);
-        $this->checkLogin();
     }
 
     /**

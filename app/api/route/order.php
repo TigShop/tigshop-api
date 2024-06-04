@@ -17,7 +17,9 @@ Route::group('order', function () {
         // 获得上次订单发票信息
         Route::get('get_invoice', 'order.check/getInvoice');
 
-    });
+    })->middleware([
+        \app\api\middleware\JWT::class,
+    ]);
 
     // 订单支付
     Route::group('pay', function () {

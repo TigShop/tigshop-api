@@ -32,7 +32,6 @@ class Comment extends IndexBaseController
     public function __construct(App $app, CommentService $commentService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->commentService = $commentService;
     }
 
