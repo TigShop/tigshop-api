@@ -25,18 +25,17 @@ class JWT
     {
         request()->userId = 0;
         // 检查token并返回数据
-        try {
-            $result = app(AccessTokenService::class)->setApp('app')->checkToken();
-            if ($result) {
-                // 获取appUid
-                $user_id = intval($result['data']->appId);
-                if (!$user_id) {
-                    throw new Exception('token数据验证失败', 401);
-                }
-                app(UserService::class)->setLogin($user_id);
+
+        $result = app(AccessTokenService::class)->setApp('app')->checkToken();
+        if ($result) {
+            // 获取appUid
+            $user_id = intval($result['data']->appId);
+            if (!$user_id) {
+                throw new Exception('token数据验证失败', 401);
             }
-        } catch (\Exception $e) {
-            // token无效或过期
+            app(UserService::class)->setLogin($user_id);
+        } else {
+            throw new Exception('token数据验证失败', 401);
         }
         // 测试
         //app(UserService::class)->setLogin(1);
