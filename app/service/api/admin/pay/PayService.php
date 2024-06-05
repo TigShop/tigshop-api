@@ -2,6 +2,8 @@
 
 namespace app\service\api\admin\pay;
 
+use utils\Config;
+
 abstract class PayService
 {
     /**
@@ -28,4 +30,30 @@ abstract class PayService
      */
     abstract public function refund_notify(): array;
 
+    /**
+     * 获取支付回调
+     * @return string
+     */
+    public function getNotifyUrl(): string
+    {
+        return Config::get('pc_domain') . '/api/order/pay/notify';
+    }
+
+    /**
+     * 获取退款通知地址
+     * @return string
+     */
+    public function getRefundNotifyUrl(): string
+    {
+        return Config::get('pc_domain') . '/api/order/pay/refund_notify';
+    }
+
+    /**
+     * 获取同步跳转地址
+     * @return string
+     */
+    public function getReturnUrl(): string
+    {
+        return Config::get('pc_domain') . '/member/order/list';
+    }
 }

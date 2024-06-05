@@ -29,11 +29,9 @@ Route::group('order', function () {
         Route::get('check_status', 'order.pay/checkStatus');
         // 支付
         Route::post('create', 'order.pay/create');
-        // 回调
+        // 支付回调
         Route::post('notify', 'order.pay/notify');
-        // 回调
-        Route::post('notify', 'order.pay/notify');
-        // 回调
+        // 退款回调
         Route::post('refund_notify', 'order.pay/refundNotify');
     });
 });

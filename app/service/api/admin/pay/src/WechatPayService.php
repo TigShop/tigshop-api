@@ -22,7 +22,7 @@ class WechatPayService extends PayService
     const KEY_LENGTH_BYTE = 32;
     const AUTH_TAG_LENGTH_BYTE = 16;
 
-    private $payType = 'null';
+    private string|null $payType = null;
 
     protected string $appId = '';
 
@@ -44,6 +44,10 @@ class WechatPayService extends PayService
         return $this;
     }
 
+    /**
+     * 获取平台类型
+     * @return string
+     */
     public function getPayType(): string
     {
         if ($this->payType === null) {
@@ -322,6 +326,7 @@ class WechatPayService extends PayService
     /**
      * 获取退款参数
      * @param string $out_trade_no
+     * @param string $refund_sn
      * @param float $refund
      * @param float $total
      * @return array
@@ -344,25 +349,6 @@ class WechatPayService extends PayService
         return $data;
     }
 
-    /**
-     * 获取支付回调地址
-     * @return string
-     */
-    public function getNotifyUrl(): string
-    {
-        return 'https://demo2.lyecs.com/index/test';
-        return Url::app('');
-    }
-
-    /**
-     * 获取退款通知地址
-     * @return string
-     */
-    public function getRefundNotifyUrl(): string
-    {
-        return 'https://demo2.lyecs.com/index/test';
-        return Url::app('');
-    }
 
     /**
      * 查询订单结果

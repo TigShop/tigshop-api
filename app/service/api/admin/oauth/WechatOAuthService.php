@@ -148,12 +148,10 @@ class WechatOAuthService extends BaseService
             case 'pc':
                 $app_id = Config::get('wechat_open_appId');
                 $secret = Config::get('wechat_open_appSecret');
-                $callback = 'https://demo2.lyecs.com/member/login/wechat_scan_login';
                 break;
             case 'wechat':
                 $app_id = Config::get('wechat_appId');
                 $secret = Config::get('wechat_appSecret');
-                $callback = 'https://demo2.lyecs.com/member/login/wx_login';
                 break;
             case 'miniProgram':
                 $app_id = Config::get('wechat_miniProgram_appId');
