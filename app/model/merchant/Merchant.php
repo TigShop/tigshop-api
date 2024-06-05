@@ -24,10 +24,34 @@ class Merchant extends Model
     protected $autoWriteTimestamp = 'int';
     protected $json = ['merchant_data', 'base_data', 'shop_data'];
     protected $jsonAssoc = true;
+    protected $append = [
+        'type_text',
+        'status_text',
+    ];
     // 字段处理
     public function getAddTimeAttr($value): string
     {
         return Time::format($value);
+    }
+
+    const TYPE_LIST = [
+        1 => '个人',
+        2 => '企业'
+    ];
+
+    const STATUS_LIST = [
+        1 => '正常',
+        2 => '取消认证资格'
+    ];
+
+    public function getTypeTextAttr($value, $data): string
+    {
+        return self::TYPE_LIST[$data['type']] ?: '';
+    }
+
+    public function getStatusTextAttr($value, $data): string
+    {
+        return self::STATUS_LIST[$data['status']] ?: '';
     }
 
     public function user()

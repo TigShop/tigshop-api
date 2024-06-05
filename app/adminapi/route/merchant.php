@@ -27,6 +27,8 @@ Route::group('merchant', function () {
     Route::group('merchant', function () {
         // 列表
         Route::get('list', 'list');
+        Route::get('detail', 'detail');
+        Route::get('update_field', 'update_field');
 
     })->prefix('merchant.merchant/');
     // 店铺管理

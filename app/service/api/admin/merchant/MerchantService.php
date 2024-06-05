@@ -32,32 +32,6 @@ class MerchantService extends BaseService
     }
 
     /**
-     * 获取筛选结果
-     *
-     * @param array $filter
-     * @return array
-     */
-    public function getFilterResult(array $filter): array
-    {
-        $query = $this->filterQuery($filter)->with(['user']);
-        $result = $query->page($filter['page'], $filter['size'])->select();
-        return $result->toArray();
-    }
-
-    /**
-     * 获取筛选结果数量
-     *
-     * @param array $filter
-     * @return int
-     */
-    public function getFilterCount(array $filter): int
-    {
-        $query = $this->filterQuery($filter);
-        $count = $query->count();
-        return $count;
-    }
-
-    /**
      * 筛选查询
      *
      * @param array $filter
@@ -97,10 +71,10 @@ class MerchantService extends BaseService
     {
         $result = $this->merchantCoreService->getDetail($id);
 
-        if ($result) {
+        if (!$result) {
             throw new ApiException('店铺不存在');
         }
-
+        $result->user;
         return $result;
     }
 

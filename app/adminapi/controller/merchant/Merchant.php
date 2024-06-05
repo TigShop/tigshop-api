@@ -52,7 +52,7 @@ class Merchant extends AdminBaseController
             'sort_order' => 'desc',
         ], 'get');
 
-        $filterResult = $this->merchantService->getFilterResult($filter);
+        $filterResult = $this->merchantService->getFilterList($filter, ['user']);
         $total = $this->merchantService->getFilterCount($filter);
 
         return $this->success([
@@ -61,6 +61,30 @@ class Merchant extends AdminBaseController
             'total' => $total,
         ]);
     }
+
+    /**
+     * 更新单个字段
+     *
+     * @return \think\Response
+     */
+    public function updateField(): \think\Response
+    {
+        $id = input('id/d', 0);
+        $field = input('field', '');
+
+        if (!in_array($field, ['status'])) {
+            return $this->error('#field 错误');
+        }
+
+        $data = [
+            $field => input('val'),
+        ];
+
+        $this->merchantService->updateField($id, $data);
+
+        return $this->success('更新成功');
+    }
+
 
     /**
      * 详情

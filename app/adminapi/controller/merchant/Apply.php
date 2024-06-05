@@ -148,6 +148,7 @@ class Apply extends AdminBaseController
                     'base_data' => $item['base_data'],
                     'merchant_data' => $item['merchant_data'],
                     'company_name' => $item['company_name'],
+                    'corporate_name' => $item['corporate_name'],
                 ]);
                 $adminId = app(AdminUserService::class)->createAdminUser([
                     'username' => $userInfo['mobile'],
@@ -167,7 +168,7 @@ class Apply extends AdminBaseController
                 ]);
                 app(ShopService::class)->create([
                     'merchant_id' => $merchantDetail->merchant_id,
-                    'shop_title' => $item['shop_title']
+                    'shop_title' => $item['shop_name']
                 ]);
             }
             Db::commit();

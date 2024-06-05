@@ -329,7 +329,7 @@ class ArticleService extends BaseService
      * @param array $filter
      * @return array
      */
-    public function getFilterList(array $filter): array
+    public function getFilterLists(array $filter): array
     {
         $query = $this->filterQuery($filter);
         $query = $query->where('is_show', 1);

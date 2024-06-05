@@ -34,6 +34,8 @@ class Merchant extends IndexBaseController
             'shop_data' => '',
         ], 'post');
         $data['type'] = $data['base_data']['type'];
+        $data['company_name'] = $data['base_data']['company_name'] ?? '';
+        $data['corporate_name'] = $data['base_data']['corporate_name'] ?? '';
         $data['user_id'] = request()->userId;
         $result = $this->applyService->createApply($data);
         return $this->success([

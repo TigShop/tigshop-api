@@ -25,7 +25,7 @@ class MerchantCoreService
      */
     public function getDetail(int $merchant_id, string $field = '*'): mixed
     {
-        return $this->merchantModel->field($field)->findOrEmpty($merchant_id);
+        return $this->merchantModel->field($field)->where('merchant_id', $merchant_id)->findOrEmpty();
     }
 
     /**

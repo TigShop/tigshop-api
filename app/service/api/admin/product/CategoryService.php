@@ -491,7 +491,10 @@ class CategoryService extends BaseService
         if (empty($article_ids)) {
             return [];
         }
-        $result = app(ArticleService::class)->getFilterList(["article_ids" => $article_ids, "size" => $filter["size"]]);
+        $result = app(ArticleService::class)->getFilterLists([
+            "article_ids" => $article_ids,
+            "size" => $filter["size"]
+        ]);
 
         return $result["list"];
     }

@@ -54,7 +54,7 @@ class Article extends IndexBaseController
         if ($filter['size'] > 50) {
             $filter['size'] = 50;
         }
-        $filterResult = $this->articleService->getFilterList($filter);
+        $filterResult = $this->articleService->getFilterLists($filter);
 
         return $this->success([
             'filter_result' => $filterResult["list"],
