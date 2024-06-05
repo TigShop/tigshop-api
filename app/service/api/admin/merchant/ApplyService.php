@@ -128,11 +128,12 @@ class ApplyService extends BaseService
      * @return int|bool
      * @throws ApiException
      */
-    public function audit(int $id, int $status): bool|int
+    public function audit(int $id, int $status, string $auditRemark): bool|int
     {
         $result = $this->merchantApplyModel->where('merchant_apply_id', $id)->save([
             'status' => $status,
             'audit_time' => time(),
+            'audit_remark' => $auditRemark
         ]);
         return $result !== false;
     }

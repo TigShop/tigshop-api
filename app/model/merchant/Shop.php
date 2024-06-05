@@ -22,11 +22,28 @@ class Shop extends Model
 
     protected $createTime = 'add_time';
     protected $autoWriteTimestamp = 'int';
-
+    protected $append = [
+        'status_text',
+    ];
     // 字段处理
     public function getAddTimeAttr($value): string
     {
         return Time::format($value);
     }
 
+    const STATUS_LIST = [
+        1 => '开业',
+        10 => '关店'
+    ];
+
+
+    public function getStatusTextAttr($value, $data): string
+    {
+        return self::STATUS_LIST[$data['status']] ?: '';
+    }
+
+    public function merchant()
+    {
+        return $this->hasOne(Merchant::class, 'merchant_id', 'merchant_id');
+    }
 }

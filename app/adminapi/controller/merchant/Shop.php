@@ -52,7 +52,7 @@ class Shop extends AdminBaseController
             'sort_order' => 'desc',
         ], 'get');
 
-        $filterResult = $this->shopService->getFilterResult($filter);
+        $filterResult = $this->shopService->getFilterList($filter, ['merchant']);
         $total = $this->shopService->getFilterCount($filter);
 
         return $this->success([
@@ -148,6 +148,8 @@ class Shop extends AdminBaseController
             'shop_id' => $id,
             'shop_title' => '',
             'shop_logo' => '',
+            'contact_mobile' => '',
+            'description' => '',
             'status/d' => 50,
         ], 'post');
 

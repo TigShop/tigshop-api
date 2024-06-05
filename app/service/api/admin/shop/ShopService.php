@@ -22,38 +22,12 @@ use log\AdminLog;
  */
 class ShopService extends BaseService
 {
-    protected Shop $shopModel;
 
     public function __construct(Shop $shopModel)
     {
-        $this->shopModel = $shopModel;
+        $this->model = $shopModel;
     }
 
-    /**
-     * 获取筛选结果
-     *
-     * @param array $filter
-     * @return array
-     */
-    public function getFilterResult(array $filter): array
-    {
-        $query = $this->filterQuery($filter);
-        $result = $query->page($filter['page'], $filter['size'])->select();
-        return $result->toArray();
-    }
-
-    /**
-     * 获取筛选结果数量
-     *
-     * @param array $filter
-     * @return int
-     */
-    public function getFilterCount(array $filter): int
-    {
-        $query = $this->filterQuery($filter);
-        $count = $query->count();
-        return $count;
-    }
 
     /**
      * 筛选查询
@@ -63,7 +37,7 @@ class ShopService extends BaseService
      */
     protected function filterQuery(array $filter): object
     {
-        $query = $this->shopModel->query();
+        $query = $this->model->query();
         // 处理筛选条件
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
@@ -93,7 +67,7 @@ class ShopService extends BaseService
      */
     public function getDetail(int $id): array
     {
-        $result = $this->shopModel->where('shop_id', $id)->find();
+        $result = $this->model->where('shop_id', $id)->find();
 
         if (!$result) {
             throw new ApiException('店铺不存在');
@@ -110,7 +84,7 @@ class ShopService extends BaseService
      */
     public function getAllStore(): array
     {
-        $result = $this->shopModel->field('shop_id,store_title')->select();
+        $result = $this->model->field('shop_id,store_title')->select();
         return $result->toArray();
     }
 
@@ -122,7 +96,7 @@ class ShopService extends BaseService
      */
     public function getName(int $id): ?string
     {
-        return $this->shopModel->where('shop_id', $id)->value('store_title');
+        return $this->model->where('shop_id', $id)->value('store_title');
     }
 
     /**
@@ -132,7 +106,7 @@ class ShopService extends BaseService
      */
     public function create(array $data): Shop|\think\Model
     {
-        $result = $this->shopModel->create($data);
+        $result = $this->model->create($data);
         return $result;
     }
     /**
@@ -148,13 +122,13 @@ class ShopService extends BaseService
     {
 
         if ($isAdd) {
-            $result = $this->shopModel->create($data);
-            return $this->shopModel->getKey();
+            $result = $this->model->create($data);
+            return $this->model->getKey();
         } else {
             if (!$id) {
                 throw new ApiException('#id错误');
             }
-            $result = $this->shopModel->where('shop_id', $id)->save($data);
+            $result = $this->model->where('shop_id', $id)->save($data);
             return $result !== false;
         }
     }
@@ -173,7 +147,7 @@ class ShopService extends BaseService
         if (!$id) {
             throw new ApiException('#id错误');
         }
-        $result = $this->shopModel::where('shop_id', $id)->save($data);
+        $result = $this->model::where('shop_id', $id)->save($data);
         AdminLog::add('更新店铺:' . $this->getName($id));
         return $result !== false;
     }
@@ -190,7 +164,7 @@ class ShopService extends BaseService
             throw new ApiException('#id错误');
         }
         $get_name = $this->getName($id);
-        $result = $this->shopModel->destroy($id);
+        $result = $this->model->destroy($id);
 
         if ($result) {
             AdminLog::add('删除店铺:' . $get_name);

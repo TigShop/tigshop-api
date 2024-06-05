@@ -133,12 +133,14 @@ class Apply extends AdminBaseController
         $params = $this->request->only([
             'merchant_apply_id' => 0,
             'status/d' => 1,
+            'audit_remark' => ''
         ], 'post');
         try {
             Db::startTrans();
             $item = $this->applyService->getDetail($params['merchant_apply_id']);
             $userInfo = app(UserService::class)->getDetail($item['user_id']);
-            $result = $this->applyService->audit($params['merchant_apply_id'], $params['status']);
+            $result = $this->applyService->audit($params['merchant_apply_id'], $params['status'],
+                $params['audit_remark']);
             if ($result && $params['status'] == 10) {
                 $merchantService = app(MerchantService::class);
                 $merchantDetail = $merchantService->create([
