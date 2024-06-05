@@ -79,7 +79,7 @@ class OrderService extends BaseService
      */
     protected function filterQuery(array $filter): object
     {
-        $query = $this->model;
+        $query = $this->model->query();
         // 处理筛选条件
 
         // 关键词检索 收货人 + 订单号 + 订单id

@@ -14,11 +14,11 @@ namespace app\service\api\admin\panel;
 use app\model\finance\UserRechargeOrder;
 use app\model\order\Order;
 use app\model\order\OrderItem;
-use app\model\product\Comment;
 use app\model\product\Product;
 use app\model\user\User;
 use app\service\api\admin\finance\RefundApplyService;
 use app\service\api\admin\order\OrderService;
+use app\service\api\admin\product\CommentService;
 use app\service\api\admin\sys\AccessLogService;
 use app\service\core\BaseService;
 use exceptions\ApiException;
@@ -45,11 +45,22 @@ class SalesStatisticsService extends BaseService
             'order_status' => Order::ORDER_PENDING
         ]);
         // 待发货的订单
-        $await_ship = Order::awaitShip()->storePlatform()->count();
+        $await_ship = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => Order::ORDER_CONFIRMED
+        ]);
         // 待售后的订单
-        $await_after_sale = Order::completed()->storePlatform()->count();
+        $await_after_sale = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED,Order::ORDER_PROCESSING,Order::ORDER_COMPLETED]
+        ]);
         // 待回复的订单
-        $await_comment = Comment::awaitComment()->storePlatform()->count();
+        $await_comment = app(CommentService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'status' => 0,
+            'parent_id' => 0,
+            'order_id' => -1
+        ]);
         $result = [
             'await_pay' => $awaitPayTotal,
             'await_ship' => $await_ship,

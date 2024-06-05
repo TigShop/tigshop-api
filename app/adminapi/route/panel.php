@@ -7,7 +7,7 @@ Route::group('panel', function () {
     // 面板管理
     Route::group('panel', function () {
         // 面板数据
-        Route::get('list', 'panel.panel/list');
+        Route::get('index', 'panel.panel/index');
         // 一键直达
         Route::get('search_menu', 'panel.panel/searchMenu');
     });

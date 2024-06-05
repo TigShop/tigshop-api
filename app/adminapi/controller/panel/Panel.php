@@ -39,7 +39,7 @@ class Panel extends AdminBaseController
      *
      * @return Response
      */
-    public function list(): Response
+    public function index(): Response
     {
         $shopId = request()->shopId;
         // 控制台数据

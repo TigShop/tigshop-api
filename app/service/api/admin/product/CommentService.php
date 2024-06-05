@@ -118,6 +118,31 @@ class CommentService extends BaseService
             $query->where('user_id', $filter['user_id']);
         }
 
+        // 店铺检索
+        if (isset($filter["shop_id"]) && !empty($filter['shop_id'])) {
+            $query->where('shop_id', $filter['shop_id']);
+        }
+
+        // 状态检索
+        if (isset($filter['status']) && $filter['status'] != -1) {
+            $query->where('status', $filter['status']);
+        }
+
+        // 是否为回复
+        if (isset($filter['parent_id']) && $filter['parent_id'] != -1) {
+            $query->where('parent_id', $filter['parent_id']);
+        }
+
+        // 订单评论
+        if(isset($filter['order_id']) && $filter['order_id'] != -2) {
+            if($filter['order_id'] >= 0){
+                $query->where('order_id', $filter['order_id']);
+            }else{
+                $query->where('order_id','>', 0);
+            }
+        }
+
+
         $query->where('parent_id', 0);
         return $query;
     }
