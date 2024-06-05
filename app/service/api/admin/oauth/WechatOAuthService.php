@@ -186,7 +186,7 @@ class WechatOAuthService extends BaseService
         $config = [
             'app_id' => $app_id,
             'secret' => $secret,
-            'token' => '725ea3265ea16abc8f8e62360c0da0d6',
+            'token' => Config::get('wechat_server_token'),
             'aes_key' => '', // 明文模式请勿填写 EncodingAESKey
             'oauth' => [
                 'scopes' => ['snsapi_userinfo'],
