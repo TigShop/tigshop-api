@@ -33,7 +33,19 @@ class JWT
                 'common/verification/check',
             ]
         )) {
-            app(AdminUserService::class)->setLogin(1);
+            // 检查token并返回数据
+            $result = app(AccessTokenService::class)->setApp('admin')->checkToken();
+            if ($result) {
+                // 获取adminUid
+                $admin_id = intval($result['data']->adminId);
+                if (!$admin_id) {
+                    throw new Exception('token数据验证失败', 401);
+                }
+                app(AdminUserService::class)->setLogin($admin_id);
+            } else {
+                // token验证失败
+                throw new Exception('token验证失败', 401);
+            }
         }
 
         return $next($request);
