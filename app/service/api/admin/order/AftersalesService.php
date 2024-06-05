@@ -483,7 +483,6 @@ class AftersalesService extends BaseService
      */
     public function afterSalesOrderFilter()
     {
-        $in_return_time = Time::now() - 3600 * 24 * 30 * 12; //默认12个月内可退换货
         $query = Order::with([
             "items" => function ($query) {
                 $query->field("item_id,order_id,product_id,price,quantity,product_name,product_sn,pic_thumb");
