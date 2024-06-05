@@ -143,11 +143,12 @@ class Shop extends AdminBaseController
      */
     public function update(): \think\Response
     {
-        $id = input('id/d', 0);
+        $id = input('shop_id/d', 0);
         $data = $this->request->only([
-            'store_id' => $id,
+            'shop_id' => $id,
             'shop_title' => '',
-            'sort_order/d' => 50,
+            'shop_logo' => '',
+            'status/d' => 50,
         ], 'post');
 
         $result = $this->shopService->updateShop($id, $data, false);
@@ -165,15 +166,14 @@ class Shop extends AdminBaseController
      */
     public function updateField(): \think\Response
     {
-        $id = input('id/d', 0);
+        $id = input('shop_id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field, ['store_title', 'sort_order'])) {
+        if (!in_array($field, ['status'])) {
             return $this->error('#field 错误');
         }
 
         $data = [
-            'store_id' => $id,
             $field => input('val'),
         ];
 

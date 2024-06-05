@@ -28,15 +28,21 @@ Route::group('merchant', function () {
         // 列表
         Route::get('list', 'list');
         Route::get('detail', 'detail');
-        Route::get('update_field', 'update_field');
+        Route::post('update_field', 'updateField');
 
     })->prefix('merchant.merchant/');
     // 店铺管理
     Route::group('shop', function () {
         // 列表
         Route::get('list', 'list');
+        // 编辑
+        Route::post('update', 'update');
+        // 详情
+        Route::get('detail', 'detail');
         // 列表
         Route::get('my_shop', 'myShop');
+        //更新字段
+        Route::post('update_field', 'updateField');
 
     })->prefix('merchant.shop/');
 

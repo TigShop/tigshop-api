@@ -24,7 +24,7 @@ class ApplyService extends BaseService
      * @param $data
      * @return Apply|\think\Model
      */
-    public function createApply($data)
+    public function createApply($data): \think\Model|Apply
     {
         $result = $this->applyCoreService->create($data);
         return $result;
@@ -35,7 +35,7 @@ class ApplyService extends BaseService
      * @param $id
      * @return \app\model\merchant\Merchant|mixed
      */
-    public function getDetail($id)
+    public function getDetail($id): mixed
     {
         $result = $this->applyCoreService->getDetail($id);
         return $result;

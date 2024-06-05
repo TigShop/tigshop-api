@@ -93,7 +93,8 @@ class OrderService extends BaseService
 
         //订单状态
         if (isset($filter["order_status"]) && $filter["order_status"] >= 0) {
-            $query->where('order_status', $filter['order_status']);
+            $query->whereIn('order_status',
+                is_array($filter['order_status']) ? $filter['order_status'] : [$filter['order_status']]);
         }
         if (isset($filter["order_status"]) && $filter["order_status"] == -2) {
             // 查询删除的订单

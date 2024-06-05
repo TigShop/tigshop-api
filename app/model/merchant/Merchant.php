@@ -35,8 +35,8 @@ class Merchant extends Model
     }
 
     const TYPE_LIST = [
-        1 => '个人',
-        2 => '企业'
+        1 => '个人认证',
+        2 => '企业认证'
     ];
 
     const STATUS_LIST = [
