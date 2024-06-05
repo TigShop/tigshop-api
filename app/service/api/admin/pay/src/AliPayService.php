@@ -233,34 +233,4 @@ class AliPayService extends PayService
 //        $options->encryptKey = "<-- 请填写您的AES密钥，例如：aa4BtZ4tspm2wnXLb1ThQA== -->";
         return $options;
     }
-
-    /**
-     * 获取支付回调地址
-     * @return string
-     */
-    public function getNotifyUrl(): string
-    {
-        // todo
-        return 'https://demo2.lyecs.com/index/test';
-    }
-
-    /**
-     * 退款通知地址
-     * @return string
-     */
-    public function getRefundNotifyUrl(): string
-    {
-        //  todo
-        return 'https://demo2.lyecs.com/index/test';
-    }
-
-    /**
-     * 获取同步跳转地址
-     * @return string
-     */
-    public function getReturnUrl(): string
-    {
-        // todo
-        return 'https://demo2.lyecs.com/index/test';
-    }
 }
