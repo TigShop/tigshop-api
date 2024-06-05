@@ -143,10 +143,6 @@ class ShopService extends BaseService
      */
     public function updateShopField(int $id, array $data): bool|int
     {
-        validate(ShopValidate::class)->only(array_keys($data))->check($data);
-        if (!$id) {
-            throw new ApiException('#id错误');
-        }
         $result = $this->model::where('shop_id', $id)->save($data);
         AdminLog::add('更新店铺:' . $this->getName($id));
         return $result !== false;

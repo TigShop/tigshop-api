@@ -150,7 +150,7 @@ class Shop extends AdminBaseController
             'shop_logo' => '',
             'contact_mobile' => '',
             'description' => '',
-            'status/d' => 50,
+            'status' => 1,
         ], 'post');
 
         $result = $this->shopService->updateShop($id, $data, false);
