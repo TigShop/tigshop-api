@@ -109,7 +109,7 @@ class Shop extends AdminBaseController
     public function detail(): \think\Response
     {
 
-        $id = input('id/d', 0);
+        $id = input('shop_id/d', 0);
         $item = $this->shopService->getDetail($id);
         return $this->success([
             'item' => $item,
