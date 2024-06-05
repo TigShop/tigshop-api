@@ -80,7 +80,6 @@ class WechatOAuthService extends BaseService
         switch ($this->getPlatformType()) {
             case 'wechat':
                 $url = Config::get('h5_domain') . '/pages/login/index';
-                $url = 'http://test.tigshop.com/api/user/login/get_wx_login_info_by_code';
                 return $this->getApplication()->getOAuth()->scopes(['snsapi_userinfo'])->redirect($url);
             case 'pc':
                 $url = Config::get('pc_domain') . '/member/login';
@@ -147,22 +146,22 @@ class WechatOAuthService extends BaseService
         $callback = '';
         switch ($this->getPlatformType()) {
             case 'pc':
-                $app_id = Config::get('lyecs_wechat_open_appId');
-                $secret = Config::get('lyecs_wechat_open_appSecret');
+                $app_id = Config::get('wechat_open_appId');
+                $secret = Config::get('wechat_open_appSecret');
                 $callback = 'https://demo2.lyecs.com/member/login/wechat_scan_login';
                 break;
             case 'wechat':
-                $app_id = Config::get('lyecs_wechat_appId');
-                $secret = Config::get('lyecs_wechat_appSecret');
+                $app_id = Config::get('wechat_appId');
+                $secret = Config::get('wechat_appSecret');
                 $callback = 'https://demo2.lyecs.com/member/login/wx_login';
                 break;
             case 'miniProgram':
-                $app_id = Config::get('lyecs_wechat_miniProgram_appId');
-                $secret = Config::get('lyecs_wechat_miniProgram_secret');
+                $app_id = Config::get('wechat_miniProgram_appId');
+                $secret = Config::get('wechat_miniProgram_secret');
                 break;
             case 'app':
-                $app_id = Config::get('lyecs_wechat_app_appId');
-                $secret = Config::get('lyecs_wechat_app_secret');
+                $app_id = Config::get('wechat_app_appId');
+                $secret = Config::get('wechat_app_secret');
                 break;
         }
         $config = [

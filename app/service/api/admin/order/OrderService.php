@@ -644,7 +644,7 @@ class OrderService extends BaseService
         }
         $logistics = LogisticsCompany::where('logistics_id', $order_info['logistics_id'])->find();
         $param = [
-            'apiKey' => Config::get('lyecs_api_key'),
+            'apiKey' => Config::get('api_key'),
             'code' => $logistics['logistics_code'],
             'number' => $order_info['tracking_no'] ?? '',
         ];

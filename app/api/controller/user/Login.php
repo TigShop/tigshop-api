@@ -48,10 +48,10 @@ class Login extends IndexBaseController
         $wechat_login = 0;
         switch (Util::getClientType()) {
             case 'pc':
-                $wechat_login = Config::get("lyecs_wechat_open_scan");
+                $wechat_login = Config::get("wechat_open_scan");
                 break;
             case 'wechat':
-                $wechat_login = Config::get("lyecs_wechat_oauth");
+                $wechat_login = Config::get("wechat_oauth");
                 break;
             case 'miniProgram':
                 $wechat_login = 1;
