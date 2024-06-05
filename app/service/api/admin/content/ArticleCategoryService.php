@@ -12,7 +12,7 @@
 namespace app\service\api\admin\content;
 
 use app\model\content\ArticleCategory;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use tig\CacheManager;
 

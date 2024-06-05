@@ -2,7 +2,7 @@
 
 namespace app\service\api\admin\oauth;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use EasyWeChat\MiniApp\Application;
 use exceptions\ApiException;
 use utils\Config;

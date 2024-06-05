@@ -12,7 +12,7 @@
 namespace app\service\api\admin\product;
 
 use app\model\product\ProductSku;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\product\ProductSkuValidate;
 use exceptions\ApiException;
 use log\AdminLog;

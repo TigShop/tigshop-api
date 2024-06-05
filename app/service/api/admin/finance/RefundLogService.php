@@ -11,24 +11,8 @@
 
 namespace app\service\api\admin\finance;
 
-use app\model\finance\RefundApply;
 use app\model\finance\RefundLog;
-use app\model\order\Aftersales;
-use app\model\order\AftersalesItem;
-use app\model\order\Order;
-use app\model\payment\PayLogRefund;
-use app\service\api\admin\BaseService;
-use app\service\api\admin\order\OrderService;
-use app\service\api\admin\pay\PayLogRefundService;
-use app\service\api\admin\pay\PayLogService;
-use app\service\api\admin\pay\src\AliPayService;
-use app\service\api\admin\pay\src\PayPalService;
-use app\service\api\admin\pay\src\WechatPayService;
-use app\service\api\admin\user\UserService;
-use exceptions\ApiException;
-use think\facade\Db;
-use utils\Time;
-use utils\Util;
+use app\service\core\BaseService;
 
 /**
  * 退款记录服务类

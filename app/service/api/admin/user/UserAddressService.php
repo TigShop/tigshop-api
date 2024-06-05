@@ -12,8 +12,8 @@
 namespace app\service\api\admin\user;
 
 use app\model\user\UserAddress;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\setting\RegionService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

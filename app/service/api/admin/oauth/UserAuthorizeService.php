@@ -3,7 +3,7 @@
 namespace app\service\api\admin\oauth;
 
 use app\model\user\UserAuthorize;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use utils\Time;
 use utils\Util;
 

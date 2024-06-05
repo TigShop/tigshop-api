@@ -14,8 +14,7 @@ declare (strict_types = 1);
 namespace app\service\api\admin\user;
 
 use app\model\user\User;
-use app\service\api\admin\BaseService;
-use app\service\api\admin\setting\ConfigService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Config;
 use utils\Time;

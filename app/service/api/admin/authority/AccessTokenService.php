@@ -2,14 +2,13 @@
 
 namespace app\service\api\admin\authority;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use Firebase\JWT\SignatureInvalidException;
-use think\Exception;
 use think\facade\Cache;
 use think\facade\Request;
 

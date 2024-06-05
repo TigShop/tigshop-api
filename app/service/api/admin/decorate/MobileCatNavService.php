@@ -14,7 +14,7 @@ namespace app\service\api\admin\decorate;
 use app\model\decorate\MobileCatNav;
 use app\model\product\Brand;
 use app\model\product\Category;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

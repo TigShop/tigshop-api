@@ -6,8 +6,8 @@ use app\model\authority\AdminRole;
 use app\model\authority\AdminUser;
 use app\model\merchant\MerchantUser;
 use app\model\merchant\Shop;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\common\sms\SmsService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 

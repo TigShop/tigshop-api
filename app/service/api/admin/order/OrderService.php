@@ -18,8 +18,8 @@ use app\model\order\Order;
 use app\model\order\OrderItem;
 use app\model\setting\LogisticsCompany;
 use app\model\setting\Region;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\product\ProductService;
+use app\service\core\BaseService;
 use app\validate\order\OrderValidate;
 use exceptions\ApiException;
 use tig\Http;
@@ -39,6 +39,7 @@ class OrderService extends BaseService
 
     public function __construct()
     {
+        $this->model = new Order();
     }
 
     // 设置会员id
@@ -56,9 +57,8 @@ class OrderService extends BaseService
      */
     public function getFilterResult(array $filter): array
     {
-        $query = $this->filterQuery($filter)->with(['items', 'user'])
-            ->append(['order_status_name', "user_address", "shipping_status_name", "pay_status_name"]);
-        $result = $query->page($filter['page'], $filter['size'])->select();
+        $result = $this->getFilterList($filter, ['items', 'user'],
+            ['order_status_name', "user_address", "shipping_status_name", "pay_status_name"]);
         foreach ($result as $item) {
             $orderStatusService = new OrderStatusService();
             $item->available_actions = $orderStatusService->getAvailableActions($item);
@@ -69,19 +69,6 @@ class OrderService extends BaseService
             }
         }
         return $result->toArray();
-    }
-
-    /**
-     * 获取筛选结果数量
-     *
-     * @param array $filter
-     * @return int
-     */
-    public function getFilterCount(array $filter): int
-    {
-        $query = $this->filterQuery($filter);
-        $count = $query->count();
-        return $count;
     }
 
     /**

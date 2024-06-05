@@ -3,7 +3,7 @@
 namespace app\service\api\admin\product;
 
 use app\model\product\ProductGroup;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 

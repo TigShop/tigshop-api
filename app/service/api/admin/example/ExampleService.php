@@ -12,7 +12,7 @@
 namespace app\service\api\admin\example;
 
 use app\model\example\Example;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\example\ExampleValidate;
 use exceptions\ApiException;
 use log\AdminLog;

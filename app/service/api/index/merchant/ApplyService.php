@@ -3,7 +3,7 @@
 namespace app\service\api\index\merchant;
 
 use app\model\merchant\Apply;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\service\core\merchant\ApplyCoreService;
 
 class ApplyService extends BaseService

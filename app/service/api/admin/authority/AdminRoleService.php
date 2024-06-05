@@ -12,7 +12,7 @@
 namespace app\service\api\admin\authority;
 
 use app\model\authority\AdminRole;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

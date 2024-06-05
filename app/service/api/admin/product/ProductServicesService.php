@@ -12,7 +12,7 @@
 namespace app\service\api\admin\product;
 
 use app\model\product\ProductServices;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\product\ProductServicesValidate;
 use exceptions\ApiException;
 use log\AdminLog;

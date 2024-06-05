@@ -12,7 +12,7 @@
 namespace app\service\api\admin\user;
 
 use app\model\user\UserCoupon;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 

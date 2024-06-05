@@ -12,7 +12,7 @@
 namespace app\service\api\admin\user;
 
 use app\model\user\UserPointsLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 

@@ -17,10 +17,10 @@ use app\model\order\OrderItem;
 use app\model\product\Comment;
 use app\model\product\Product;
 use app\model\user\User;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\finance\RefundApplyService;
 use app\service\api\admin\order\OrderService;
 use app\service\api\admin\sys\AccessLogService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 
@@ -31,14 +31,19 @@ use utils\Time;
  */
 class SalesStatisticsService extends BaseService
 {
+
+
     /**
      * 面板控制台 - 控制台数据
      * @return array
      */
-    public function getConsoleData(): array
+    public function getConsoleData(int $shopId): array
     {
-        // 待付款的订单
-        $await_pay = Order::awaitPay()->storePlatform()->count();
+
+        $awaitPayTotal = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => Order::ORDER_PENDING
+        ]);
         // 待发货的订单
         $await_ship = Order::awaitShip()->storePlatform()->count();
         // 待售后的订单
@@ -46,7 +51,7 @@ class SalesStatisticsService extends BaseService
         // 待回复的订单
         $await_comment = Comment::awaitComment()->storePlatform()->count();
         $result = [
-            'await_pay' => $await_pay,
+            'await_pay' => $awaitPayTotal,
             'await_ship' => $await_ship,
             'await_after_sale' => $await_after_sale,
             'await_comment' => $await_comment,

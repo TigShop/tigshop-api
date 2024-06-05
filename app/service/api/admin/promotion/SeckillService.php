@@ -13,8 +13,8 @@ namespace app\service\api\admin\promotion;
 
 use app\model\promotion\Seckill;
 use app\model\promotion\SeckillItem;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\product\ProductService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 use think\facade\Db;

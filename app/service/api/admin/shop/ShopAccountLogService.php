@@ -13,7 +13,7 @@ namespace app\service\api\admin\shop;
 
 use app\model\merchant\Shop;
 use app\model\merchant\ShopAccountLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 
 /**
  * 店铺资金服务类

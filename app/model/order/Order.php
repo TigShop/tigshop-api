@@ -192,6 +192,11 @@ class Order extends Model
         return $query->where('shop_id', request()->shopId);
     }
 
+    public function scopeShop($query, $shopId)
+    {
+        return $query->where('shop_id', $shopId);
+    }
+
     // 查询店铺平台订单
     public function scopeStorePlatform($query)
     {

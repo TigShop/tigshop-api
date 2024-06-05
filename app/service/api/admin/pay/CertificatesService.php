@@ -2,7 +2,7 @@
 
 namespace app\service\api\admin\pay;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\service\pay\RuntimeException;
 use exceptions\ApiException;
 use utils\Config;

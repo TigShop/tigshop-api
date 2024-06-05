@@ -3,7 +3,7 @@
 namespace app\service\api\admin\user;
 
 use app\model\user\UserGrowthPointsLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 
 class UserGrowthPointsLogService extends BaseService
 {

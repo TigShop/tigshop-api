@@ -13,8 +13,8 @@ namespace app\service\api\admin\product;
 
 use app\model\product\Product;
 use app\model\product\ProductSku;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\promotion\SeckillService;
+use app\service\core\BaseService;
 
 /**
  * 商品库存相关服务类

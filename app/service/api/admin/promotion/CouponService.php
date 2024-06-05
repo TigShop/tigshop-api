@@ -14,10 +14,10 @@ namespace app\service\api\admin\promotion;
 use app\model\promotion\Coupon;
 use app\model\user\User;
 use app\model\user\UserCoupon;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\product\CategoryService;
 use app\service\api\admin\user\UserCouponService;
 use app\service\api\admin\user\UserService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 

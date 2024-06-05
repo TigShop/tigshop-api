@@ -12,7 +12,7 @@
 namespace app\service\api\admin\shipping;
 
 use app\model\shipping\ShippingTpl;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\shipping\ShippingTplValidate;
 use exceptions\ApiException;
 use log\AdminLog;

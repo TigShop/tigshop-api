@@ -12,7 +12,7 @@
 namespace app\service\api\admin\promotion;
 
 use app\model\promotion\FlashSale;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\promotion\FlashSaleValidate;
 use exceptions\ApiException;
 use log\AdminLog;

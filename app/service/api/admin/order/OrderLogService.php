@@ -13,7 +13,7 @@ namespace app\service\api\admin\order;
 
 use app\model\order\OrderLog;
 use app\model\order\OrderSplitLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\order\OrderLogValidate;
 use exceptions\ApiException;
 use log\AdminLog;

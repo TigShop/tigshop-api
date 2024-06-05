@@ -7,10 +7,10 @@ use app\job\MiniProgramJob;
 use app\job\SmsJob;
 use app\job\WechatJob;
 use app\service\api\admin\oauth\UserAuthorizeService;
+use app\service\api\admin\order\OrderService;
+use app\service\core\BaseService;
 use utils\Config;
 use utils\TigQueue;
-use app\service\api\admin\BaseService;
-use app\service\api\admin\order\OrderService;
 
 class MessageCenterService extends BaseService
 {

@@ -11,7 +11,7 @@
 
 namespace app\service\api\admin\shipping;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 
 /**
  * 物流服务类

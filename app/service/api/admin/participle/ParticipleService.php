@@ -2,7 +2,7 @@
 
 namespace app\service\api\admin\participle;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use Fukuball\Jieba\Finalseg;
 use Fukuball\Jieba\Jieba;
 

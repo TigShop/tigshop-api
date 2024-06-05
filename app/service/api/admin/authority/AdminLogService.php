@@ -12,8 +12,7 @@
 namespace app\service\api\admin\authority;
 
 use app\model\authority\AdminLog as AdminLogModel;
-use app\service\api\admin\BaseService;
-use app\validate\authority\AdminLogValidate;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

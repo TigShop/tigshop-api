@@ -14,7 +14,7 @@ namespace app\service\api\admin\finance;
 use app\model\finance\UserRechargeOrder;
 use app\model\finance\UserWithdrawApply;
 use app\model\promotion\RechargeSetting;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 

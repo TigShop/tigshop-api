@@ -2,7 +2,7 @@
 
 namespace app\service\api\admin\captcha;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use Fastknife\Exception\ParamException;
 use Fastknife\Service\BlockPuzzleCaptchaService;

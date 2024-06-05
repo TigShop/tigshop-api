@@ -11,8 +11,7 @@
 
 namespace app\service\api\admin\product;
 
-use app\model\promotion\Coupon;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 
 /**
  * 商品服务类

@@ -13,7 +13,7 @@ namespace app\service\api\admin\setting;
 
 use app\model\setting\ShippingTpl;
 use app\model\setting\ShippingTplInfo;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 

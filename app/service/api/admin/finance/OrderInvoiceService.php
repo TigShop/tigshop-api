@@ -13,7 +13,7 @@ namespace app\service\api\admin\finance;
 
 use app\model\finance\OrderInvoice;
 use app\model\order\Order;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

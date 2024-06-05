@@ -1,6 +1,6 @@
 <?php
 //**---------------------------------------------------------------------+
-//** 服务层文件 -- banner
+//** 模型文件 -- 店铺
 //**---------------------------------------------------------------------+
 //** 版权所有：江西佰商科技有限公司. 官网：https://www.tigshop.com
 //**---------------------------------------------------------------------+
@@ -9,31 +9,24 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\service\api\admin\decorate\modules;
+namespace app\model\merchant;
 
-use app\service\api\admin\user\UserService;
-use app\service\core\BaseService;
-use exceptions\ApiException;
+use app\model\user\User;
+use think\Model;
+use utils\Time;
 
-/**
- * 装修服务类
- */
-class PcBannerService extends BaseService
+class ShopCategory extends Model
 {
-    public function __construct()
+    protected $pk = 'category_id';
+    protected $table = 'shop_category';
+
+    protected $createTime = 'add_time';
+    protected $autoWriteTimestamp = 'int';
+
+    // 字段处理
+    public function getAddTimeAttr($value): string
     {
-    }
-    /**
-     * 模块数据格式化
-     *
-     * @param array $module
-     * @return array
-     * @throws ApiException
-     */
-    public function formatData(array $module, array $params = null): array
-    {
-        $module['avatar'] = app(UserService::class)->getUserAvatar();
-        return $module;
+        return Time::format($value);
     }
 
 }

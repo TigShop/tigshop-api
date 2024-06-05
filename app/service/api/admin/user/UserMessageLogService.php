@@ -14,7 +14,7 @@ namespace app\service\api\admin\user;
 use app\model\user\User;
 use app\model\user\UserMessage;
 use app\model\user\UserMessageLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 

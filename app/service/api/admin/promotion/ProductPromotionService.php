@@ -12,7 +12,7 @@
 namespace app\service\api\admin\promotion;
 
 use app\model\promotion\ProductPromotion;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

@@ -3,7 +3,7 @@
 namespace app\service\api\admin\pay;
 
 use app\model\payment\PayLogRefund;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use Fastknife\Utils\RandomUtils;
 use utils\Time;
 

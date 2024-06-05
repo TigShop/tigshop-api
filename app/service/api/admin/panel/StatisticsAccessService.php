@@ -12,7 +12,7 @@
 namespace app\service\api\admin\panel;
 
 use app\model\sys\AccessLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 class StatisticsAccessService extends BaseService

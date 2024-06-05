@@ -144,6 +144,10 @@ class Apply extends AdminBaseController
                 $merchantDetail = $merchantService->create([
                     'merchant_apply_id' => $item['merchant_apply_id'],
                     'user_id' => $item['user_id'],
+                    'shop_data' => $item['shop_data'],
+                    'base_data' => $item['base_data'],
+                    'merchant_data' => $item['merchant_data'],
+                    'company_name' => $item['company_name'],
                 ]);
                 $adminId = app(AdminUserService::class)->createAdminUser([
                     'username' => $userInfo['mobile'],

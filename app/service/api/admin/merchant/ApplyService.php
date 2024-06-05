@@ -12,7 +12,7 @@
 namespace app\service\api\admin\merchant;
 
 use app\model\merchant\Apply;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

@@ -12,7 +12,7 @@
 namespace app\service\api\admin\shop;
 
 use app\model\merchant\Shop;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\shop\ShopValidate;
 use exceptions\ApiException;
 use log\AdminLog;

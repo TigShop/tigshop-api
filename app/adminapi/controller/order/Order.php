@@ -293,7 +293,7 @@ class Order extends AdminBaseController
             'sort_order' => 'desc',
         ], 'get');
 
-        $filterResult = $this->orderService->getFilterResult($filter);
+        $filterResult = $this->orderService->getFilterList($filter);
         $result = $this->orderService->orderExport($filterResult);
         return $result ? $this->success("导出成功") : $this->error('导出失败');
     }

@@ -11,8 +11,8 @@
 
 namespace app\service\api\admin\decorate\modules;
 
-use app\service\api\admin\BaseService;
 use app\service\api\admin\product\ProductService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

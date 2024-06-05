@@ -13,7 +13,7 @@ namespace app\service\api\admin\finance;
 
 use app\model\finance\UserBalanceLog;
 use app\model\user\User;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**
