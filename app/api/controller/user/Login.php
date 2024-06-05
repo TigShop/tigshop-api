@@ -19,7 +19,9 @@ use app\service\api\admin\oauth\WechatOAuthService;
 use app\service\api\admin\user\UserRegistService;
 use app\service\api\admin\user\UserService;
 use Fastknife\Utils\RandomUtils;
+use JetBrains\PhpStorm\NoReturn;
 use think\App;
+use think\facade\Cache;
 use think\Response;
 use utils\Config;
 use utils\Util;
@@ -133,9 +135,10 @@ class Login extends IndexBaseController
      */
     public function getWechatLoginUrl(): Response
     {
-        $url = app(WechatOAuthService::class)->getOAuthUrl();
+        $res = app(WechatOAuthService::class)->getOAuthUrl();
         return $this->success([
-            'url' => $url,
+            'url' => $res['url'],
+            'ticket' => $res['ticket'] ?? '',
         ]);
     }
 
@@ -213,6 +216,82 @@ class Login extends IndexBaseController
         app(UserService::class)->setLogin($user['user_id']);
         $token = app(UserService::class)->getLoginToken($user['user_id']);
         return $this->success([
+            'token' => $token,
+        ]);
+    }
+
+    /**
+     * 服务端验证
+     * @return void
+     * @throws \EasyWeChat\Kernel\Exceptions\BadRequestException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \EasyWeChat\Kernel\Exceptions\RuntimeException
+     * @throws \ReflectionException
+     * @throws \Throwable
+     */
+    #[NoReturn] public function wechatServerVerify(): void
+    {
+        $body = app(WechatOAuthService::class)->setPlatformType('wechat')->getApplication()->getServer()->serve()->getBody();
+        exit($body);
+    }
+
+    /**
+     * 处理消息
+     * @return Response
+     * @throws \EasyWeChat\Kernel\Exceptions\BadRequestException
+     * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \ReflectionException
+     * @throws \Throwable
+     */
+    public function getWechatMessage(): Response
+    {
+        $message = app(WechatOAuthService::class)->setPlatformType('wechat')->getApplication()->getServer()->getRequestMessage();
+        file_put_contents('msg.txt', $message, FILE_APPEND);
+        if (isset($message['Event'])) {
+            //检测用户是否登录
+            $openid = $message['FromUserName'];
+            $ticket = $message['Ticket'];
+            if (in_array($message['Event'], ['subscribe', 'SCAN'])) {
+                Cache::set($ticket, $openid);
+            }
+        }
+
+        return $this->success('Success');
+    }
+
+    /**
+     * 检测用户扫码后处理事件
+     * @return Response
+     * @throws \exceptions\ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function wechatEvent(): Response
+    {
+        $key = input('key');
+        if (empty($key)) {
+            return $this->success([
+                'type' => 0,
+                'message' => '未登录'
+            ]);
+        }
+        $openid = Cache::get($key);
+        if (empty($openid)) {
+            return $this->success([
+                'type' => 0,
+                'message' => '未登录',
+            ]);
+        }
+        $user_id = app(UserAuthorizeService::class)->getUserOAuthInfo($openid);
+        $open_data = ['openid' => $openid];
+        if (empty($user_id)) {
+            return $this->success(['type' => 2, 'open_data' => $open_data]);
+        }
+        app(UserService::class)->setLogin($user_id);
+        $token = app(UserService::class)->getLoginToken($user_id);
+        return $this->success([
+            'type' => 1,
             'token' => $token,
         ]);
     }

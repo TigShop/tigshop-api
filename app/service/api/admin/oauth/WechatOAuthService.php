@@ -5,7 +5,9 @@ namespace app\service\api\admin\oauth;
 use app\service\core\BaseService;
 use EasyWeChat\OfficialAccount\Application;
 use exceptions\ApiException;
+use Fastknife\Utils\RandomUtils;
 use think\Exception;
+use think\facade\Cache;
 use utils\Config;
 use utils\Util;
 
@@ -72,20 +74,39 @@ class WechatOAuthService extends BaseService
 
     /**
      * 获取网页授权地址
-     * @return string
+     * @return array
+     * @throws \EasyWeChat\Kernel\Exceptions\BadResponseException
      * @throws \EasyWeChat\Kernel\Exceptions\InvalidArgumentException
+     * @throws \Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface
+     * @throws \Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface
      */
-    public function getOAuthUrl(): string
+    public function getOAuthUrl(): array
     {
         switch ($this->getPlatformType()) {
             case 'wechat':
-                $url = Config::get('h5_domain') . '/pages/login/index';
-                return $this->getApplication()->getOAuth()->scopes(['snsapi_userinfo'])->redirect($url);
+                $redirect_url = Config::get('h5_domain') . '/pages/login/index';
+                $url = $this->getApplication()->getOAuth()->scopes(['snsapi_userinfo'])->redirect($redirect_url);
+                return ['url' => $url];
             case 'pc':
-                $url = Config::get('pc_domain') . '/member/login';
-                return $this->getApplication()->getOAuth()->scopes(['snsapi_login'])->redirect($url);
+                $access_token = $this->setPlatformType('wechat')->getApplication()->getAccessToken()->getToken();
+                $url = 'https://api.weixin.qq.com/cgi-bin/qrcode/create?access_token=' . $access_token;
+                $scene_str = RandomUtils::getRandomCode(12);
+                $data = [
+                    'expire_seconds' => 300,
+                    'action_name' => 'QR_STR_SCENE',
+                    'action_info' => [
+                        'scene_id' => rand(0, 100000),
+                        'scene_str' => $scene_str
+                    ]
+                ];
+                $res = $this->getApplication()->getClient()->postJson($url, $data)->toArray();
+                Cache::set($res['ticket'], '',300);
+                return $res;
             default:
-                return '';
+                return [];
         }
     }
 
@@ -165,7 +186,7 @@ class WechatOAuthService extends BaseService
         $config = [
             'app_id' => $app_id,
             'secret' => $secret,
-            'token' => 'easywechat',
+            'token' => '725ea3265ea16abc8f8e62360c0da0d6',
             'aes_key' => '', // 明文模式请勿填写 EncodingAESKey
             'oauth' => [
                 'scopes' => ['snsapi_userinfo'],

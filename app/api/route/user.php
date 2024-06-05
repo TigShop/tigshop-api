@@ -127,6 +127,12 @@ Route::group('user', function () {
         Route::get('get_wx_login_info_by_code', 'user.login/getWechatLoginInfoByCode');
         //第三方绑定手机号
         Route::post('bind_mobile', 'user.login/bindMobile');
+        //微信服务器校验
+        Route::get('wechat_server', 'user.login/wechatServerVerify');
+        //获取微信推送消息
+        Route::post('wechat_server', 'user.login/getWechatMessage');
+        //检测微信用户操作事件
+        Route::post('wechat_event', 'user.login/wechatEvent');
     });
     // 站内信
     Route::group('message', function () {
