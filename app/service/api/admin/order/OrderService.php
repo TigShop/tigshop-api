@@ -582,9 +582,13 @@ class OrderService extends BaseService
      * @param array $data
      * @return float
      */
-    public function getPayMoneyTotal(array $data): float
+    public function getPayMoneyTotal(array $data,int $shopId = 0): float
     {
-        return Order::payTime($data)->storePlatform()->paid()->where("is_del", 0)->sum('total_amount');
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'shop_id' => $shopId,
+            'pay_status' => Order::PAYMENT_PAID
+        ])->sum('total_amount');
     }
 
     /**

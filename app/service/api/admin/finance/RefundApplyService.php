@@ -87,6 +87,16 @@ class RefundApplyService extends BaseService
             $query->where('refund_status', $filter["refund_status"]);
         }
 
+        // 申请退款时间
+        if (isset($filter['add_time']) && !empty($filter['add_time'])) {
+            $filter['add_time'] = is_array($filter['add_time']) ? $filter['add_time'] : explode(',', $filter['add_time']);
+            list($start_date, $end_date) = $filter['add_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $pay_time = [$start_date, $end_date];
+            $query->whereTime('add_time', 'between', $pay_time);
+        }
+
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
