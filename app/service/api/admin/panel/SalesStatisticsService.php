@@ -108,14 +108,19 @@ class SalesStatisticsService extends BaseService
 
         $result = [
             "today_order_amount" => $today_order_amount,
+            "yesterday_order_amount" => $yesterday_order_amount,
             "order_amount_growth_rate" => $order_amount_growth_rate,
             "today_visit_num" => $today_visit_num,
+            "yesterday_visit_num" => $yesterday_visit_num,
             "visit_growth_rate" => $visit_growth_rate,
             "today_buyer_num" => $today_buyer_num,
+            "yesterday_buyer_num" => $yesterday_buyer_num,
             "buyer_growth_rate" => $buyer_growth_rate,
             "today_view_num" => $today_view_num,
+            "yesterday_view_num" => $yesterday_view_num,
             "view_growth_rate" => $view_growth_rate,
             "today_order_num" => $today_order_num,
+            "yesterday_order_num" => $yesterday_order_num,
             "order_growth_rate" => $order_growth_rate,
         ];
         return $result;
@@ -481,7 +486,7 @@ class SalesStatisticsService extends BaseService
             $data = [];
             foreach ($total_list as $item) {
                 $sku_data = "";
-                if(!empty($item["sku_data"])){
+                if (!empty($item["sku_data"])) {
                     // 平铺数组并以:分隔
                     $sku_data = array_map(function ($subArray) {
                         return implode(':', $subArray);
