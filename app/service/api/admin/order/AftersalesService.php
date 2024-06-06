@@ -309,6 +309,7 @@ class AftersalesService extends BaseService
                     "order_id" => $aftersales->order_id,
                     "user_id" => $aftersales->user_id,
                     "aftersale_id" => $aftersales_id,
+                    'shop_id' => $aftersales->shop_id
                 ];
                 if (!app(RefundApplyService::class)->applyRefund($apply_data)) {
                     throw new \Exception('创建退款申请失败');
@@ -348,6 +349,7 @@ class AftersalesService extends BaseService
                 "order_id" => $aftersales->order_id,
                 "user_id" => $aftersales->user_id,
                 "aftersale_id" => $aftersales_id,
+                'shop_id' => $aftersales->shop_id
             ];
             if (!app(RefundApplyService::class)->applyRefund($apply_data)) {
                 throw new \Exception('创建退款申请失败');
@@ -393,48 +395,6 @@ class AftersalesService extends BaseService
         // 生成售后记录
         AftersalesLog::create($aftersales_log);
         return true;
-    }
-
-    /**
-     * 执行退换货添加或更新
-     *
-     * @param int $id
-     * @param array $data
-     * @param bool $isAdd
-     * @return int|bool
-     * @throws ApiException
-     */
-    public function updateAftersales(int $id, array $data, bool $isAdd = false)
-    {
-        validate(AftersalesValidate::class)->only(array_keys($data))->check($data);
-        $data["number"] = $data["modify_number"];
-        unset($data["modify_number"]);
-        if ($isAdd) {
-            unset($data['aftersale_id']);
-            $result = Aftersales::create($data);
-            AdminLog::add('新增退换货' . $this->getName($result->aftersale_id));
-            $aftersale_id = $result->aftersale_id;
-        } else {
-            if (!$id) {
-                throw new ApiException('#id错误');
-            }
-            $result = Aftersales::where('aftersale_id', $id)->save($data);
-            AdminLog::add('更新退换货:' . $this->getName($id));
-            $aftersale_id = $id;
-        }
-        if ($result !== false) {
-            $admin_name = AdminUser::where('admin_id', request()->adminUid)->value("username");
-            $log_info = Aftersales::STATUS_NAME[$data['status']] . ":" . $data["reply"];
-            // 生成售后记录
-            $aftersales_log = [
-                "aftersale_id" => $aftersale_id,
-                "log_info" => $log_info,
-                "admin_name" => $admin_name,
-            ];
-            AftersalesLog::create($aftersales_log);
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -583,6 +543,7 @@ class AftersalesService extends BaseService
         $data['aftersales_sn'] = date("YmdHis") . rand(1000, 99999);
         $aftersale_items = $data['items'];
         $order = Order::where('order_id', $data['order_id'])->find();
+        $data["shop_id"] = $order->shop_id;
         if (!$order->hasPay()) {
             throw new ApiException(/** LANG */'未支付订单不允许售后');
         }

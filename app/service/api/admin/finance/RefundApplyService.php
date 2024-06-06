@@ -419,6 +419,7 @@ class RefundApplyService extends BaseService
             "order_id" => $data["order_id"],
             "user_id" => $data["user_id"],
             "aftersale_id" => $data["aftersale_id"],
+            'shop_id' => $data["shop_id"]
         ];
         $result = RefundApply::create($apply_data);
         return $result !== false;
