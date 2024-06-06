@@ -104,7 +104,7 @@ class ShopProductCategoryService extends BaseService
      * @return int|bool
      * @throws ApiException
      */
-    public function updateCategory(int $id, array $data, bool $isAdd = false)
+    public function updateCategory(int $id, array $data, bool $isAdd = false): bool|int
     {
         if ($isAdd) {
             $result = $this->model->save($data);

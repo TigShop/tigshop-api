@@ -78,7 +78,7 @@ class ShopProductCategory extends AdminBaseController
 
         $id = input('id/d');
         $item = $this->categoryService->getDetail($id);
-
+        $this->checkShopAuth($item['shop_id']);
         return $this->success([
             'item' => $item,
         ]);
@@ -102,7 +102,8 @@ class ShopProductCategory extends AdminBaseController
         if ($data['category_id'] == $data['parent_id']) {
             return $this->error(/** LANG */ '上级不能选自己');
         }
-        $data['shop_id'] = request()->shopId;
+        $item = $this->categoryService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         $result = $this->categoryService->updateCategory($id, $data, false);
         if ($result) {
             return $this->success('分类更新成功');
@@ -137,7 +138,8 @@ class ShopProductCategory extends AdminBaseController
         if (!in_array($field, ['category_name', 'measure_unit', 'is_hot', 'is_show', 'sort_order'])) {
             return $this->error('#field 错误');
         }
-
+        $item = $this->categoryService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         $data = [
             'category_id' => $id,
             $field => input('val'),
@@ -180,7 +182,8 @@ class ShopProductCategory extends AdminBaseController
     public function del(): \think\Response
     {
         $id = input('id/d');
-
+        $item = $this->categoryService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         if ($id) {
             $this->categoryService->deleteCategory($id);
             return $this->success('指定项目已删除');
@@ -202,6 +205,8 @@ class ShopProductCategory extends AdminBaseController
 
         if (input('type') == 'del') {
             foreach (input('ids') as $key => $id) {
+                $item = $this->categoryService->getDetail($id);
+                $this->checkShopAuth($item['shop_id']);
                 $id = intval($id);
                 $this->categoryService->deleteCategory($id);
             }

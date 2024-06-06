@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\adminapi;
 
 use app\BaseController;
+use exceptions\ApiException;
 
 /**
  * 控制器基础类
@@ -21,5 +22,24 @@ abstract class AdminBaseController extends BaseController
     {
         return true;
 //         return app(AuthorityService::class)->checkAuthor($author,request()->shopId,request()->authList);
+    }
+
+    /**
+     * 判断
+     * @param int $shopId
+     * @return false
+     */
+    public function checkShopAuth(int $shopId, bool $throwException = true): bool
+    {
+        if ($shopId != request()->ShopId) {
+            if (
+                $throwException
+            ) {
+                new ApiException('数据不存在');
+            } else {
+                return false;
+            }
+        }
+        return true;
     }
 }

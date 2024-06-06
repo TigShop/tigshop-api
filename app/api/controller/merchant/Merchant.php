@@ -5,6 +5,7 @@ namespace app\api\controller\merchant;
 use app\api\IndexBaseController;
 use app\service\api\index\merchant\ApplyService;
 use think\App;
+use utils\Config;
 
 class Merchant extends IndexBaseController
 {
@@ -43,7 +44,20 @@ class Merchant extends IndexBaseController
         ]);
     }
 
+    /**
+     * 申请入驻协议
+     * @return \think\Response
+     */
+    public function applyShopAgreement(): \think\Response
+    {
+        return $this->success([
+            'item' => Config::get('shop_agreement', 'merchant')
+        ]);
+    }
 
+    /**
+     * @return \think\Response
+     */
     public function myApply(): \think\Response
     {
         $item = $this->applyService->getApplyByUserId(request()->userId);
@@ -56,6 +70,9 @@ class Merchant extends IndexBaseController
     {
         $id = input('id/d', 0);
         $item = $this->applyService->getDetail($id);
+        if ($item['user_id'] != request()->userId) {
+            return $this->error('商户申请信息不存在');
+        }
         return $this->success([
             'item' => $item,
         ]);

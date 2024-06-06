@@ -16,6 +16,7 @@ namespace app\service\api\admin\user;
 use app\model\user\User;
 use app\service\core\BaseService;
 use exceptions\ApiException;
+use Fastknife\Utils\RandomUtils;
 use utils\Config;
 use utils\Time;
 
@@ -56,7 +57,7 @@ class UserRegistService extends BaseService
             'email' => $params['email'] ?? '',
             'password' => password_hash($params['password'], PASSWORD_DEFAULT),
             'avatar' => isset($params['avatar']) ? $params['avatar'] : '',
-            'nickname' => isset($params['nickname']) ? $params['nickname'] : '',
+            'nickname' => isset($params['nickname']) ? $params['nickname'] : 'USER_' . RandomUtils::getRandomCode(8, 3),
             'reg_time' => Time::now(),
             'referrer_user_id' => isset($params['referrer_user_id']) ? $params['referrer_user_id'] : 0, //推荐人
         ];
@@ -105,7 +106,7 @@ class UserRegistService extends BaseService
     public function generateUsername(): string
     {
         while (true) {
-            $username = Config::get('username_prefix') . rand(100000, 999999);
+            $username = Config::get('username_prefix') . RandomUtils::getRandomCode(8, 3);
             if (!User::where('username', $username)->count()) {
                 return $username;
             }

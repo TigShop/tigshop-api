@@ -181,11 +181,12 @@ class Apply extends AdminBaseController
         }
 
         if ($result) {
-            return $this->success('商户入驻申请审核成功');
+            return $this->success('商户入驻申请审核操作成功');
         } else {
-            return $this->error('商户入驻申请审核失败');
+            return $this->error('商户入驻申请审核操作失败');
         }
     }
+
 
     /**
      * 更新单个字段
