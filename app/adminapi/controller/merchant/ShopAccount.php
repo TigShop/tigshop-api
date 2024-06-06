@@ -12,9 +12,8 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
-use app\service\api\admin\shop\ShopAccountLogService;
-use app\service\api\admin\shop\ShopService;
-use app\validate\shop\ShopValidate;
+use app\service\api\admin\merchant\ShopAccountLogService;
+use app\service\api\admin\merchant\ShopService;
 use think\App;
 
 /**

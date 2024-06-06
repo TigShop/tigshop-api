@@ -12,7 +12,7 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
-use app\service\api\admin\shop\ShopService;
+use app\service\api\admin\merchant\ShopService;
 use app\validate\shop\ShopValidate;
 use think\App;
 

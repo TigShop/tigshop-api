@@ -39,7 +39,7 @@ class SalesStatisticsService extends BaseService
      */
     public function getConsoleData(int $shopId): array
     {
-
+        // 待付款订单
         $awaitPayTotal = app(OrderService::class)->getFilterCount([
             'shop_id' => $shopId,
             'order_status' => Order::ORDER_PENDING
@@ -74,7 +74,7 @@ class SalesStatisticsService extends BaseService
      * 面板控制台 - 实时数据
      * @return array
      */
-    public function getRealTimeData(): array
+    public function getRealTimeData(int $shopId): array
     {
         // 当天时间段
         $today = Time::getCurrentDatetime("Y-m-d");
@@ -82,40 +82,74 @@ class SalesStatisticsService extends BaseService
         // 获取环比时间区间
         $prev_date = app(StatisticsUserService::class)->getPrevDate([$today, Time::format(strtotime('+ 1 days'), "Y-m-d")]);
         // 支付金额
-        $today_order_amount = Order::payTime($start_end_time)->paid()->storePlatform()->where("is_del", 0)->sum("total_amount");
-        $yesterday_order_amount = Order::payTime($prev_date)->paid()->storePlatform()->where("is_del", 0)->sum("total_amount");
+        $today_order_amount = app(OrderService::class)->filterQuery([
+            'shop_id' => $shopId,
+            'pay_time' => $start_end_time,
+            'pay_status' => Order::PAYMENT_PAID
+        ])->sum('total_amount');
+
+        $yesterday_order_amount = app(OrderService::class)->filterQuery([
+            'shop_id' => $shopId,
+            'pay_time' => $prev_date,
+            'pay_status' => Order::PAYMENT_PAID
+        ])->sum('total_amount');
+
         $order_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_order_amount, $yesterday_order_amount);
 
         // 访客数
-        $today_visit_num = app(AccessLogService::class)->getVisitNum($start_end_time);
-        $yesterday_visit_num = app(AccessLogService::class)->getVisitNum($prev_date);
+        $today_visit_num = app(AccessLogService::class)->getVisitNum($start_end_time,0,0,$shopId);
+        $yesterday_visit_num = app(AccessLogService::class)->getVisitNum($prev_date,0,0,$shopId);
         $visit_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_visit_num, $yesterday_visit_num);
 
         //支付买家数
-        $today_buyer_num = Order::payTime($start_end_time)->paid()->storePlatform()->where("is_del", 0)->group("user_id")->count();
-        $yesterday_buyer_num = Order::payTime($prev_date)->paid()->storePlatform()->where("is_del", 0)->group("user_id")->count();
+        $today_buyer_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $start_end_time,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->group("user_id")->count();
+
+        $yesterday_buyer_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $prev_date,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->group("user_id")->count();
+
         $buyer_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_buyer_num, $yesterday_buyer_num);
 
         // 浏览量
-        $today_view_num = app(AccessLogService::class)->getVisitNum($start_end_time, 1);
-        $yesterday_view_num = app(AccessLogService::class)->getVisitNum($prev_date, 1);
+        $today_view_num = app(AccessLogService::class)->getVisitNum($start_end_time, 1,0,$shopId);
+        $yesterday_view_num = app(AccessLogService::class)->getVisitNum($prev_date, 1,0,$shopId);
         $view_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_view_num, $yesterday_view_num);
 
         // 支付订单数
-        $today_order_num = Order::payTime($start_end_time)->paid()->storePlatform()->where("is_del", 0)->count();
-        $yesterday_order_num = Order::payTime($prev_date)->paid()->storePlatform()->where("is_del", 0)->count();
+        $today_order_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $start_end_time,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->count();
+
+        $yesterday_order_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $prev_date,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->count();
         $order_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_order_num, $yesterday_order_num);
 
         $result = [
             "today_order_amount" => $today_order_amount,
+            "yesterday_order_amount" => $yesterday_order_amount,
             "order_amount_growth_rate" => $order_amount_growth_rate,
             "today_visit_num" => $today_visit_num,
+            "yesterday_visit_num" => $yesterday_visit_num,
             "visit_growth_rate" => $visit_growth_rate,
             "today_buyer_num" => $today_buyer_num,
+            "yesterday_buyer_num" => $yesterday_buyer_num,
             "buyer_growth_rate" => $buyer_growth_rate,
             "today_view_num" => $today_view_num,
+            "yesterday_view_num" => $yesterday_view_num,
             "view_growth_rate" => $view_growth_rate,
             "today_order_num" => $today_order_num,
+            "yesterday_order_num" => $yesterday_order_num,
             "order_growth_rate" => $order_growth_rate,
         ];
         return $result;
@@ -125,7 +159,7 @@ class SalesStatisticsService extends BaseService
      * 面板控制台 - 统计图表
      * @return array
      */
-    public function getPanelStatisticalData(): array
+    public function getPanelStatisticalData(int $shopId = 0): array
     {
         // 默认为一个月的数据
         $today = Time::getCurrentDatetime("Y-m-d");
@@ -133,15 +167,16 @@ class SalesStatisticsService extends BaseService
         $start_end_time = app(StatisticsUserService::class)->getDateRange(0, [$month_day, $today]);
 
         // 访问统计
-        $access_data = app(AccessLogService::class)->getVisitList($start_end_time, 1);
+        $access_data = app(AccessLogService::class)->getVisitList($start_end_time, 1,0,$shopId);
 
         // 订单统计 -- 订单数量/ 订单金额
-        $order_data = Order::field("DATE_FORMAT(FROM_UNIXTIME(pay_time), '%Y-%m-%d') AS period")
+        $order_data = app(OrderService::class)->filterQuery([
+                'pay_time' => $start_end_time,
+                'pay_status' => Order::PAYMENT_PAID,
+                'shop_id' => $shopId
+            ])
+            ->field("DATE_FORMAT(FROM_UNIXTIME(pay_time), '%Y-%m-%d') AS period")
             ->field("COUNT(*) AS order_count,SUM(total_amount) AS order_amount")
-            ->payTime($start_end_time)
-            ->paid()
-            ->where("is_del", 0)
-            ->storePlatform()
             ->group("period")
             ->select()->toArray();
 
@@ -481,7 +516,7 @@ class SalesStatisticsService extends BaseService
             $data = [];
             foreach ($total_list as $item) {
                 $sku_data = "";
-                if(!empty($item["sku_data"])){
+                if (!empty($item["sku_data"])) {
                     // 平铺数组并以:分隔
                     $sku_data = array_map(function ($subArray) {
                         return implode(':', $subArray);
