@@ -252,6 +252,7 @@ class Login extends IndexBaseController
             $openid = $message['FromUserName'];
             $ticket = $message['Ticket'];
             if (in_array($message['Event'], ['subscribe', 'SCAN'])) {
+                if (!empty($ticket) && !empty($openid))
                 Cache::set($ticket, $openid);
             }
         }
