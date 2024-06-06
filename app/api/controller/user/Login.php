@@ -186,6 +186,7 @@ class Login extends IndexBaseController
         $data = $this->request->only([
             'mobile' => '',
             'mobile_code' => '',
+            'password' => '',
             'open_data' => [],
             'referrer_user_id/d' => 0,
         ], 'post');
@@ -197,8 +198,7 @@ class Login extends IndexBaseController
         if (empty($user)) {
             try {
                 $username = app(UserRegistService::class)->generateUsername();
-                //随机密码
-                $password = RandomUtils::getRandomCode(8);
+                $password = $data['password'] ?? RandomUtils::getRandomCode(8);
                 $register = [
                     'username' => $username,
                     'password' => $password,

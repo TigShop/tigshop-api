@@ -12,7 +12,7 @@ class UserAuthorizeService extends BaseService
     const AUTHORIZE_TYPE = [
         'wechat' => 1,
         'miniProgram' => 2,
-        'pc' => 3,
+        'pc' => 1,
         'qq' => 4,
     ];
 
