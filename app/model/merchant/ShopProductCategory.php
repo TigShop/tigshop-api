@@ -15,10 +15,10 @@ use app\model\user\User;
 use think\Model;
 use utils\Time;
 
-class ShopCategory extends Model
+class ShopProductCategory extends Model
 {
     protected $pk = 'category_id';
-    protected $table = 'shop_category';
+    protected $table = 'shop_product_category';
 
     protected $createTime = 'add_time';
     protected $autoWriteTimestamp = 'int';
@@ -28,5 +28,6 @@ class ShopCategory extends Model
     {
         return Time::format($value);
     }
+
 
 }

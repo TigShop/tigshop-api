@@ -9,7 +9,7 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\service\api\admin\shop;
+namespace app\service\api\admin\merchant;
 
 use app\model\merchant\Shop;
 use app\model\merchant\ShopAccountLog;

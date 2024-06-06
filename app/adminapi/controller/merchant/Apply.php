@@ -15,7 +15,7 @@ use app\adminapi\AdminBaseController;
 use app\service\api\admin\authority\AdminUserService;
 use app\service\api\admin\merchant\ApplyService;
 use app\service\api\admin\merchant\MerchantService;
-use app\service\api\admin\shop\ShopService;
+use app\service\api\admin\merchant\ShopService;
 use app\service\api\admin\user\UserService;
 use think\App;
 use think\facade\Db;

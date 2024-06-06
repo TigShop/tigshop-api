@@ -53,4 +53,24 @@ Route::group('merchant', function () {
         Route::get('log_list', 'logList');
 
     })->prefix('merchant.shopAccount/');
+
+    // 分类
+    Route::group('shop_product_category', function () {
+        // 列表
+        Route::get('list', 'list');
+        // 添加
+        Route::post('create', 'create');
+        // 编辑
+        Route::post('update', 'update');
+        // 选择分类
+        Route::get('get_all_category', 'getAllCategory');
+        // 删除
+        Route::post('del', 'del');
+        // 更新字段
+        Route::post('update_field', 'updateField');
+        // batch批量操作
+        Route::post('batch', 'batch');
+        // 详情
+        Route::get('detail', 'detail');
+    })->prefix('merchant.shopProductCategory/');;
 });
