@@ -46,9 +46,9 @@ class Panel extends AdminBaseController
         $console_data = app(SalesStatisticsService::class)->getConsoleData($shopId);
 
         // 实时数据
-        $real_time_data = app(SalesStatisticsService::class)->getRealTimeData();
+        $real_time_data = app(SalesStatisticsService::class)->getRealTimeData($shopId);
         //统计图表
-        $panel_statistical_data = app(SalesStatisticsService::class)->getPanelStatisticalData();
+        $panel_statistical_data = app(SalesStatisticsService::class)->getPanelStatisticalData($shopId);
         return $this->success([
             'console_data' => $console_data,
             'real_time_data' => $real_time_data,
