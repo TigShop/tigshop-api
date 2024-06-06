@@ -117,10 +117,6 @@ class AftersalesService extends BaseService
         $result->can_cancel = $result->canCancel();
         $result->step_status = $this->getStepStatus($result);
 
-        if (!$result) {
-            throw new ApiException('退换货不存在');
-        }
-
         return $result->toArray();
     }
 

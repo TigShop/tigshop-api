@@ -174,11 +174,13 @@ class Shop extends AdminBaseController
         if (!in_array($field, ['status'])) {
             return $this->error('#field 错误');
         }
-
+        $val = input('val');
         $data = [
-            $field => input('val'),
+            $field => $val,
         ];
-
+        if ($field == 'status' && !in_array($data['val'], array_keys(\app\model\merchant\Shop::STATUS_LIST))) {
+            return $this->error('无效的状态值');
+        }
         $this->shopService->updateShopField($id, $data);
 
         return $this->success('更新成功');

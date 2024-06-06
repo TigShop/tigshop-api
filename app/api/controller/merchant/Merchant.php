@@ -29,7 +29,7 @@ class Merchant extends IndexBaseController
     public function apply(): \think\Response
     {
         $data = $this->request->only([
-            'shop_name' => '',
+            'shop_title' => '',
             'merchant_data' => '',
             'base_data' => '',
             'shop_data' => '',

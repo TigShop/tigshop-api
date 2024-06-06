@@ -278,4 +278,5 @@ class CartService extends BaseService
     {
         Cart::where('cart_id', $cart_id)->update(['is_checked' => $checked]);
     }
+
 }

@@ -111,7 +111,7 @@ class Apply extends AdminBaseController
         $id = input('id/d', 0);
         $data = $this->request->only([
             'merchant_apply_id' => $id,
-            'shop_name' => '',
+            'shop_title' => '',
             'status/d' => 1,
         ], 'post');
 
@@ -171,7 +171,7 @@ class Apply extends AdminBaseController
                 ]);
                 app(ShopService::class)->create([
                     'merchant_id' => $merchantDetail->merchant_id,
-                    'shop_title' => $item['shop_name']
+                    'shop_title' => $item['shop_title']
                 ]);
             }
             Db::commit();
