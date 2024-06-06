@@ -213,8 +213,8 @@ class SalesStatisticsService extends BaseService
         $prev_date = app(StatisticsUserService::class)->getPrevDate($start_end_time);
 
         // 商品支付金额
-        $product_payment = app(OrderService::class)->getPayMoneyTotal($start_end_time);
-        $prev_product_payment = app(OrderService::class)->getPayMoneyTotal($prev_date);
+        $product_payment = app(OrderService::class)->getPayMoneyTotal($start_end_time,$filter['shop_id']);
+        $prev_product_payment = app(OrderService::class)->getPayMoneyTotal($prev_date,$filter['shop_id']);
         $product_payment_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_payment, $prev_product_payment);
 
         // 商品退款金额
