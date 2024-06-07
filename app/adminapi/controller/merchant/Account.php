@@ -109,6 +109,7 @@ class Account extends AdminBaseController
             'account_name' => '',
             'bank_name' => '',
             'account_no' => '',
+            'bank_branch' => ''
         ], 'post');
         $data['merchant_id'] = request()->merchantId;
         $result = $this->merchantAccountService->update(0, $data, true);
@@ -133,6 +134,7 @@ class Account extends AdminBaseController
             'account_name' => '',
             'bank_name' => '',
             'account_no' => '',
+            'bank_branch' => ''
         ], 'post');
         $item = $this->merchantAccountService->getDetail($id);
         $this->checkMerchantAuth($item['merchant_id']);
