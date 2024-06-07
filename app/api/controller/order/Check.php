@@ -15,6 +15,7 @@ use app\api\IndexBaseController;
 use app\service\api\admin\order\OrderCheckService;
 use app\service\api\admin\user\UserAddressService;
 use think\App;
+use utils\Config;
 
 /**
  * 商品控制器
@@ -129,6 +130,14 @@ class Check extends IndexBaseController
             'buyer_note' => '',
             'invoice_data/a' => [],
         ]);
+        $close_order = Config::get('close_order');
+        if ($close_order == 1){
+            $this->error('商城正在维护已停止下单！');
+        }
+        $shop_reg_closed = Config::get('shop_reg_closed');
+        if ($shop_reg_closed == 1){
+            $this->error('商城已停止注册！');
+        }
         $orderCheckService->initSet($params);
 
         $result = $orderCheckService->submit();

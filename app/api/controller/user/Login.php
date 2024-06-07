@@ -196,6 +196,10 @@ class Login extends IndexBaseController
         //检测手机号是否存在
         $user = app(UserService::class)->getUserByMobile($data['mobile']);
         if (empty($user)) {
+            $shop_reg_closed = Config::get('shop_reg_closed');
+            if ($shop_reg_closed == 1){
+                $this->error('商城已停止注册！');
+            }
             try {
                 $username = app(UserRegistService::class)->generateUsername();
                 $password = $data['password'] ?? RandomUtils::getRandomCode(8);
