@@ -44,11 +44,12 @@ class Aftersales extends IndexBaseController
             'size' => 15,
             'sort_field' => 'order_id',
             'sort_order' => 'desc',
+            'user_id' => request()->userId
         ];
         $filter["page"] = input("page/d", 1);
 
         $result = $this->aftersalesService->afterSalesOrderList($filter);
-        $total = $this->aftersalesService->afterSalesOrderFilter()->count();
+        $total = $this->aftersalesService->afterSalesOrderFilter($filter['user_id'])->count();
         return $this->success([
             'filter_result' => $result,
             'total' => $total,

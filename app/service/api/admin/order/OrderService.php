@@ -159,8 +159,7 @@ class OrderService extends BaseService
             list($start_date, $end_date) = $filter['pay_time'];
             $start_date = Time::toTime($start_date);
             $end_date = Time::toTime($end_date) + 86400;
-            $pay_time = [$start_date, $end_date];
-            $query->whereTime('pay_time', 'between', $pay_time);
+            $query->whereTime('pay_time', 'between', [$start_date, $end_date]);
         }
 
         if (isset($filter["user_id"]) && $filter["user_id"] > 0) {
@@ -570,11 +569,16 @@ class OrderService extends BaseService
      * @param array $data
      * @return float
      */
-    public function getOrderTotal(array $data): float
+    public function getOrderTotal(array $data,int $shopId = 0): float
     {
         return OrderItem::hasWhere("orders", function ($query) use ($data) {
-            $query->storePlatform()->paid()->PayTime($data)->where("is_del", 0);
-        })->sum("quantity");
+                    $query->where('pay_status', Order::PAYMENT_PAID)->PayTime($data)->where("is_del", 0);
+                })
+                ->where(function ($query) use ($shopId) {
+                    if ($shopId) {
+                        $query->where("OrderItem.shop_id", $shopId);
+                    }
+                })->sum("OrderItem.quantity");
     }
 
     /**

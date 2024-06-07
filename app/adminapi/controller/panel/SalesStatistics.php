@@ -70,7 +70,7 @@ class SalesStatistics extends AdminBaseController
             "end_time" => "",
             'date_type/d' => 1,
         ], 'get');
-
+        $filter['shop_id'] = request()->shopId;
         $filterResult = $this->salesStatisticsService->getSaleDetail($filter);
 
         return $this->success([

@@ -97,6 +97,20 @@ class AftersalesService extends BaseService
             $query->where('aftersale_type', $filter['aftersale_type']);
         }
 
+        // 店铺检索
+        if (isset($filter['shop_id']) && !empty($filter['shop_id'])) {
+            $query->where('shop_id', $filter['shop_id']);
+        }
+
+        // 添加时间
+        if (isset($filter['add_time']) && !empty($filter['add_time'])) {
+            $filter['add_time'] = is_array($filter['add_time']) ? $filter['add_time'] : explode(',', $filter['add_time']);
+            list($start_date, $end_date) = $filter['add_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('add_time', 'between', [$start_date, $end_date]);
+        }
+
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
@@ -437,7 +451,7 @@ class AftersalesService extends BaseService
      * 可售后的订单列表过滤 -- PC 端
      * @return Order
      */
-    public function afterSalesOrderFilter()
+    public function afterSalesOrderFilter(int $user_id = 0): Order
     {
         $query = Order::with([
             "items" => function ($query) {
@@ -445,7 +459,7 @@ class AftersalesService extends BaseService
             },
         ])
             ->field("order_id,order_sn,shipping_time")
-            ->where(["is_del" => 0, "user_id" => request()->userId])
+            ->where(["is_del" => 0, "user_id" => $user_id])
             ->whereIn("order_status", [1, 2, 5]);
         return $query;
     }
@@ -457,7 +471,7 @@ class AftersalesService extends BaseService
      */
     public function afterSalesOrderList(array $filter): object
     {
-        $query = $this->afterSalesOrderFilter();
+        $query = $this->afterSalesOrderFilter($filter['user_id']);
         $list = $query->page($filter['page'], $filter['size'])->order($filter["sort_field"],
             $filter["sort_order"])->select();
 

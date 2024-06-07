@@ -315,33 +315,33 @@ class SalesStatisticsService extends BaseService
         $prev_date = app(StatisticsUserService::class)->getPrevDate($start_end_time);
 
         // 商品浏览量
-        $product_view = app(AccessLogService::class)->getVisitNum($start_end_time, 1, 1);
-        $prev_product_view = app(AccessLogService::class)->getVisitNum($prev_date, 1, 1);
+        $product_view = app(AccessLogService::class)->getVisitNum($start_end_time, 1, 1,$filter['shop_id']);
+        $prev_product_view = app(AccessLogService::class)->getVisitNum($prev_date, 1, 1,$filter['shop_id']);
         $product_view_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_view, $prev_product_view);
 
         // 商品访客数
-        $product_visitor = app(AccessLogService::class)->getVisitNum($start_end_time, 0, 1);
-        $prev_product_visitor = app(AccessLogService::class)->getVisitNum($prev_date, 0, 1);
+        $product_visitor = app(AccessLogService::class)->getVisitNum($start_end_time, 0, 1,$filter['shop_id']);
+        $prev_product_visitor = app(AccessLogService::class)->getVisitNum($prev_date, 0, 1,$filter['shop_id']);
         $product_visitor_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_visitor, $prev_product_visitor);
 
         // 下单件数
-        $order_num = app(OrderService::class)->getOrderTotal($start_end_time);
-        $prev_order_num = app(OrderService::class)->getOrderTotal($prev_date);
+        $order_num = app(OrderService::class)->getOrderTotal($start_end_time,$filter['shop_id']);
+        $prev_order_num = app(OrderService::class)->getOrderTotal($prev_date,$filter['shop_id']);
         $order_num_growth_rate = app(StatisticsUserService::class)->getGrowthRate($order_num, $prev_order_num);
 
         // 支付金额
-        $payment_amount = app(OrderService::class)->getPayMoneyTotal($start_end_time);
-        $prev_payment_amount = app(OrderService::class)->getPayMoneyTotal($prev_date);
+        $payment_amount = app(OrderService::class)->getPayMoneyTotal($start_end_time,$filter['shop_id']);
+        $prev_payment_amount = app(OrderService::class)->getPayMoneyTotal($prev_date,$filter['shop_id']);
         $payment_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($payment_amount, $prev_payment_amount);
 
         // 退款金额
-        $refund_amount = app(RefundApplyService::class)->getRefundTotal($start_end_time);
-        $prev_refund_amount = app(RefundApplyService::class)->getRefundTotal($prev_date);
+        $refund_amount = app(RefundApplyService::class)->getRefundTotal($start_end_time,$filter['shop_id']);
+        $prev_refund_amount = app(RefundApplyService::class)->getRefundTotal($prev_date,$filter['shop_id']);
         $refund_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($refund_amount, $prev_refund_amount);
 
         // 退款件数
-        $refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($start_end_time);
-        $prev_refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($prev_date);
+        $refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($start_end_time,$filter['shop_id']);
+        $prev_refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($prev_date,$filter['shop_id']);
         $refund_quantity_growth_rate = app(StatisticsUserService::class)->getGrowthRate($refund_quantity, $prev_refund_quantity);
 
         $result["sales_data"] = [
@@ -359,7 +359,7 @@ class SalesStatisticsService extends BaseService
             "refund_quantity_growth_rate" => $refund_quantity_growth_rate,
         ];
 
-        $result["sales_statistics_data"] = $this->getSalesStatisticsDetail($start_end_time);
+        $result["sales_statistics_data"] = $this->getSalesStatisticsDetail($start_end_time,$filter['shop_id']);
         return $result;
     }
 
@@ -368,7 +368,7 @@ class SalesStatisticsService extends BaseService
      * @param array $start_end_time
      * @return array
      */
-    public function getSalesStatisticsDetail(array $start_end_time): array
+    public function getSalesStatisticsDetail(array $start_end_time,int $shopId = 0): array
     {
         list($start_date, $end_date) = $start_end_time;
         // 横轴
@@ -379,15 +379,15 @@ class SalesStatisticsService extends BaseService
         $longitudinal_axis_payment_amount = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $payment_amount_list, 0, 4);
 
         // 退款金额
-        $refund_amount_list = app(RefundApplyService::class)->getRefundList($start_end_time);
+        $refund_amount_list = app(RefundApplyService::class)->getRefundList($start_end_time,$shopId);
         $longitudinal_axis_refund_amount = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $refund_amount_list, 0, 6);
 
         // 商品浏览量
-        $product_view_list = app(AccessLogService::class)->getVisitList($start_end_time, 1, 1);
+        $product_view_list = app(AccessLogService::class)->getVisitList($start_end_time, 1, 1,$shopId);
         $longitudinal_axis_product_view = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $product_view_list, 0, 2);
 
         // 商品访客量
-        $product_visitor_list = app(AccessLogService::class)->getVisitList($start_end_time, 0, 1);
+        $product_visitor_list = app(AccessLogService::class)->getVisitList($start_end_time, 0, 1,$shopId);
         $longitudinal_axis_product_visitor = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $product_visitor_list, 0, 2);
 
         $result = [
