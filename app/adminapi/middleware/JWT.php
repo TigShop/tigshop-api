@@ -6,6 +6,7 @@ namespace app\adminapi\middleware;
 
 use app\service\api\admin\authority\AccessTokenService;
 use app\service\api\admin\authority\AdminUserService;
+use exceptions\ApiException;
 use think\Exception;
 use think\facade\Request;
 
@@ -42,6 +43,10 @@ class JWT
                     throw new Exception('token数据验证失败', 401);
                 }
                 app(AdminUserService::class)->setLogin($admin_id);
+                if (request()->adminType == 'shop' && Request::pathinfo() != 'merchant/shop/my_shop' && !in_array(request()->shopId,
+                        request()->shopIds)) {
+                    throw new ApiException('非法请求');
+                }
             } else {
                 // token验证失败
                 throw new Exception('token验证失败', 401);
