@@ -140,6 +140,9 @@ class UserAddressService extends BaseService
             $data['region_names'] = app(RegionService::class)->getNames($data['region_ids']);
         }
         $data['user_id'] = $user_id;
+        if (isset($data['is_default']) && $data['is_default'] == 1) {
+            UserAddress::where('user_id', $user_id)->update(['is_default' => 0]);
+        }
         $result = UserAddress::create($data);
         return $result->address_id;
     }
@@ -160,6 +163,9 @@ class UserAddressService extends BaseService
 
         if (!$id) {
             throw new ApiException(/** LANG */'#id错误');
+        }
+        if (isset($data['is_default']) && $data['is_default'] == 1) {
+            UserAddress::where('user_id', $user_id)->where('address_id', '<>', $id)->update(['is_default' => 0]);
         }
         $result = UserAddress::where('address_id', $id)->where('user_id', $user_id)->save($data);
         return $id;

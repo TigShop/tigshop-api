@@ -172,6 +172,9 @@ class Authority extends AdminBaseController
     {
         $type = input('type/d', 0);
         $admin_type = input('admin_type', 'admin');
+        if (request()->adminType == 'shop') {
+            $admin_type = 'shop';
+        }
         $cat_list = $this->authorityService->authorityList(0, $type, request()->authList, $admin_type);
 
         return $this->success([

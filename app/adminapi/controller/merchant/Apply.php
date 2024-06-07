@@ -173,6 +173,7 @@ class Apply extends AdminBaseController
                 ]);
                 app(ShopService::class)->create([
                     'merchant_id' => $merchantDetail->merchant_id,
+                    'shop_logo' => isset($item['shop_data']['shop_logo']) ? $item['shop_data']['shop_logo'] : '',
                     'shop_title' => $item['shop_title']
                 ]);
             }
