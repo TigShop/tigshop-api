@@ -299,9 +299,6 @@ class AdminUserService extends BaseService
         if ($user['admin_type'] == 'shop') {
             request()->shopIds = Shop::where('merchant_id', $user['merchant_id'])->column('shop_id');
             request()->shopId = request()->header('X-Shop-Id', 0);
-            if (!in_array(request()->shopId, request()->shopIds)) {
-                throw new ApiException('非法请求');
-            }
         } elseif ($user['admin_type'] == 'admin') {
             request()->shopId = 0;
         }

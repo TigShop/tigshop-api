@@ -42,4 +42,23 @@ abstract class AdminBaseController extends BaseController
         }
         return true;
     }
+
+    /**
+     * 判断
+     * @param int $merchant_id
+     * @return false
+     */
+    public function checkMerchantAuth(int $merchant_id, bool $throwException = true): bool
+    {
+        if ($merchant_id != request()->merchantId) {
+            if (
+                $throwException
+            ) {
+                new ApiException('数据不存在');
+            } else {
+                return false;
+            }
+        }
+        return true;
+    }
 }

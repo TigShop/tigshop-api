@@ -33,7 +33,20 @@ class ShopAccount extends AdminBaseController
     {
         parent::__construct($app);
         $this->shopService = $shopService;
-        $this->checkAuthor('storeManage'); //权限检查
+    }
+
+    /**
+     * 资产总览
+     * @return \think\Response
+     */
+    public function index(): \think\Response
+    {
+        $item = $this->shopService->getDetail(request()->shopId);
+        return $this->success([
+            'shop_money' => $item['shop_money'],
+            'frozen_money' => $item['frozen_money'],
+            'un_settlement_money' => '',
+        ]);
     }
 
     /**
@@ -52,7 +65,7 @@ class ShopAccount extends AdminBaseController
             'sort_order' => 'desc',
         ], 'get');
 
-        $filterResult = $this->shopService->getFilterResult($filter);
+        $filterResult = $this->shopService->getFilterList($filter);
         $total = $this->shopService->getFilterCount($filter);
 
         return $this->success([

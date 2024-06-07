@@ -38,7 +38,6 @@ class Apply extends AdminBaseController
     {
         parent::__construct($app);
         $this->applyService = $applyService;
-        $this->checkAuthor('merchantApplyManage'); //权限检查
     }
 
     /**

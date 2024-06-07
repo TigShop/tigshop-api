@@ -36,12 +36,13 @@ class ApplyCoreService
                 $result['base_data']['license_addr_province_name'] .= $regionList[$regionId] ?? '';
             }
         }
-        if (!empty($result['shop_data']['business_address'])) {
-            $regionList = Region::whereIn('region_id', $result['shop_data']['business_address'])->column('region_name',
+        if (!empty($result['merchant_data']['business_address'])) {
+            $regionList = Region::whereIn('region_id',
+                $result['merchant_data']['business_address'])->column('region_name',
                 'region_id');
-            $result['shop_data']['business_address_name'] = '';
-            foreach ($result['shop_data']['business_address'] as $regionId) {
-                $result['shop_data']['business_address_name'] .= $regionList[$regionId] ?? '';
+            $result['merchant_data']['business_address_name'] = '';
+            foreach ($result['merchant_data']['business_address'] as $regionId) {
+                $result['merchant_data']['business_address_name'] .= $regionList[$regionId] ?? '';
             }
         }
         return $result ?: null;
