@@ -18,6 +18,7 @@ use app\service\api\admin\user\UserRegistService;
 use app\service\api\admin\user\UserService;
 use exceptions\ApiException;
 use think\App;
+use utils\Config;
 
 /**
  * 会员登录控制器
@@ -50,7 +51,10 @@ class Regist extends IndexBaseController
             'email' => '',
             'email_code' => '',
         ], 'post');
-
+        $shop_reg_closed = Config::get('shop_reg_closed');
+        if ($shop_reg_closed == 1) {
+            $this->error('商城已停止注册！');
+        }
         $regist_type = input('regist_type', 'mobile');
         $password = input('password', '');
         $referrer_user_id = input('referrer_user_id/d', 0);
@@ -111,6 +115,7 @@ class Regist extends IndexBaseController
             'token' => $token,
         ]);
     }
+
     /**
      * 获取验证码
      * @throws \exceptions\ApiException
