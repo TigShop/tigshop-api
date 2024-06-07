@@ -17,6 +17,7 @@ use app\model\order\Aftersales;
 use app\model\order\AftersalesItem;
 use app\model\order\Order;
 use app\model\payment\PayLogRefund;
+use app\service\api\admin\order\AftersalesService;
 use app\service\api\admin\order\OrderService;
 use app\service\api\admin\pay\PayLogRefundService;
 use app\service\api\admin\pay\PayLogService;
@@ -374,17 +375,18 @@ class RefundApplyService extends BaseService
      * @param array $data
      * @return array
      */
-    public function getRefundList(array $data): array
+    public function getRefundList(array $data,int $shopId = 0): array
     {
-        $list = RefundApply::hasWhere("orderInfo", function ($query) {
-            $query->storePlatform();
-        })
-            ->field("SUM(RefundApply.online_balance + RefundApply.offline_balance + RefundApply.refund_balance) AS refund_amount,RefundApply.add_time")
-            ->refundOrderStatus()
-            ->addTime($data)
+        $list = $this->filterQuery([
+                'shop_id' => $shopId,
+                'refund_status' => RefundApply::REFUND_STATUS_PROCESSED,
+                'add_time' => $data
+            ])
+            ->field("SUM(online_balance + offline_balance + refund_balance) AS refund_amount,add_time")
             ->select()->toArray();
+
         foreach ($list as $key => $item) {
-            if (empty($item['refund_id'])) {
+            if (empty($item['refund_amount'])) {
                 unset($list[$key]);
             }
         }
@@ -396,20 +398,20 @@ class RefundApplyService extends BaseService
      * @param array $data
      * @return int
      */
-    public function getRefundItemTotal(array $data): int
+    public function getRefundItemTotal(array $data,int $shopId = 0): int
     {
-        list($star, $end) = $data;
-        $rows = Aftersales::join("aftersales_item ai", "ai.aftersale_id = aftersales.aftersale_id", "LEFT")
-            ->join("order o", "o.order_id = aftersales.order_id", "LEFT")
-            ->where("aftersales.status", Aftersales::STATUS_COMPLETE)
-            ->whereBetween("aftersales.add_time", [Time::toTime($star), Time::toTime($end)])
-            ->field("SUM(ai.number) as total");
-        if (request()->shopId > 0) {
-            $rows->where("o.shop_id", request()->shopId);
-        }
-        $count = $rows->find()->total ?? 0;
-        $count = intval($count);
-        return $count;
+        $subQuery = app(AftersalesService::class)->filterQuery([
+            'status' => Aftersales::STATUS_COMPLETE,
+            'shop_id' => $shopId,
+            'add_time' => $data,
+        ])->field("aftersale_id")->buildSql();
+
+        $result = AftersalesItem::whereExists(function ($query) use ($subQuery) {
+                    $query->table($subQuery)->alias("sub")->whereRaw("sub.aftersale_id = aftersales_item.aftersale_id");
+                })
+                ->field("SUM(number) as total")
+                ->findOrEmpty();
+        return $result->total ?? 0;
     }
 
     /**
