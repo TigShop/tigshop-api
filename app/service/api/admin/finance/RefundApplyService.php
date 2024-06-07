@@ -97,6 +97,11 @@ class RefundApplyService extends BaseService
             $query->whereTime('add_time', 'between', $pay_time);
         }
 
+        // 店铺检索
+        if (isset($filter['shop_id']) && !empty($filter['shop_id'])) {
+            $query->where('shop_id', $filter['shop_id']);
+        }
+
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
@@ -353,14 +358,14 @@ class RefundApplyService extends BaseService
      * @param array $data
      * @return mixed
      */
-    public function getRefundTotal(array $data): mixed
+    public function getRefundTotal(array $data,int $shopId = 0): mixed
     {
-        return RefundApply::hasWhere("orderInfo", function ($query) {
-            $query->storePlatform();
-        })
+        return $this->filterQuery([
+                "shop_id" => $shopId,
+                "refund_status" => RefundApply::REFUND_STATUS_PROCESSED,
+                'add_time' => $data
+            ])
             ->field("SUM(online_balance + offline_balance + refund_balance) AS refund_amount")
-            ->refundOrderStatus()
-            ->addTime($data)
             ->findOrEmpty()->refund_amount ?? 0;
     }
 

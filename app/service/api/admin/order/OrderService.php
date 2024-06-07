@@ -596,9 +596,13 @@ class OrderService extends BaseService
      * @param array $data
      * @return mixed
      */
-    public function getPayBalanceTotal(array $data)
+    public function getPayBalanceTotal(array $data,int $shopId = 0)
     {
-        return Order::payTime($data)->storePlatform()->ValidOrder()->where("is_del", 0)->sum('balance');
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING,Order::ORDER_COMPLETED]
+        ])->sum('balance');
     }
 
     /**
@@ -606,13 +610,14 @@ class OrderService extends BaseService
      * @param array $data
      * @return array
      */
-    public function getPayMoneyList(array $data): array
+    public function getPayMoneyList(array $data,int $shopId = 0): array
     {
-        return Order::payTime($data)
+        return $this->filterQuery([
+                'pay_time' => $data,
+                'shop_id' => $shopId,
+                'pay_status' => Order::PAYMENT_PAID
+            ])
             ->field('total_amount,pay_time')
-            ->storePlatform()
-            ->paid()
-            ->where("is_del", 0)
             ->select()->toArray();
     }
 

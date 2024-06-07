@@ -76,6 +76,15 @@ class UserRechargeOrderService extends BaseService
             $query->where('status', $filter["status"]);
         }
 
+        // 支付时间
+        if (isset($filter['pay_time']) && !empty($filter['pay_time'])) {
+            $filter['pay_time'] = is_array($filter['pay_time']) ? $filter['pay_time'] : explode(',', $filter['pay_time']);
+            list($start_date, $end_date) = $filter['pay_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('paid_time', 'between', [$start_date, $end_date]);
+        }
+
         if(isset($filter["user_id"]) && $filter["user_id"] > 0){
             $query->where('user_id', $filter["user_id"]);
         }
