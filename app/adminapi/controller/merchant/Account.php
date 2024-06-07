@@ -12,12 +12,8 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
-use app\service\api\admin\authority\AdminUserService;
-use app\service\api\admin\merchant\merchantAccountService;
-use app\service\api\admin\merchant\ShopService;
-use app\service\api\admin\user\UserService;
+use app\service\api\admin\merchant\MerchantAccountService;
 use think\App;
-use think\facade\Db;
 use think\Response;
 
 /**

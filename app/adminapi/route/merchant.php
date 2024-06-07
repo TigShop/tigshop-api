@@ -23,6 +23,22 @@ Route::group('merchant', function () {
         // batch批量操作
         Route::post('batch', 'merchant.apply/batch');
     });
+    // 商户账户
+    Route::group('account', function () {
+        // 列表
+        Route::get('list', 'list');
+        // 列表
+        Route::get('config', 'config');
+        // 添加
+        Route::post('create', 'create');
+        // 编辑
+        Route::post('update', 'update');
+        // 删除
+        Route::post('del', 'del');
+        // batch批量操作;
+        // 详情
+        Route::get('detail', 'detail');
+    })->prefix('merchant.account/');
     // 商户管理
     Route::group('merchant', function () {
         // 列表
@@ -72,21 +88,7 @@ Route::group('merchant', function () {
         Route::post('batch', 'batch');
         // 详情
         Route::get('detail', 'detail');
-    })->prefix('merchant.shopProductCategory/');
+    })->prefix('merchant.merchant/');
 
-    // 商户账户
-    Route::group('account', function () {
-        // 列表
-        Route::get('list', 'list');
-        // 添加
-        Route::post('create', 'create');
-        // 编辑
-        Route::post('update', 'update');
-        // 删除
-        Route::post('del', 'del');
-        // batch批量操作
-        Route::post('batch', 'batch');
-        // 详情
-        Route::get('detail', 'detail');
-    })->prefix('merchant.account/');
+
 });
