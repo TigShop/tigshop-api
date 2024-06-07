@@ -156,7 +156,7 @@ class ShopProductCategoryService extends BaseService
      * @param bool $return_ids 是否返回分类id列表
      * @return array
      */
-    public function catList(int $category_id = 0, int $shopId): array
+    public function catList(int $category_id = 0, int $shopId = 0): array
     {
         $cat_list = $this->model->alias('c')->field('c.category_id, c.category_name, c.parent_id')
             ->order('c.parent_id, c.sort_order ASC, c.category_id ASC')->where('shop_id', $shopId)->where("c.is_show",
