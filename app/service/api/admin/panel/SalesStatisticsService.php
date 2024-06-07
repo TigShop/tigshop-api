@@ -17,6 +17,7 @@ use app\model\order\OrderItem;
 use app\model\product\Product;
 use app\model\user\User;
 use app\service\api\admin\finance\RefundApplyService;
+use app\service\api\admin\finance\UserRechargeOrderService;
 use app\service\api\admin\order\OrderService;
 use app\service\api\admin\product\CommentService;
 use app\service\api\admin\sys\AccessLogService;
@@ -218,13 +219,20 @@ class SalesStatisticsService extends BaseService
         $product_payment_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_payment, $prev_product_payment);
 
         // 商品退款金额
-        $product_refund = app(RefundApplyService::class)->getRefundTotal($start_end_time);
-        $prev_product_refund = app(RefundApplyService::class)->getRefundTotal($prev_date);
+        $product_refund = app(RefundApplyService::class)->getRefundTotal($start_end_time,$filter['shop_id']);
+        $prev_product_refund = app(RefundApplyService::class)->getRefundTotal($prev_date,$filter['shop_id']);
         $product_refund_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_refund, $prev_product_refund);
 
         // 充值金额
-        $recharge_amount = UserRechargeOrder::paidTime($start_end_time)->paid()->sum('amount');
-        $prev_recharge_amount = UserRechargeOrder::paidTime($prev_date)->paid()->sum('amount');
+        $recharge_amount = app(UserRechargeOrderService::class)->filterQuery([
+            'pay_time' => $start_end_time,
+            'status' => UserRechargeOrder::STATUS_SUCCESS
+        ])->sum('amount');
+
+        $prev_recharge_amount = app(UserRechargeOrderService::class)->filterQuery([
+            'pay_time' => $prev_date,
+            'status' => UserRechargeOrder::STATUS_SUCCESS
+        ])->sum('amount');
         $recharge_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($recharge_amount, $prev_recharge_amount);
 
         // 营业额
@@ -233,8 +241,8 @@ class SalesStatisticsService extends BaseService
         $turnover_growth_rate = app(StatisticsUserService::class)->getGrowthRate($turnover, $prev_turnover);
 
         // 余额支付金额
-        $balance_payment = app(OrderService::class)->getPayBalanceTotal($start_end_time);
-        $prev_balance_payment = app(OrderService::class)->getPayBalanceTotal($prev_date);
+        $balance_payment = app(OrderService::class)->getPayBalanceTotal($start_end_time,$filter['shop_id']);
+        $prev_balance_payment = app(OrderService::class)->getPayBalanceTotal($prev_date,$filter['shop_id']);
         $balance_payment_growth_rate = app(StatisticsUserService::class)->getGrowthRate($balance_payment, $prev_balance_payment);
 
         $result["sales_data"] = [
@@ -251,7 +259,7 @@ class SalesStatisticsService extends BaseService
         ];
 
         // 获取统计图表数据
-        $result["sales_statistics_data"] = $this->getSalesStatisticsData($filter["date_type"], $start_end_time, $filter["statistic_type"]);
+        $result["sales_statistics_data"] = $this->getSalesStatisticsData($filter["date_type"], $start_end_time, $filter["statistic_type"],$filter['shop_id']);
         // 导出
         if ($filter["is_export"]) {
             // 导出
@@ -271,12 +279,12 @@ class SalesStatisticsService extends BaseService
      * @param int $statistic_type
      * @return array
      */
-    public function getSalesStatisticsData(int $date_type, array $start_end_time, int $statistic_type): array
+    public function getSalesStatisticsData(int $date_type, array $start_end_time, int $statistic_type,int $shopId = 0): array
     {
         list($start_date, $end_date) = $start_end_time;
         // 横轴
         $horizontal_axis = app(StatisticsUserService::class)->getHorizontalAxis($date_type, $start_date, $end_date);
-        $order_statistics_list = app(OrderService::class)->getPayMoneyList($start_end_time);
+        $order_statistics_list = app(OrderService::class)->getPayMoneyList($start_end_time,$shopId);
         if ($statistic_type) {
             // 订单金额统计
             $longitudinal_axis = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $order_statistics_list, $date_type, 4);
