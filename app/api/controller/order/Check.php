@@ -134,10 +134,6 @@ class Check extends IndexBaseController
         if ($close_order == 1){
             $this->error('商城正在维护已停止下单！');
         }
-        $shop_reg_closed = Config::get('shop_reg_closed');
-        if ($shop_reg_closed == 1){
-            $this->error('商城已停止注册！');
-        }
         $orderCheckService->initSet($params);
 
         $result = $orderCheckService->submit();
