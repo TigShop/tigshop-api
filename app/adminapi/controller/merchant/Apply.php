@@ -138,6 +138,9 @@ class Apply extends AdminBaseController
             Db::startTrans();
             $item = $this->applyService->getDetail($params['merchant_apply_id']);
             $userInfo = app(UserService::class)->getDetail($item['user_id']);
+            if ($item['status'] != 1) {
+                throw new \Exception('状态错误');
+            }
             $result = $this->applyService->audit($params['merchant_apply_id'], $params['status'],
                 $params['audit_remark']);
             if ($result && $params['status'] == 10) {

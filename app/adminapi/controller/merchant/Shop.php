@@ -78,7 +78,7 @@ class Shop extends AdminBaseController
             'sort_order' => 'desc',
         ], 'get');
 
-        $filterResult = $this->shopService->getFilterResult($filter);
+        $filterResult = $this->shopService->getFilterList($filter);
         $total = $this->shopService->getFilterCount($filter);
 
         return $this->success([
