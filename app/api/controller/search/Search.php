@@ -57,7 +57,7 @@ class Search extends IndexBaseController
         ]);
         $product_search = new ProductSearchService($params, 'list');
         $filter_selected = $product_search->getFilterSeleted();
-        $filter_list = $product_search->getFilterList();
+        $filter_list = $product_search->getFilterLists();
         return $this->success([
             'filter' => $filter_list,
             'filter_selected' => $filter_selected,

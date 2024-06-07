@@ -107,7 +107,7 @@ class ProductSearchService extends BaseService
         return $count;
     }
     // 筛选列表
-    public function getFilterList(): array
+    public function getFilterLists(): array
     {
         $filter = [
             'category' => [],

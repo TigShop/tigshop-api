@@ -72,5 +72,21 @@ Route::group('merchant', function () {
         Route::post('batch', 'batch');
         // 详情
         Route::get('detail', 'detail');
-    })->prefix('merchant.shopProductCategory/');;
+    })->prefix('merchant.shopProductCategory/');
+
+    // 商户账户
+    Route::group('account', function () {
+        // 列表
+        Route::get('list', 'list');
+        // 添加
+        Route::post('create', 'create');
+        // 编辑
+        Route::post('update', 'update');
+        // 删除
+        Route::post('del', 'del');
+        // batch批量操作
+        Route::post('batch', 'batch');
+        // 详情
+        Route::get('detail', 'detail');
+    })->prefix('merchant.account/');
 });
