@@ -87,7 +87,7 @@ class SuppliersService extends BaseService
      */
     public function getDetail(int $id): Suppliers
     {
-        $result = $this->suppliersModel->where('suppliers_id', $id)->find()->append(["regions"]);
+        $result = $this->suppliersModel->where('suppliers_id', $id)->append(["regions"])->find();
 
         if (!$result) {
             throw new ApiException('供应商不存在');

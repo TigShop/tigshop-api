@@ -312,4 +312,28 @@ class ArticleCategoryService extends BaseService
         }
         return (array) $tree;
     }
+
+    /**
+     * 获取指定分类id下的所有父级分类id
+     * @param int $article_category_id 分类id
+     * @return array
+     */
+    public function getParents(int $article_category_id): array
+    {
+        // 递归获取父类id集合
+        $category_ids = [];
+        while ($article_category_id != 0) {
+            $result = ArticleCategory::field('article_category_id,parent_id')
+                ->where('article_category_id', $article_category_id)
+                ->findOrEmpty()
+                ->toArray();
+            if (!empty($result)) {
+                array_unshift($category_ids, $result['article_category_id']);
+                $article_category_id = $result['parent_id'];
+            } else {
+                break;
+            }
+        }
+        return $category_ids;
+    }
 }

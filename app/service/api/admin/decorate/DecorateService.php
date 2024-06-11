@@ -74,10 +74,6 @@ class DecorateService extends BaseService
             $query->where('decorate_type', $filter['decorate_type']);
         }
 
-        if (isset($filter['is_show']) && $filter['is_show'] > -1) {
-            $query->where('is_show', $filter['is_show']);
-        }
-
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
