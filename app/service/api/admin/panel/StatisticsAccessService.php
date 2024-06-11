@@ -11,7 +11,7 @@
 
 namespace app\service\api\admin\panel;
 
-use app\model\sys\AccessLog;
+use app\service\api\admin\sys\AccessLogService;
 use app\service\core\BaseService;
 use exceptions\ApiException;
 
@@ -29,22 +29,22 @@ class StatisticsAccessService extends BaseService
             throw new ApiException('请选择日期');
         }
         $start_end_time = [$filter["start_time"], $filter["end_time"]];
+        $data_query = app(AccessLogService::class)->filterQuery([
+                        'access_time' => $start_end_time,
+                        'shop_id' => $filter['shop_id']
+                    ])->group("period");
+
         if ($filter["is_hits"]) {
             // 点击量统计
-            $data = AccessLog::field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
-                ->field("COUNT(*) AS access_count")
-                ->accessTime($start_end_time)
-                ->storePlatform()
-                ->group("period")
-                ->select();
+            $data = $data_query->field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
+                    ->field("COUNT(*) AS access_count")
+                    ->select();
+
         } else {
             // 访客数统计
-            $data = AccessLog::field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
-                ->field("COUNT(DISTINCT ip_address) AS access_count")
-                ->accessTime($start_end_time)
-                ->storePlatform()
-                ->group("period")
-                ->select();
+            $data = $data_query->field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
+                    ->field("COUNT(DISTINCT ip_address) AS access_count")
+                    ->select();
         }
 
         $data = $data->toArray();

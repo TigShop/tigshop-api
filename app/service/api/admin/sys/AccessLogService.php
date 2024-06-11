@@ -73,12 +73,11 @@ class AccessLogService extends BaseService
 
         // 访问时间
         if (isset($filter['access_time']) && !empty($filter['access_time'])) {
-            $value = is_array($filter['access_time']) ? $filter['access_time'] : explode(',', $filter['access_time']);
-            list($start_date, $end_date) = $value;
+            $filter['access_time'] = is_array($filter['access_time']) ? $filter['access_time'] : explode(',', $filter['access_time']);
+            list($start_date, $end_date) = $filter['access_time'];
             $start_date = Time::toTime($start_date);
             $end_date = Time::toTime($end_date) + 86400;
-            $value = [$start_date, $end_date];
-            return $query->whereTime('access_time', "between", $value);
+            $query->whereTime('access_time', "between", [$start_date, $end_date]);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {

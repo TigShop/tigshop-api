@@ -110,6 +110,15 @@ class UserService extends BaseService
             $query->where('points', '>', $filter["points_gt"]);
         }
 
+        // 注册时间
+        if (isset($filter['reg_time']) && !empty($filter['reg_time'])) {
+            $filter['reg_time'] = is_array($filter['reg_time']) ? $filter['reg_time'] : explode(',',$filter['reg_time']);
+            list($start_date, $end_date) = $filter['reg_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('reg_time', "between", [$start_date, $end_date]);
+        }
+
         if (isset($filter['points_lt']) && !empty($filter["points_lt"])) {
             $query->where('points', '<', $filter["points_lt"]);
         }

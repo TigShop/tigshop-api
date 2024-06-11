@@ -71,6 +71,7 @@ class StatisticsUser extends AdminBaseController
             'sort_field' => 'order_amount',
             'sort_order' => 'desc',
         ], 'get');
+        $filter["shop_id"] = request()->shopId;
 
         $filterResult = $this->statisticsUserService->getUserConsumptionRanking($filter);
         $total = $this->statisticsUserService->getFilterCount($filter);

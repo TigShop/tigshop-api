@@ -47,6 +47,7 @@ class StatisticsAccess extends AdminBaseController
             "start_time" => "",
             "end_time" => "",
         ], 'get');
+        $filter["shop_id"] = request()->shopId;
 
         $filterResult = $this->statisticsAccessService->getAccessStatistics($filter);
 

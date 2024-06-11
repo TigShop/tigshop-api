@@ -16,6 +16,7 @@ use app\model\user\User;
 use app\service\api\admin\finance\UserRechargeOrderService;
 use app\service\api\admin\order\OrderService;
 use app\service\api\admin\sys\AccessLogService;
+use app\service\api\admin\user\UserService;
 use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Excel;
@@ -37,7 +38,11 @@ class StatisticsUserService extends BaseService
         $start_end_time = $this->getDateRange($filter["date_type"], $filter["start_end_time"]);
 
         list($start_date, $end_date) = $start_end_time;
-        $list = User::RegTime($start_end_time)->field("user_id,reg_time")->select()->toArray();
+        $list = app(UserService::class)->filterQuery([
+                "reg_time" => $start_end_time
+            ])
+            ->field("user_id,reg_time")
+            ->select()->toArray();
 
         // 横轴
         $horizontal_axis = $this->getHorizontalAxis($filter["date_type"], $start_date, $end_date);
