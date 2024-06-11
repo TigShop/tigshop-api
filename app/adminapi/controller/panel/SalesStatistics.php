@@ -68,7 +68,6 @@ class SalesStatistics extends AdminBaseController
         $filter = $this->request->only([
             "start_time" => "",
             "end_time" => "",
-            'date_type/d' => 1,
         ], 'get');
         $filter['shop_id'] = request()->shopId;
         $filterResult = $this->salesStatisticsService->getSaleDetail($filter);
@@ -95,7 +94,7 @@ class SalesStatistics extends AdminBaseController
             'sort_field' => 'item_id',
             'sort_order' => 'desc',
         ], 'get');
-
+        $filter["shop_id"] = request()->shopId;
         $filterResult = $this->salesStatisticsService->getSaleProductDetail($filter);
 
         return $this->success([

@@ -411,13 +411,24 @@ class SalesStatisticsService extends BaseService
         if (!empty($filter["start_time"]) && !empty($filter["end_time"])) {
             $start_end_time = [$filter["start_time"], $filter["end_time"]];
         }
-        $query = OrderItem::hasWhere("orders", function ($query) use ($start_end_time) {
-            $query->where("is_del", 0)->addTime($start_end_time)->validOrder()->storePlatform();
-        })
-            ->with("orders")
+
+        $query = OrderItem::with(["orders"])
+            ->hasWhere('orders',function ($query) use ($start_end_time) {
+                $query->where("is_del", 0)
+                    ->whereIn('order_status', [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED])
+                    ->addTime($start_end_time);
+            })
             ->visible(['orders' => ['order_sn', 'add_time']])
-            ->keyword($filter["keyword"])
-            ->field("(quantity * price) AS subtotal");
+            ->field("(quantity * price) AS subtotal")
+            ->where(function ($query) use ($filter) {
+                if(!empty($filter["keyword"])){
+                    $query->where("product_name|product_sn", "like", "%{$filter["keyword"]}%");
+                }
+                if($filter['shop_id']){
+                    $query->where("OrderItem.shop_id", $filter['shop_id']);
+                }
+            });
+
         $count = $query->count();
         $total_list = $query->select()->toArray();
         $list = $query->page($filter["page"], $filter["size"])->order($filter["sort_field"], $filter["sort_order"])->select()->toArray();
@@ -430,15 +441,20 @@ class SalesStatisticsService extends BaseService
             // 导出
             $data = [];
             foreach ($total_list as $item) {
+                if (!empty($item['sku_data'])) {
+                    $sku_data = implode('|', array_map(function ($data) {
+                        return $data['name'] . ':' . $data['value'];
+                    }, $item['sku_data']));
+                }
                 $data[] = [
                     "product_name" => $item["product_name"],
                     "product_sn" => $item["product_sn"],
-                    "sku_data" => is_array($item["sku_data"]) ? implode(":", $item["sku_data"]) : "",
-                    "order_sn" => $item["order"]["order_sn"],
+                    "sku_data" => $sku_data ?? '',
+                    "order_sn" => $item["orders"]["order_sn"],
                     "quantity" => $item["quantity"],
                     "price" => $item["price"],
                     "subtotal" => $item["subtotal"],
-                    "add_time" => $item["order"]["add_time"],
+                    "add_time" => $item["orders"]["add_time"],
                 ];
             }
             app(StatisticsUserService::class)->executeExport($data, 0, 6);
