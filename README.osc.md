@@ -110,15 +110,120 @@ PC端：http://demo.tigshop.com/ （电脑端打开）
 
 ---
 
-### 部署教程
+## 部署教程
 
-ps: 如果你不清楚如何启动我们的商城，请仔细阅wiki当中的文档
+### 运行环境准备
 
+服务器环境推荐要求
 
-https://tigshop.com/
+* Nignx
+* PHP >= 8.2
+* composer
+* MySQL  >= 5.5
+* Redis
+* Supervisor管理器
+* Node >= 18
+
+安装PHP扩展插件 fileinfo、redis
+
 ---
 
+### 安装api接口项目
 
+1，下载源码后复制根目录下的.example.env 改名为.env。并修改mysql和redis链接地址与账号
+2，根目录执行以下命令安装下载代码包
+
+``` composer install ```
+
+3，给日志目录写入权限
+
+``` chmod -R 777 runtime```
+
+4，配置nginx站点指向public目录并设置伪静态
+
+```
+location (/api|adminapi) {
+	if (!-e $request_filename){
+		rewrite  ^(.*)$  /index.php?s=$1  last;   break;
+	}
+}
+```
+
+开启消息队列：
+Supervisor管理器，运行
+
+```php think queue:listen --queue ```
+
+---
+
+### 安装Admin管理后台前端
+
+1，下载源码后修改根目录下的.env.production
+
+修改 VITE_BASE_URL 值为您后端接口地址的值
+
+2，执行本地打包并生成打包后文件
+
+```shell
+npm install
+
+npm run build:prod 
+```
+
+3，构建打包成功之后，会在根目录生成 admin-dist 文件夹，里面就是构建打包好的admin-dist文件夹复制里面的文件到API项目的public下并重命名为admin
+
+```shell
+#管理后台访问地址
+https://yourwebsite.com/admin
+```
+
+---
+
+### 安装H5前端
+
+1，下载源码后修改根目录下的.env.production
+
+修改 VITE_APP_BASE_URL 值为您后端接口地址的值
+
+2，执行本地打包并生成打包后文件
+
+```shell
+npm install
+
+npm run build:h5 
+```
+
+3，构建打包成功之后，会在根目录生成 dist/h5 文件夹，里面就是构建打包好的h5文件夹复制里面的文件到API项目的public下并重命名为mobile
+
+```shell
+#H5端访问地址
+https://yourwebsite.com/mobile
+```
+
+
+---
+
+### 安装PC前端
+
+1，下载源码后修改根目录下的.env.production
+
+修改 VITE_API_PROXY_URL 值为您后端接口地址的值
+
+2，执行本地打包并生成打包后文件
+
+```shell
+npm install
+
+npm run build
+```
+
+3，构建打包成功之后，会在根目录生成 .output 文件夹，里面就是构建打包好的.output文件夹复制里面的文件到API项目的public下并重命名为web
+
+因为pc端需要更换支持seo需要服务端渲染。所以Supervisor管理器，运行
+
+```node /API项目目录/web/server/index.mjs ```
+
+4，
 
 ---
 
