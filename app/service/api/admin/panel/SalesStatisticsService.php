@@ -14,12 +14,12 @@ namespace app\service\api\admin\panel;
 use app\model\finance\UserRechargeOrder;
 use app\model\order\Order;
 use app\model\order\OrderItem;
-use app\model\product\Product;
 use app\model\user\User;
 use app\service\api\admin\finance\RefundApplyService;
 use app\service\api\admin\finance\UserRechargeOrderService;
 use app\service\api\admin\order\OrderService;
 use app\service\api\admin\product\CommentService;
+use app\service\api\admin\product\ProductService;
 use app\service\api\admin\sys\AccessLogService;
 use app\service\core\BaseService;
 use exceptions\ApiException;
@@ -467,32 +467,56 @@ class SalesStatisticsService extends BaseService
      * @return array
      * @throws \think\db\exception\DbException
      */
-    public function getSaleIndicators(): array
+    public function getSaleIndicators(int $shopId = 0): array
     {
         //订单总数
-        $order_num = Order::where("is_del", 0)->ValidOrder()->storePlatform()->count();
+        $order_num = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED],
+        ]);
         //订单商品总数
         $order_product_num = OrderItem::hasWhere("orders", function ($query) {
-            $query->where("is_del", 0)->validOrder()->paid()->storePlatform();
-        })->count();
+                $query->where("is_del", 0)
+                    ->whereIn('order_status',[Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED])
+                    ->where('pay_status',Order::PAYMENT_PAID);
+            })
+            ->where(function ($query) use ($shopId) {
+                if ($shopId) {
+                    $query->where('OrderItem.shop_id', $shopId);
+                }
+            })
+            ->count();
+
         //订单总金额
-        $order_total_amount = Order::where("is_del", 0)->ValidOrder()->storePlatform()->sum('total_amount');
+        $order_total_amount = app(OrderService::class)->filterQuery([
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED],
+        ])->sum('total_amount');
+
         //会员总数
         $user_num = User::count();
         //消费会员总数
-        $consumer_membership_num = Order::where("is_del", 0)->ValidOrder()->storePlatform()->group('user_id')->count();
+        $consumer_membership_num = app(OrderService::class)->filterQuery([
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED],
+            'shop_id' => $shopId
+        ])->group('user_id')->count();
+
         //人均消费数
-        $capita_consumption = number_format($order_total_amount / $user_num, 2, '.', '');
+        $capita_consumption = $user_num > 0 ? number_format($order_total_amount / $user_num, 2, '.', '') : 0;
         //访问数 -- 商品点击数
-        $click_count = Product::where("is_delete", 0)->storePlatform()->sum('click_count');
+        $click_count = app(ProductService::class)->filterQuery([
+            'shop_id' => $shopId ? $shopId : -2,
+            'is_delete' => 0
+        ])->sum('click_count');
+
         //访问转化率
-        $click_rate = number_format(($order_num / $click_count) * 100, 2, '.', '');
+        $click_rate = $click_count > 0 ? number_format(($order_num / $click_count) * 100, 2, '.', '') : 0;
         //订单转化率
-        $order_rate = number_format(($order_total_amount / $click_count) * 100, 2, '.', '');
+        $order_rate = $click_count > 0 ? number_format(($order_total_amount / $click_count) * 100, 2, '.', '') : 0;
         //消费会员比率
-        $consumer_membership_rate = number_format(($consumer_membership_num / $user_num) * 100, 2, '.', '');
+        $consumer_membership_rate = $user_num > 0 ? number_format(($consumer_membership_num / $user_num) * 100, 2, '.', '') : 0;
         //购买率
-        $purchase_rate = number_format(($order_num / $user_num) * 100, 2, '.', '');
+        $purchase_rate = $user_num > 0 ? number_format(($order_num / $user_num) * 100, 2, '.', '') : 0;
         $result = [
             "order_num" => $order_num,
             "order_product_num" => $order_product_num,
@@ -520,11 +544,21 @@ class SalesStatisticsService extends BaseService
         if (!empty($filter["start_time"]) && !empty($filter["end_time"])) {
             $start_end_time = [$filter["start_time"], $filter["end_time"]];
         }
-        $query = OrderItem::hasWhere("orders", function ($query) use ($start_end_time) {
-            $query->where("is_del", 0)->addTime($start_end_time)->validOrder()->storePlatform();
-        })
-            ->keyword($filter["keyword"])
+
+        $query = OrderItem::hasWhere('orders',function ($query) use ($start_end_time) {
+                $query->where("is_del", 0)
+                    ->whereIn('order_status', [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED])
+                    ->addTime($start_end_time);
+            })
             ->field("SUM(quantity * price) AS total_sales_amount,SUM(quantity) AS total_sales_num")
+            ->where(function ($query) use ($filter) {
+                if(!empty($filter["keyword"])){
+                    $query->where("product_name|product_sn", "like", "%{$filter["keyword"]}%");
+                }
+                if($filter['shop_id']){
+                    $query->where("OrderItem.shop_id", $filter['shop_id']);
+                }
+            })
             ->group("product_id");
 
         $count = $query->count();
@@ -539,9 +573,7 @@ class SalesStatisticsService extends BaseService
             // 导出
             $data = [];
             foreach ($total_list as $item) {
-                $sku_data = "";
                 if (!empty($item["sku_data"])) {
-                    // 平铺数组并以:分隔
                     $sku_data = array_map(function ($subArray) {
                         return implode(':', $subArray);
                     }, $item["sku_data"]);
@@ -550,7 +582,7 @@ class SalesStatisticsService extends BaseService
                 $data[] = [
                     "product_name" => $item["product_name"],
                     "product_sn" => $item["product_sn"],
-                    "sku_data" => $sku_data,
+                    "sku_data" => $sku_data ?? "",
                     "total_sales_num" => $item["total_sales_num"],
                     "total_sales_amount" => $item["total_sales_amount"],
                 ];

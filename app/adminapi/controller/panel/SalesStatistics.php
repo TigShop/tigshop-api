@@ -111,7 +111,7 @@ class SalesStatistics extends AdminBaseController
      */
     public function salesIndicators(): Response
     {
-        $filterResult = $this->salesStatisticsService->getSaleIndicators();
+        $filterResult = $this->salesStatisticsService->getSaleIndicators(request()->shopId);
         return $this->success([
             'filter_result' => $filterResult,
         ]);
@@ -133,6 +133,7 @@ class SalesStatistics extends AdminBaseController
             'sort_field' => 'item_id',
             'sort_order' => 'desc',
         ], 'get');
+        $filter["shop_id"] = request()->shopId;
 
         $filterResult = $this->salesStatisticsService->getSalesRanking($filter);
 
