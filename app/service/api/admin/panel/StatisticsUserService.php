@@ -103,31 +103,22 @@ class StatisticsUserService extends BaseService
      */
     public function getFilterData(array $filter): mixed
     {
-        $start_end_time = [];
-        if (!empty($filter["start_time"]) && !empty($filter["end_time"])) {
-            $start_end_time = [$filter["start_time"], $filter["end_time"]];
-        }
+        $query = app(OrderService::class)->filterQuery([
+                "pay_status" => Order::PAYMENT_PAID,
+                'add_start_time' => $filter["start_time"] ?? "",
+                'add_end_time' => $filter['end_time'] ?? "",
+                "shop_id" => $filter['shop_id'] ? $filter['shop_id'] : -1,
+            ])
+            ->leftJoin("user", "user.user_id = order.user_id")
+            ->field("user.username,user.mobile,COUNT(order.order_id) as order_num,SUM(order.total_amount) AS order_amount")
+            ->where(function ($query) use ($filter) {
+                if (!empty($filter['keyword'])) {
+                    $query->where('user.username|user.mobile', 'like', '%' . $filter['keyword'] . '%');
+                }
+            })
+            ->group("order.user_id")
+            ->order($filter["sort_field"], $filter["sort_order"]);
 
-        $query = Order::leftJoin("user", "user.user_id = order.user_id")
-            ->where("order.pay_status", ">", 0)
-            ->where("order.is_del", 0)
-            ->addTime($start_end_time)
-            ->storePlatform()
-            ->field("user.username,user.mobile,COUNT(order.order_id) as order_num,user.order_amount")
-            ->group("order.user_id");
-
-        if ($filter["sort_field"] == "order_amount") {
-            $query = $query->order("user.order_amount", $filter["sort_order"]);
-        } elseif ($filter["sort_field"] == "order_num") {
-            $query = $query->order("order_num", $filter["sort_order"]);
-        }
-
-        if (!empty($filter["keyword"])) {
-            $query->where(function ($query) use ($filter) {
-                $query->where('user.username', 'like', '%' . $filter['keyword'] . '%')
-                    ->whereOr('user.mobile', 'like', '%' . $filter['keyword'] . '%');
-            });
-        }
         return $query;
     }
 
