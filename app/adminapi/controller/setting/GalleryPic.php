@@ -214,7 +214,7 @@ class GalleryPic extends AdminBaseController
             'pic_thumb' => $thumb_img,
             'pic_name' => $image->orgName,
             'add_time' => Time::now(),
-            'pic_store_id' => Request()->shopId,
+            'shop_id' => Request()->shopId,
         ];
 
         $id = $this->galleryPicService->createGalleryPic($data);
