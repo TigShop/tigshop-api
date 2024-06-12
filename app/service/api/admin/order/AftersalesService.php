@@ -98,7 +98,7 @@ class AftersalesService extends BaseService
         }
 
         // 店铺检索
-        if (isset($filter['shop_id']) && !empty($filter['shop_id'])) {
+        if (isset($filter['shop_id']) && $filter['shop_id'] > -1) {
             $query->where('shop_id', $filter['shop_id']);
         }
 
