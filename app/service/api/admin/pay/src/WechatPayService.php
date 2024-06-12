@@ -22,7 +22,7 @@ class WechatPayService extends PayService
     const KEY_LENGTH_BYTE = 32;
     const AUTH_TAG_LENGTH_BYTE = 16;
 
-    private $payType = 'null';
+    private string|null $payType = null;
 
     protected string $appId = '';
 
@@ -128,7 +128,7 @@ class WechatPayService extends PayService
             $data = json_decode($data, true);
             //查询订单
             $query_data = $this->queryOrderPay($data['out_trade_no']);
-            if ($query_data['trade_state'] == 'trade_state') {
+            if ($query_data['trade_state'] == 'SUCCESS') {
                 //支付成功--设置订单未已支付
                 $pay_sn = $query_data['out_trade_no'];
                 app(PaymentService::class)->paySuccess($pay_sn);
@@ -350,8 +350,7 @@ class WechatPayService extends PayService
      */
     public function getNotifyUrl(): string
     {
-        return 'https://demo2.lyecs.com/index/test';
-        return Url::app('');
+        return Config::get('pc_domain') . '/api/index/order/pay/notify';
     }
 
     /**
@@ -360,8 +359,7 @@ class WechatPayService extends PayService
      */
     public function getRefundNotifyUrl(): string
     {
-        return 'https://demo2.lyecs.com/index/test';
-        return Url::app('');
+        return Config::get('pc_domain') . '/api/index/order/pay/refund_notify';
     }
 
     /**

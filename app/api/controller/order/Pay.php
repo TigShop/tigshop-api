@@ -79,9 +79,8 @@ class Pay extends IndexBaseController
         } else {
             $pay_status = app(PayLogService::class)->getPayStatus($pay_log_id);
         }
-        //根据后台配置项来确定使用那些支付类型
         return $this->success([
-            'pay_status' => $pay_status,
+            'pay_status' => $pay_status > 0 ? 1 : 0,
         ]);
     }
 
