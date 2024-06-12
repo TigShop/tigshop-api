@@ -187,7 +187,7 @@ https://yourwebsite.com/admin
 
 1，下载源码后修改根目录下的.env.production
 
-修改 VITE_APP_BASE_URL 值为您后端接口地址的值
+修改 VITE_BASE_URL 值为您后端接口地址的值
 
 2，执行本地打包并生成打包后文件
 
@@ -211,7 +211,7 @@ https://yourwebsite.com/mobile
 
 1，下载源码后修改根目录下的.env.production
 
-修改 VITE_API_PROXY_URL 值为您后端接口地址的值
+修改 VITE_BASE_URL 值为您后端接口地址的值
 
 2，执行本地打包并生成打包后文件
 
