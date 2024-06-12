@@ -141,7 +141,7 @@ PC端：http://demo.tigshop.com/ （电脑端打开）
 4，配置nginx站点指向public目录并设置伪静态
 
 ```
-location (/api|adminapi) {
+location ~ ^/(api|adminapi){
 	if (!-e $request_filename){
 		rewrite  ^(.*)$  /index.php?s=$1  last;   break;
 	}
@@ -152,6 +152,11 @@ location (/api|adminapi) {
 Supervisor管理器，运行
 
 ```php think queue:listen --queue ```
+
+```shell
+#接口访问地址
+https://yourwebsite.com
+```
 
 ---
 
