@@ -55,8 +55,9 @@ class Decorate extends AdminBaseController
             'sort_field' => 'decorate_id',
             'sort_order' => 'desc',
         ], 'get');
+        $filter['shop_id'] = request()->shopId;
 
-        $filterResult = $this->decorateService->getFilterResult($filter);
+        $filterResult = $this->decorateService->getFilterList($filter);
         $total = $this->decorateService->getFilterCount($filter);
 
         return $this->success([
@@ -75,6 +76,7 @@ class Decorate extends AdminBaseController
     {
         $id = input('id/d', 0);
         $item = $this->decorateService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         $has_draft_data = false;
         if ($item['draft_data']) {
             $has_draft_data = true;
@@ -93,10 +95,10 @@ class Decorate extends AdminBaseController
     public function loadDraftData(): Response
     {
         $id = input('id/d', 0);
-        $draft_data = $this->decorateService->loadDraftData($id);
-
+        $item = $this->decorateService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         return $this->success([
-            'data' => $draft_data,
+            'data' => $detail['draft_data'] ?? [],
         ]);
     }
 
@@ -112,7 +114,8 @@ class Decorate extends AdminBaseController
             'decorate_id' => $id,
             'data' => '',
         ], 'post');
-
+        $item = $this->decorateService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         $result = $this->decorateService->saveDecoratetoDraft($id, $data['data']);
         return $this->success(/** LANG */'草稿保存成功');
     }
@@ -129,7 +132,8 @@ class Decorate extends AdminBaseController
             'decorate_id' => $id,
             'data' => '',
         ], 'post');
-
+        $item = $this->decorateService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         $result = $this->decorateService->publishDecorate($id, $data);
         return $this->success(/** LANG */'装修发布成功');
     }
@@ -144,6 +148,7 @@ class Decorate extends AdminBaseController
             'decorate_title' => '',
             'decorate_type/d' => 1,
             'data' => '',
+            'shop_id' => request()->shopId
         ], 'post');
 
         try {
@@ -177,7 +182,8 @@ class Decorate extends AdminBaseController
             'decorate_type/d' => 1,
             'data' => '',
         ], 'post');
-
+        $item = $this->decorateService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         try {
             validate(DecorateValidate::class)
                 ->scene('update')
@@ -203,7 +209,8 @@ class Decorate extends AdminBaseController
     {
         $id = input('id/d', 0);
         $field = input('field', '');
-
+        $item = $this->decorateService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         if (!in_array($field, ['decorate_title', 'is_show', 'sort_order'])) {
             return $this->error(/** LANG */'#field 错误');
         }
@@ -226,6 +233,8 @@ class Decorate extends AdminBaseController
     public function del(): Response
     {
         $id = input('id/d', 0);
+        $item = $this->decorateService->getDetail($id);
+        $this->checkShopAuth($item['shop_id']);
         $this->decorateService->deleteDecorate($id);
         return $this->success(/** LANG */'指定项目已删除');
     }
@@ -246,6 +255,8 @@ class Decorate extends AdminBaseController
                 //批量操作一定要事务
                 Db::startTrans();
                 foreach (input('ids') as $key => $id) {
+                    $item = $this->decorateService->getDetail($id);
+                    $this->checkShopAuth($item['shop_id']);
                     $id = intval($id);
                     $this->decorateService->deleteDecorate($id);
                 }

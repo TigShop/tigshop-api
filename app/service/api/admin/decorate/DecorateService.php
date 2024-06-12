@@ -21,37 +21,9 @@ use utils\Time;
  */
 class DecorateService extends BaseService
 {
-    protected Decorate $decorateModel;
-
-    public function __construct(Decorate $decorateModel)
+    public function __construct(Decorate $model)
     {
-        $this->decorateModel = $decorateModel;
-    }
-
-    /**
-     * 获取筛选结果
-     *
-     * @param array $filter
-     * @return array
-     */
-    public function getFilterResult(array $filter): array
-    {
-        $query = $this->filterQuery($filter);
-        $result = $query->page($filter['page'], $filter['size'])->select();
-        return $result->toArray();
-    }
-
-    /**
-     * 获取筛选结果数量
-     *
-     * @param array $filter
-     * @return int
-     */
-    public function getFilterCount(array $filter): int
-    {
-        $query = $this->filterQuery($filter);
-        $count = $query->count();
-        return $count;
+        $this->model = $model;
     }
 
     /**
@@ -62,7 +34,7 @@ class DecorateService extends BaseService
      */
     protected function filterQuery(array $filter): object
     {
-        $query = $this->decorateModel->query();
+        $query = $this->model->query();
         // 处理筛选条件
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
@@ -76,6 +48,10 @@ class DecorateService extends BaseService
 
         if (isset($filter['is_show']) && $filter['is_show'] > -1) {
             $query->where('is_show', $filter['is_show']);
+        }
+
+        if (isset($filter['shop_id']) && $filter['shop_id'] > -1) {
+            $query->where('shop_id', $filter['shop_id']);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
@@ -93,7 +69,7 @@ class DecorateService extends BaseService
      */
     public function getDetail(int $id): Decorate
     {
-        $result = $this->decorateModel->where('decorate_id', $id)->find();
+        $result = $this->model->where('decorate_id', $id)->find();
 
         if (!$result) {
             throw new ApiException(/** LANG */'装修不存在');
@@ -121,7 +97,7 @@ class DecorateService extends BaseService
      */
     public function getName(int $id): ?string
     {
-        return $this->decorateModel::where('decorate_id', $id)->value('decorate_title');
+        return $this->model::where('decorate_id', $id)->value('decorate_title');
     }
 
     /**
@@ -131,8 +107,8 @@ class DecorateService extends BaseService
      */
     public function createDecorate(array $data):int
     {
-        $result = $this->decorateModel->save($data);
-        return $this->decorateModel->getKey();
+        $result = $this->model->save($data);
+        return $this->model->getKey();
     }
 
     /**
@@ -149,7 +125,7 @@ class DecorateService extends BaseService
         if (!$id) {
             throw new ApiException(/** LANG */'#id错误');
         }
-        $result = $this->decorateModel->where('decorate_id', $id)->save($data);
+        $result = $this->model->where('decorate_id', $id)->save($data);
         return $result !== false;
     }
     /**
@@ -167,7 +143,7 @@ class DecorateService extends BaseService
         $data['status'] = 1;
         $data['draft_data'] = '';
         $data['update_time'] = Time::now();
-        $result = $this->decorateModel->where('decorate_id', $id)->save($data);
+        $result = $this->model->where('decorate_id', $id)->save($data);
         return $result !== false;
     }
 
@@ -186,7 +162,7 @@ class DecorateService extends BaseService
         $data = [
             'draft_data' => $draft_data,
         ];
-        $result = $this->decorateModel->where('decorate_id', $id)->save($data);
+        $result = $this->model->where('decorate_id', $id)->save($data);
         return $result !== false;
     }
 
@@ -203,7 +179,7 @@ class DecorateService extends BaseService
         if (!$id) {
             throw new ApiException(/** LANG */'#id错误');
         }
-        $result = $this->decorateModel::where('decorate_id', $id)->save($data);
+        $result = $this->model::where('decorate_id', $id)->save($data);
         return $result !== false;
     }
 
@@ -218,7 +194,7 @@ class DecorateService extends BaseService
         if (!$id) {
             throw new ApiException(/** LANG */'#id错误');
         }
-        $result = $this->decorateModel::destroy($id);
+        $result = $this->model::destroy($id);
         return $result !== false;
     }
 
@@ -273,7 +249,7 @@ class DecorateService extends BaseService
      */
     public function getPreviewDecorate(int $type, int $decorate_id): array
     {
-        $result = $this->decorateModel->where('decorate_type', $type)->where('decorate_id', $decorate_id)->find();
+        $result = $this->model->where('decorate_type', $type)->where('decorate_id', $decorate_id)->find();
         $result = $result ? $result->toArray() : $result;
         if (!$result) {
             throw new ApiException(/** LANG */'模板不存在' . $decorate_id);
@@ -296,7 +272,7 @@ class DecorateService extends BaseService
      */
     public function getDecorateModule(string $type, bool $is_home = false, int $status = 1, bool $is_draft = false): array
     {
-        $result = $this->decorateModel->where('decorate_type', $type)
+        $result = $this->model->where('decorate_type', $type)
             ->where('is_home', $is_home)
             ->where('status', $status)->find();
         $result = $result ? $result->toArray() : $result;
@@ -342,7 +318,7 @@ class DecorateService extends BaseService
      */
     public function getDecorateModuleData($decorate_id, $module_index, array $params = []): array
     {
-        $result = $this->decorateModel->find($decorate_id);
+        $result = $this->model->find($decorate_id);
         $result = $result ? $result->toArray() : $result;
         if (!$result) {
             throw new ApiException(/** LANG */'模板不存在');
