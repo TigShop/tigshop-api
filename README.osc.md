@@ -222,8 +222,26 @@ npm run build
 
 ```node /API项目目录/web/server/index.mjs ```
 
-4，
+4，nginx 增加配置转发支持服务端渲染
 
+```shell
+ location =/
+{
+    proxy_pass http://127.0.0.1:3000;
+    
+}
+
+ location /_nuxt/
+{
+    proxy_pass http://127.0.0.1:3000;
+    
+}
+```
+
+```shell
+#PC端访问地址
+https://yourwebsite.com/
+```
 ---
 
 ### 商城功能展示
