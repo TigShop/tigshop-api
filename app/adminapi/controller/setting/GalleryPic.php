@@ -107,7 +107,9 @@ class GalleryPic extends AdminBaseController
             'is_show/d' => 1,
             'sort_order/d' => 50,
         ], 'post');
-
+        if (request()->adminType == 'shop') {
+            $data['shop_id'] = request()->shopId;
+        }
         try {
             validate(GalleryPicValidate::class)
                 ->scene('create')
