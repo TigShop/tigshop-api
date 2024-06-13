@@ -281,7 +281,8 @@ class Product extends AdminBaseController
             'check_reason' => '',
             'product_article_list' => [],
             'img_list' => [],
-            'shop_id' => request()->shopId
+            'shop_id' => request()->shopId,
+            'shop_category_id' => 0
         ], 'post');
         validate(ProductValidate::class)->only(array_keys($data))->check($data);
         $result = $this->productService->updateProduct($id, $data, true);
@@ -357,6 +358,7 @@ class Product extends AdminBaseController
             'check_reason' => '',
             'product_article_list' => [],
             'img_list' => [],
+            'shop_category_id' => 0
         ], 'post');
 
         /* 处理属性 */
