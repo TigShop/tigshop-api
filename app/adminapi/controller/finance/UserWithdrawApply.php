@@ -120,11 +120,8 @@ class UserWithdrawApply extends AdminBaseController
         $id = input('id/d', 0);
         $data = $this->request->only([
             'id' => $id,
-            'user_id/d' => 0,
-            'amount' => '',
             'postscript' => '',
             'status/d' => 0,
-            'account_data' => [],
         ], 'post');
 
         try {

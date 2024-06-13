@@ -109,8 +109,6 @@ class UserRechargeOrder extends AdminBaseController
         $id = input('id/d', 0);
         $data = $this->request->only([
             'order_id' => $id,
-            'user_id/d' => 0,
-            'amount' => 0,
             'postscript' => '',
             'status/d' => 0,
         ], 'post');
