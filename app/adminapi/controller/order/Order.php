@@ -66,10 +66,9 @@ class Order extends AdminBaseController
             'sort_field' => 'order_id',
             'sort_order' => 'desc',
         ], 'get');
-        if(request()->adminType == 'shop')
-        {
-            $filter['shop_id'] = request()->shopId;
-        }
+
+        $filter['shop_id'] = $this->shopId;
+
         $filterResult = $this->orderService->getFilterResult($filter);
         $total = $this->orderService->getFilterCount($filter);
         return $this->success([
@@ -295,10 +294,9 @@ class Order extends AdminBaseController
             'sort_field' => 'order_id',
             'sort_order' => 'desc',
         ], 'get');
-        if(request()->adminType == 'shop')
-        {
-            $filter['shop_id'] = request()->shopId;
-        }
+
+        $filter['shop_id'] = $this->shopId;
+
         $filterResult = $this->orderService->getFilterList($filter);
         $result = $this->orderService->orderExport($filterResult);
         return $result ? $this->success("导出成功") : $this->error('导出失败');

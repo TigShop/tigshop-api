@@ -54,10 +54,9 @@ class Aftersales extends AdminBaseController
             'status/d' => 0,
             'aftersale_type/d' => 0,
         ], 'get');
-        if(request()->adminType == 'shop')
-        {
-            $filter['shop_id'] = request()->shopId;
-        }
+
+        $filter['shop_id'] = $this->shopId;
+
         $filterResult = $this->aftersalesService->getFilterResult($filter);
         $total = $this->aftersalesService->getFilterCount($filter);
 
