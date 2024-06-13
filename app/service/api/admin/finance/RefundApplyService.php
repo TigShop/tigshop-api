@@ -49,7 +49,7 @@ class RefundApplyService extends BaseService
      */
     public function getFilterResult(array $filter): array
     {
-        $query = $this->filterQuery($filter)->with(["aftersales", "order_info"])->append(["refund_type_name", "refund_status_name"]);
+        $query = $this->filterQuery($filter)->with(["aftersales"])->append(["refund_type_name", "refund_status_name"]);
         $result = $query->page($filter['page'], $filter['size'])->select();
 
         return $result->toArray();
@@ -80,7 +80,9 @@ class RefundApplyService extends BaseService
         // 处理筛选条件
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
-            $query->keyword($filter["keyword"]);
+            $query->hasWhere('aftersales', function ($query) use ($filter) {
+                $query->where('aftersales_sn', 'like', "%$filter[keyword]%");
+            });
         }
 
         // 退款状态
