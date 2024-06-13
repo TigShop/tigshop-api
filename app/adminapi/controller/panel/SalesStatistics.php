@@ -32,7 +32,7 @@ class SalesStatistics extends AdminBaseController
     {
         parent::__construct($app);
         $this->salesStatisticsService = $salesStatisticsService;
-        $this->checkAuthor('statisticsSalesManage'); //权限检查
+        $this->checkAuthor('statisticsSalesManage');//权限检查
     }
 
     /**
@@ -48,7 +48,8 @@ class SalesStatistics extends AdminBaseController
             'date_type/d' => 1,
             'start_end_time' => "",
         ], 'get');
-        $filter['shop_id'] = request()->shopId;
+
+        $filter['shop_id'] = $this->shopId;
         // 销售统计数据
         $filterResult = $this->salesStatisticsService->getSalesData($filter);
 
@@ -69,7 +70,7 @@ class SalesStatistics extends AdminBaseController
             "start_time" => "",
             "end_time" => "",
         ], 'get');
-        $filter['shop_id'] = request()->shopId;
+        $filter['shop_id'] = $this->shopId;
         $filterResult = $this->salesStatisticsService->getSaleDetail($filter);
 
         return $this->success([
@@ -94,7 +95,7 @@ class SalesStatistics extends AdminBaseController
             'sort_field' => 'item_id',
             'sort_order' => 'desc',
         ], 'get');
-        $filter["shop_id"] = request()->shopId;
+        $filter['shop_id'] = $this->shopId;
         $filterResult = $this->salesStatisticsService->getSaleProductDetail($filter);
 
         return $this->success([
@@ -111,7 +112,7 @@ class SalesStatistics extends AdminBaseController
      */
     public function salesIndicators(): Response
     {
-        $filterResult = $this->salesStatisticsService->getSaleIndicators(request()->shopId);
+        $filterResult = $this->salesStatisticsService->getSaleIndicators($this->shopId);
         return $this->success([
             'filter_result' => $filterResult,
         ]);
@@ -133,7 +134,7 @@ class SalesStatistics extends AdminBaseController
             'sort_field' => 'item_id',
             'sort_order' => 'desc',
         ], 'get');
-        $filter["shop_id"] = request()->shopId;
+        $filter["shop_id"] = $this->shopId;
 
         $filterResult = $this->salesStatisticsService->getSalesRanking($filter);
 

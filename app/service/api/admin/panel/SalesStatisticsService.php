@@ -424,7 +424,7 @@ class SalesStatisticsService extends BaseService
                 if(!empty($filter["keyword"])){
                     $query->where("product_name|product_sn", "like", "%{$filter["keyword"]}%");
                 }
-                if($filter['shop_id']){
+                if(isset($filter['shop_id']) && $filter['shop_id'] > -1){
                     $query->where("OrderItem.shop_id", $filter['shop_id']);
                 }
             });
@@ -481,7 +481,7 @@ class SalesStatisticsService extends BaseService
                     ->where('pay_status',Order::PAYMENT_PAID);
             })
             ->where(function ($query) use ($shopId) {
-                if ($shopId) {
+                if ($shopId > -1) {
                     $query->where('OrderItem.shop_id', $shopId);
                 }
             })
@@ -505,7 +505,7 @@ class SalesStatisticsService extends BaseService
         $capita_consumption = $user_num > 0 ? number_format($order_total_amount / $user_num, 2, '.', '') : 0;
         //访问数 -- 商品点击数
         $click_count = app(ProductService::class)->filterQuery([
-            'shop_id' => $shopId ? $shopId : -2,
+            'shop_id' => $shopId,
             'is_delete' => 0
         ])->sum('click_count');
 
@@ -555,7 +555,7 @@ class SalesStatisticsService extends BaseService
                 if(!empty($filter["keyword"])){
                     $query->where("product_name|product_sn", "like", "%{$filter["keyword"]}%");
                 }
-                if($filter['shop_id']){
+                if(isset($filter['shop_id']) && $filter['shop_id'] > -1){
                     $query->where("OrderItem.shop_id", $filter['shop_id']);
                 }
             })

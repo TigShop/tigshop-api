@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace app\adminapi;
 
 use app\BaseController;
+use think\App;
 use exceptions\ApiException;
 
 /**
@@ -12,6 +13,17 @@ use exceptions\ApiException;
  */
 abstract class AdminBaseController extends BaseController
 {
+    protected $shopId = 0;
+    public function __construct(App $app)
+    {
+        parent::__construct($app);
+        if(request()->adminType == 'admin')
+        {
+            $this->shopId = -1;
+        }else{
+            $this->shopId = request()->shopId;
+        }
+    }
     /**
      * 权限验证
      *

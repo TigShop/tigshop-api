@@ -180,13 +180,8 @@ class ProductService extends BaseService
         }
 
         // 店铺id
-        if (isset($filter["shop_id"]) && $filter["shop_id"] != -2) {
-            if ($filter["shop_id"] == -1) {
-                // 店铺商品列表
-                $query->where('shop_id', ">", 0);
-            } else {
-                $query->where('shop_id', $filter["shop_id"]);
-            }
+        if (isset($filter["shop_id"]) && $filter["shop_id"] > -1) {
+            $query->where('shop_id', $filter["shop_id"]);
         }
 
         // 商品类型
