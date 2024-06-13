@@ -51,8 +51,8 @@ class OrderInvoice extends AdminBaseController
             'keyword' => '',
             'invoice_type/d' => 0,
             'status/d' => -1,
-            'store_type/d' => 0,
-            'store_id/d' => -1,
+            'shop_type/d' => 0,
+            'shop_id/d' => -1,
             'page/d' => 1,
             'size/d' => 15,
             'sort_field' => 'id',
@@ -84,34 +84,6 @@ class OrderInvoice extends AdminBaseController
     }
 
     /**
-     * 添加
-     * @return Response
-     */
-    public function create(): Response
-    {
-        $data = $this->request->only([
-            'status/d' => 0,
-            'amount' => '0.00',
-            'apply_reply' => '',
-        ], 'post');
-
-        try {
-            validate(OrderInvoiceValidate::class)
-                ->scene('create')
-                ->check($data);
-        } catch (ValidateException $e) {
-            return $this->error($e->getError());
-        }
-
-        $result = $this->orderInvoiceService->createOrderInvoice($data);
-        if ($result) {
-            return $this->success(/** LANG */'发票申请添加成功');
-        } else {
-            return $this->error(/** LANG */'发票申请更新失败');
-        }
-    }
-
-    /**
      * 执行更新操作
      *
      * @return Response
@@ -140,29 +112,6 @@ class OrderInvoice extends AdminBaseController
         } else {
             return $this->error(/** LANG */'发票申请更新失败');
         }
-    }
-
-    /**
-     * 更新单个字段
-     * @return Response
-     */
-    public function updateField(): Response
-    {
-        $id = input('id/d', 0);
-        $field = input('field', '');
-
-        if (!in_array($field, ['company_name', 'sort_order', 'is_show'])) {
-            return $this->error(/** LANG */'#field 错误');
-        }
-
-        $data = [
-            'id' => $id,
-            $field => input('val'),
-        ];
-
-        $this->orderInvoiceService->updateOrderInvoiceField($id, $data);
-
-        return $this->success(/** LANG */'更新成功');
     }
 
     /**
