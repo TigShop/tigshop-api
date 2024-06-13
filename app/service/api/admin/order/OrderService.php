@@ -444,7 +444,7 @@ class OrderService extends BaseService
     // 保存标签的详情
     public function getExportItemInfo()
     {
-        $item = AdminUser::where("admin_id", request()->adminUid)->value("order_export");
+        $item = AdminUser::where("admin_id", request()->adminUid)->value("order_export") ?? [];
         // 获取订单导出标签列表
         $export_info = [];
         $export_list = $this->getExportItemList();
@@ -469,7 +469,11 @@ class OrderService extends BaseService
         // 获取订单标题
         $export_all_list = $this->getExportItemList();
         // 获取要导出的字段
-        $export_item = AdminUser::where("admin_id", request()->adminUid)->value("order_export");
+        $export_item = AdminUser::where("admin_id", request()->adminUid)->value("order_export") ?? [];
+        if(empty($export_item))
+        {
+            throw new ApiException('导出栏目不能为空！');
+        }
         $export_title = [];
         foreach ($export_item as $key => $value) {
             if (isset($export_all_list[$value])) {
