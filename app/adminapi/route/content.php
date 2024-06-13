@@ -7,7 +7,10 @@ Route::group('content', function () {
     // 文章管理
     Route::group('article', function () {
         // 文章列表
-        Route::get('list', 'content.article/list');
+        Route::get('list', 'content.article/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'articleManage'
+        ]);
         // 文章详情
         Route::get('detail', 'content.article/detail');
         // 文章添加
@@ -25,7 +28,10 @@ Route::group('content', function () {
     // 文章分类管理
     Route::group('article_category', function () {
         // 文章分类列表
-        Route::get('list', 'content.articleCategory/list');
+        Route::get('list', 'content.articleCategory/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'articleCategoryManage'
+        ]);
         // 文章分类详情
         Route::get('detail', 'content.articleCategory/detail');
         // 文章分类添加
@@ -41,4 +47,6 @@ Route::group('content', function () {
         // 批量操作
         Route::post('batch', 'content.articleCategory/batch');
     });
-});
+})->middleware([
+    \app\adminapi\middleware\CheckAuthor::class
+]);

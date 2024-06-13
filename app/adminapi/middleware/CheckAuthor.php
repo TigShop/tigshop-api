@@ -11,8 +11,9 @@ class CheckAuthor
 {
     public function handle($request, \Closure $next)
     {
-        if (false) {
-            app(AuthorityService::class)->checkAuthor($author, request()->shopId, request()->authList);
+        $authority_sn = $request->all('authorityCheckAppendName');
+        if ($authority_sn) {
+            app(AuthorityService::class)->checkAuthor($authority_sn, request()->shopId, request()->authList);
         }
         return $next($request);
     }

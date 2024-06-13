@@ -37,7 +37,6 @@ class Decorate extends AdminBaseController
     {
         parent::__construct($app);
         $this->decorateService = $decorateService;
-        $this->checkAuthor('decorateManage'); //权限检查
     }
 
     /**
@@ -56,7 +55,11 @@ class Decorate extends AdminBaseController
             'sort_order' => 'desc',
         ], 'get');
         $filter['shop_id'] = request()->shopId;
-
+        if ($filter['decorate_type'] == 1) {
+            $this->checkAuthor('pcDecorateManage');
+        } elseif ($filter['decorate_type'] == 2) {
+            $this->checkAuthor('mobileDecorateManage');
+        }
         $filterResult = $this->decorateService->getFilterList($filter);
         $total = $this->decorateService->getFilterCount($filter);
 

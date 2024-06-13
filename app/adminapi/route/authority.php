@@ -7,13 +7,19 @@ Route::group('authority', function () {
     // 管理员日志
     Route::group('admin_log', function () {
         // 列表
-        Route::get('list', 'authority.adminLog/list');
+        Route::get('list', 'authority.adminLog/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'adminLogManage'
+        ]);
     });
 
     // 角色管理
     Route::group('admin_role', function () {
         // 角色列表
-        Route::get('list', 'authority.adminRole/list');
+        Route::get('list', 'authority.adminRole/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'adminRoleManage'
+        ]);
         // 角色详情
         Route::get('detail', 'authority.adminRole/detail');
         // 角色添加
@@ -31,7 +37,10 @@ Route::group('authority', function () {
     // 管理员
     Route::group('admin_user', function () {
         // 管理员列表
-        Route::get('list', 'authority.adminUser/list');
+        Route::get('list', 'authority.adminUser/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'adminUserManage'
+        ]);
         // 指定管理员详情
         Route::get('detail', 'authority.adminUser/detail');
         // 当前管理员详情
@@ -57,7 +66,10 @@ Route::group('authority', function () {
     // 权限管理
     Route::group('authority', function () {
         // 权限列表
-        Route::get('list', 'authority.authority/list');
+        Route::get('list', 'authority.authority/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'authorityManage'
+        ]);
         // 权限详情
         Route::get('detail', 'authority.authority/detail');
         // 权限添加
@@ -77,7 +89,10 @@ Route::group('authority', function () {
     // 供应商管理
     Route::group('suppliers', function () {
         // 供应商列表
-        Route::get('list', 'authority.suppliers/list');
+        Route::get('list', 'authority.suppliers/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'suppliersManage'
+        ]);
         // 供应商详情
         Route::get('detail', 'authority.suppliers/detail');
         // 供应商添加
@@ -92,4 +107,6 @@ Route::group('authority', function () {
         Route::post('batch', 'authority.suppliers/batch');
     });
 
-});
+})->middleware([
+    \app\adminapi\middleware\CheckAuthor::class
+]);

@@ -84,7 +84,7 @@ class AccessTokenService extends BaseService
     {
         $token = $this->getHeaderToken();
         if (!$token) {
-            throw new ApiException('签名错误:无效token', 403);
+            throw new ApiException('签名错误:无效token', 401);
         }
         try {
             JWT::$leeway = 10; //当前时间减去60，把时间留点余地
@@ -98,13 +98,13 @@ class AccessTokenService extends BaseService
             }
             return $result;
         } catch (SignatureInvalidException $e) { //签名不正确
-            throw new ApiException('签名错误:token无效', 403);
+            throw new ApiException('签名错误:token无效', 401);
         } catch (BeforeValidException $e) { // 签名在某个时间点之后才能用
             throw new ApiException('签名错误:token已失效', 401);
         } catch (ExpiredException $e) { // token过期
             throw new ApiException('签名错误:token已失效', 401);
         } catch (\Exception $e) { //其他错误
-            throw new ApiException('签名错误:' . $e->getMessage(), 403);
+            throw new ApiException('签名错误:' . $e->getMessage(), 401);
         }
     }
 

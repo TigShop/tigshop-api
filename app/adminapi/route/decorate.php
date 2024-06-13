@@ -7,7 +7,10 @@ Route::group('decorate', function () {
     // 装修管理
     Route::group('decorate', function () {
         // 装修列表
-        Route::get('list', 'decorate.decorate/list');
+        Route::get('list', 'decorate.decorate/list')->append([
+            //此处因为移动端装修权限和pc端装修权限单独设置但都是请求这个接口。所以不能在这拦截权限，需要代码控制器里控制
+            // 'authorityCheckAppendName' => 'pcDecorate'
+        ]);
         // 装修详情
         Route::get('detail', 'decorate.decorate/detail');
         // 草稿数据
@@ -30,7 +33,10 @@ Route::group('decorate', function () {
     // 装修模块管理
     Route::group('decorate_discrete', function () {
         // 装修模块详情
-        Route::get('detail', 'decorate.decorateDiscrete/detail');
+        Route::get('detail', 'decorate.decorateDiscrete/detail')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'pcDecorateOtherManage'
+        ]);
         // 装修模块编辑
         Route::post('update', 'decorate.decorateDiscrete/update');
     });
@@ -80,7 +86,10 @@ Route::group('decorate', function () {
     // PC分类抽屉
     Route::group('pc_cat_floor', function () {
         // PC分类抽屉列表
-        Route::get('list', 'decorate.pcCatFloor/list');
+        Route::get('list', 'decorate.pcCatFloor/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'pcCatFloorManage'
+        ]);
         // PC分类抽屉详情
         Route::get('detail', 'decorate.pcCatFloor/detail');
         // PC分类抽屉添加
@@ -97,7 +106,10 @@ Route::group('decorate', function () {
     // PC导航栏
     Route::group('pc_navigation', function () {
         // PC导航栏列表
-        Route::get('list', 'decorate.pcNavigation/list');
+        Route::get('list', 'decorate.pcNavigation/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'pcNavigationManage'
+        ]);
         // PC导航栏详情
         Route::get('detail', 'decorate.pcNavigation/detail');
         // 获取上级导航
@@ -115,4 +127,6 @@ Route::group('decorate', function () {
         // 批量操作
         Route::post('batch', 'decorate.pcNavigation/batch');
     });
-});
+})->middleware([
+    \app\adminapi\middleware\CheckAuthor::class
+]);
