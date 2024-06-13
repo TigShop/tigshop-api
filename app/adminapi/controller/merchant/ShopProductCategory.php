@@ -119,7 +119,13 @@ class ShopProductCategory extends AdminBaseController
      */
     public function getAllCategory()
     {
-        $cat_list = $this->categoryService->catList(0, request()->shopId);
+        $data = $this->request->only([
+            'shop_id' => 0,
+        ], 'get');
+        if (request()->adminType = 'shop') {
+            $data['shop_id'] = request()->shopId;
+        }
+        $cat_list = $this->categoryService->catList(0, $data['shop_id']);
         return $this->success([
             'filter_result' => $cat_list,
         ]);
