@@ -53,7 +53,7 @@ class PayLogService extends BaseService
         }
 
         // 支付状态
-        if (isset($filter["pay_status"]) && $filter["pay_status"] != -1 && !empty($filter["pay_status"])) {
+        if (isset($filter["pay_status"]) && $filter["pay_status"] != -1) {
             $query->where('pay_status', $filter["pay_status"]);
         }
 

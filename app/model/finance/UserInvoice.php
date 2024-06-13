@@ -61,13 +61,9 @@ class UserInvoice extends Model
     public function scopeKeyword($query, $value)
     {
         if (!empty($value)) {
-            $query = $query->join('user', 'user_invoice.user_id = user.user_id')
-                ->field('user_invoice.*')
-                ->where(function ($query) use ($value) {
-                    $query->where('user.username', 'like', "%$value%")
-                        ->whereOr('user_invoice.company_name', 'like', "%$value%");
-                });
-
+            return $query->hasWhere('user', function ($query) use ($value) {
+                $query->where('username', 'like', "%$value%");
+            })->whereOr('company_name', 'like', "%$value%");
         }
         return $query;
     }
