@@ -15,12 +15,8 @@ Route::group('finance', function () {
         Route::get('list', 'finance.orderInvoice/list');
         // 发票申请详情
         Route::get('detail', 'finance.orderInvoice/detail');
-        // 发票申请添加
-        Route::post('create', 'finance.orderInvoice/create');
         // 发票申请编辑
         Route::post('update', 'finance.orderInvoice/update');
-        // 更新字段
-        Route::post('update_field', 'finance.orderInvoice/updateField');
         // 发票申请删除
         Route::post('del', 'finance.orderInvoice/del');
         // 批量操作
