@@ -65,7 +65,9 @@ class UserInvoiceService extends BaseService
         // 处理筛选条件
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
-            $query->keyword($filter['keyword']);
+            $query->hasWhere('user', function ($query) use ($filter) {
+                $query->where('username', 'like', "%$filter[keyword]%");
+            })->whereOr('company_name', 'like', "%$filter[keyword]%");
         }
 
         // 审核状态
