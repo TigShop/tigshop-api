@@ -24,7 +24,7 @@ TigShop开源商城系统PHP版
 <div align="center">
 
 [官网](https://www.tigshop.com/) |
-[在线体验](https://demo.tigshop.com/) |
+[在线体验](https://demo.tigshop.cn/) |
 [帮助文档](https://www.tigshop.com/) |
 [技术社区](https://www.tigshop.com/)
 
@@ -97,13 +97,13 @@ Tigshop开源商城管理后台前端：[https://gitee.com/tigshop/tigshop-admin
 
 ### 演示地址
 
-管理后台： http://demo.tigshop.com/admin
+管理后台： http://demo.tigshop.cn/admin
 
 账号：123123 密码：123123
 
-H5端：http://demo.tigshop.com/mobile （移动端打开）
+H5端：http://demo.tigshop.cn/mobile （移动端打开）
 
-PC端：http://demo.tigshop.com/ （电脑端打开）
+PC端：http://demo.tigshop.cn/ （电脑端打开）
 
 
 
