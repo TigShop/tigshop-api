@@ -88,7 +88,7 @@ Route::group('merchant', function () {
         Route::post('batch', 'batch');
         // 详情
         Route::get('detail', 'detail');
-    })->prefix('merchant.merchant/');
+    })->prefix('merchant.shopProductCategory/');
 
 
 });
