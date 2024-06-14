@@ -4,6 +4,7 @@ declare (strict_types = 1);
 
 namespace app;
 
+use app\constant\ResponseCode;
 use think\App;
 use think\exception\ValidateException;
 use think\Response;
@@ -109,17 +110,17 @@ abstract class BaseController
         return $item;
     }
 
-    protected function success(string|array $message = '', $error_code = 0): Response
+    protected function success(string|array $message = '', $error_code = ResponseCode::SUCCESS): Response
     {
         return $this->output($message, $error_code);
     }
 
-    protected function error(string|array $message = '', $error_code = 1001): Response
+    protected function error(string|array $message = '', $error_code = ResponseCode::ERROR): Response
     {
         return $this->output($message, $error_code);
     }
 
-    protected function output(string|array $message = '', $error_code = 0): Response
+    protected function output(string|array $message = '', $error_code = ResponseCode::SUCCESS): Response
     {
         return $this->defaultOutput($message, $error_code);
     }
