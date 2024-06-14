@@ -7,7 +7,10 @@ Route::group('user', function () {
     // 会员留言
     Route::group('feedback', function () {
         // 列表
-        Route::get('list', 'user.feedback/list');
+        Route::get('list', 'user.feedback/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'feedbackManage'
+        ]);
         // 详情
         Route::get('detail', 'user.feedback/detail');
         // 编辑
@@ -24,7 +27,10 @@ Route::group('user', function () {
     // 会员
     Route::group('user', function () {
         // 列表
-        Route::get('list', 'user.user/list');
+        Route::get('list', 'user.user/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'userManage'
+        ]);
         // 详情
         Route::get('detail', 'user.user/detail');
         // 编辑
@@ -45,7 +51,10 @@ Route::group('user', function () {
     // 会员日志
     Route::group('user_message_log', function () {
         // 列表
-        Route::get('list', 'user.userMessageLog/list');
+        Route::get('list', 'user.userMessageLog/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'messageLogManage'
+        ]);
         // 列表
         Route::get('detail', 'user.userMessageLog/detail');
         // 新增
@@ -60,7 +69,10 @@ Route::group('user', function () {
     // 会员积分日志
     Route::group('user_points_log', function () {
         // 列表
-        Route::get('list', 'user.userPointsLog/list');
+        Route::get('list', 'user.userPointsLog/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'integralLogManage'
+        ]);
         // 删除
         Route::post('del', 'user.userPointsLog/del');
         // batch批量操作
@@ -69,7 +81,10 @@ Route::group('user', function () {
     // 会员等级
     Route::group('user_rank', function () {
         // 列表
-        Route::get('list', 'user.userRank/list');
+        Route::get('list', 'user.userRank/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'userRankManage'
+        ]);
         // 详情
         Route::get('detail', 'user.userRank/detail');
         // 编辑
@@ -83,4 +98,6 @@ Route::group('user', function () {
         // batch批量操作
         Route::post('batch', 'user.userRank/batch');
     });
-});
+})->middleware([
+    \app\adminapi\middleware\CheckAuthor::class
+]);

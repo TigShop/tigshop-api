@@ -7,7 +7,10 @@ Route::group('setting', function () {
     // APP版本管理
     Route::group('app_version', function () {
         // 列表
-        Route::get('list', 'setting.appVersion/list');
+        Route::get('list', 'setting.appVersion/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'appVersionManage'
+        ]);
         // 详情
         Route::get('detail', 'setting.appVersion/detail');
         // 添加
@@ -18,7 +21,10 @@ Route::group('setting', function () {
     // 设置项管理
     Route::group('config', function () {
         // 基础设置
-        Route::get('get_base', 'setting.config/get_base');
+        Route::get('get_base', 'setting.config/get_base')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'config'
+        ]);
         // 前端后台设置项
         Route::get('get_admin', 'setting.config/getAdmin');
         // todo 基础设置更新
@@ -56,7 +62,10 @@ Route::group('setting', function () {
     // 友情链接
     Route::group('friend_links', function () {
         // 列表
-        Route::get('list', 'setting.friendLinks/list');
+        Route::get('list', 'setting.friendLinks/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'friendLinksManage'
+        ]);
         // 详情
         Route::get('detail', 'setting.friendLinks/detail');
         // 添加
@@ -109,7 +118,10 @@ Route::group('setting', function () {
     // 物流公司
     Route::group('logistics_company', function () {
         // 分页列表
-        Route::get('list', 'setting.logisticsCompany/list');
+        Route::get('list', 'setting.logisticsCompany/list')->append([
+            //用于权限校验的名称
+            'authorityCheckAppendName' => 'logisticsCompanyManage'
+        ]);
         // 全部列表
         Route::get('get_all', 'setting.logisticsCompany/getAll');
         // 详情
@@ -141,7 +153,10 @@ Route::group('setting', function () {
         Route::post('batch', 'setting.mailTemplates/batch');
         // 获取所有的邮件模板
         Route::get('get_all_mail_templates', 'setting.mailTemplates/getAllMailTemplates');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'mailTemplateManage'
+    ]);
     // 消息设置
     Route::group('message_type', function () {
         // 列表
