@@ -2,6 +2,7 @@
 
 namespace app\service\api\admin\authority;
 
+use app\constant\ResponseCode;
 use app\service\core\BaseService;
 use exceptions\ApiException;
 use Firebase\JWT\BeforeValidException;
@@ -84,7 +85,7 @@ class AccessTokenService extends BaseService
     {
         $token = $this->getHeaderToken();
         if (!$token) {
-            throw new ApiException('签名错误:无效token', 401);
+            throw new ApiException('签名错误:无效token', ResponseCode::NOT_TOKEN);
         }
         try {
             JWT::$leeway = 10; //当前时间减去60，把时间留点余地
@@ -94,17 +95,17 @@ class AccessTokenService extends BaseService
             // redis检查登录状态
             $redis_token = Cache::get($this->app . ':' . ($this->app . 'Id') . ':' . $data->uuid, $token);
             if (!$redis_token || $token != $redis_token) {
-                throw new ApiException('签名错误:token已失效', 401);
+                throw new ApiException('签名错误:token已失效', ResponseCode::NOT_TOKEN);
             }
             return $result;
         } catch (SignatureInvalidException $e) { //签名不正确
-            throw new ApiException('签名错误:token无效', 401);
+            throw new ApiException('签名错误:token无效', ResponseCode::NOT_TOKEN);
         } catch (BeforeValidException $e) { // 签名在某个时间点之后才能用
-            throw new ApiException('签名错误:token已失效', 401);
+            throw new ApiException('签名错误:token已失效', ResponseCode::NOT_TOKEN);
         } catch (ExpiredException $e) { // token过期
-            throw new ApiException('签名错误:token已失效', 401);
+            throw new ApiException('签名错误:token已失效', ResponseCode::NOT_TOKEN);
         } catch (\Exception $e) { //其他错误
-            throw new ApiException('签名错误:' . $e->getMessage(), 401);
+            throw new ApiException('签名错误:' . $e->getMessage(), ResponseCode::NOT_TOKEN);
         }
     }
 

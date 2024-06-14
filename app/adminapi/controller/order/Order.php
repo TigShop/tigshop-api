@@ -294,11 +294,17 @@ class Order extends AdminBaseController
             'sort_field' => 'order_id',
             'sort_order' => 'desc',
         ], 'get');
-
         $filter['shop_id'] = $this->shopId;
 
+        //导出栏目
+        $exportItem = input('export_item', []);
+        if(empty($exportItem))
+        {
+            return $this->error('导出栏目不能为空！');
+        }
+
         $filterResult = $this->orderService->getFilterList($filter);
-        $result = $this->orderService->orderExport($filterResult);
+        $result = $this->orderService->orderExport($filterResult,$exportItem);
         return $result ? $this->success("导出成功") : $this->error('导出失败');
     }
 

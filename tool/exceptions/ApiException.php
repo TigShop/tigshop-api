@@ -2,18 +2,17 @@
 
 namespace exceptions;
 
+use app\constant\ResponseCode;
 use think\Exception;
 
 class ApiException extends Exception
 {
-    protected $code = 0;
-    protected $message = 'An error occurred';
     protected $errorData = [];
 
-    public function __construct($message = null, $code = null, $errorData = [])
+    public function __construct($message = 'An error occurred', $code = ResponseCode::ERROR, $errorData = [])
     {
-        $this->message = $message ?: $this->message;
-        $this->code = $code ? $code : 1001;
+        $this->message = $message;
+        $this->code = $code;
         $this->errorData = $errorData;
         parent::__construct($this->message, $this->code);
     }
