@@ -539,7 +539,7 @@ class OrderService extends BaseService
     }
 
     // 订单导出
-    public function orderExport(object $data,array $exportItem): bool
+    public function orderExport(array $data,array $exportItem): bool
     {
         $export_title = $this->getOrderExportTitle($exportItem);
         // 组装导出数据

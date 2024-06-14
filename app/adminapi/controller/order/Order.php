@@ -303,7 +303,7 @@ class Order extends AdminBaseController
             return $this->error('导出栏目不能为空！');
         }
 
-        $filterResult = $this->orderService->getFilterList($filter);
+        $filterResult = $this->orderService->getFilterList($filter)->toArray();
         $result = $this->orderService->orderExport($filterResult,$exportItem);
         return $result ? $this->success("导出成功") : $this->error('导出失败');
     }
