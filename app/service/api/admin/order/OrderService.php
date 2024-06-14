@@ -464,18 +464,13 @@ class OrderService extends BaseService
     }
 
     // 获取订单导出标题
-    public function getOrderExportTitle(): array
+    public function getOrderExportTitle(array $exportItem): array
     {
         // 获取订单标题
         $export_all_list = $this->getExportItemList();
         // 获取要导出的字段
-        $export_item = AdminUser::where("admin_id", request()->adminUid)->value("order_export") ?? [];
-        if(empty($export_item))
-        {
-            throw new ApiException('导出栏目不能为空！');
-        }
         $export_title = [];
-        foreach ($export_item as $key => $value) {
+        foreach ($exportItem as $key => $value) {
             if (isset($export_all_list[$value])) {
                 $export_title[] = $export_all_list[$value];
                 if ($value == 'product_info') {
@@ -483,7 +478,7 @@ class OrderService extends BaseService
                 }
             }
         }
-        if (in_array("product_info", $export_item)) {
+        if (in_array("product_info", $exportItem)) {
             // 商品信息放在最后
             $export_title[] = "商品信息";
         }
@@ -492,13 +487,12 @@ class OrderService extends BaseService
     }
 
     // 组装订单导出数据
-    public function getOrderExportData(array $data = []): array
+    public function getOrderExportData(array $data = [],array $exportItem): array
     {
         $row = [];
         $product_info = false;
         // 获取要导出的字段
-        $export_item = AdminUser::where("admin_id", request()->adminUid)->value("order_export");
-        foreach ($export_item as $key => $value) {
+        foreach ($exportItem as $key => $value) {
             if (isset($data[$value])) {
                 $row[$value] = $data[$value];
             }
@@ -519,7 +513,7 @@ class OrderService extends BaseService
                 }
             } elseif ($value == "product_info") {
                 // 商品信息
-                unset($export_item[$key]);
+                unset($exportItem[$key]);
                 $product_info = true;
             }
 
@@ -545,13 +539,13 @@ class OrderService extends BaseService
     }
 
     // 订单导出
-    public function orderExport(array $data): bool
+    public function orderExport(object $data,array $exportItem): bool
     {
-        $export_title = $this->getOrderExportTitle();
+        $export_title = $this->getOrderExportTitle($exportItem);
         // 组装导出数据
         $export_data = [];
         foreach ($data as $k => $v) {
-            $export_data[] = $this->getOrderExportData($v);
+            $export_data[] = $this->getOrderExportData($v,$exportItem);
         }
         $file_name = "订单导出" . Time::getCurrentDatetime("Ymd") . rand(1000, 9999);
         Excel::export($export_title, $file_name, $export_data);
