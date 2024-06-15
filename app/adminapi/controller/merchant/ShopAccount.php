@@ -12,8 +12,12 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
+use app\model\merchant\MerchantAccount;
+use app\service\api\admin\merchant\MerchantAccountService;
+use app\service\api\admin\merchant\MerchantService;
 use app\service\api\admin\merchant\ShopAccountLogService;
 use app\service\api\admin\merchant\ShopService;
+use app\service\api\admin\order\OrderService;
 use think\App;
 
 /**
@@ -41,11 +45,22 @@ class ShopAccount extends AdminBaseController
      */
     public function index(): \think\Response
     {
-        $item = $this->shopService->getDetail(request()->shopId);
+        $shop_money = $this->shopService->getFilterSum(['shop_id' => $this->shopId], 'shop_money');
+        $frozen_money = $this->shopService->getFilterSum(['shop_id' => $this->shopId], 'frozen_money');
+        $un_settlement_money = app(OrderService::class)->getFilterSum([
+            'shop_id' => $this->shopId,
+            'is_settlement' => 0
+        ], 'paid_amount');
+        $card_count = app(MerchantAccountService::class)->getFilterCount(['merchant_id' => request()->merchantId]);
+        $merchant = app(MerchantService::class)->getDetail(request()->merchantId);
         return $this->success([
-            'shop_money' => $item['shop_money'],
-            'frozen_money' => $item['frozen_money'],
-            'un_settlement_money' => '',
+            'item' => [
+                'shop_money' => $shop_money,
+                'frozen_money' => $frozen_money,
+                'un_settlement_money' => $un_settlement_money,
+                'card_count' => $card_count,
+                'merchant' => $merchant
+            ]
         ]);
     }
 
@@ -84,10 +99,11 @@ class ShopAccount extends AdminBaseController
         $filter = $this->request->only([
             'page' => 1,
             'size' => 15,
-            'shop_id' => 0,
+            'shop_id' => $this->shopId,
         ]);
+
         $shopAccountLogService = app(ShopAccountLogService::class);
-        $filterResult = $shopAccountLogService->getFilterResult($filter);
+        $filterResult = $shopAccountLogService->getFilterList($filter);
         $total = $shopAccountLogService->getFilterCount($filter);
         return $this->success([
             'filter_result' => $filterResult,

@@ -107,6 +107,10 @@ class OrderService extends BaseService
         if (isset($filter["shop_id"]) && $filter['shop_id'] > -1) {
             $query->where('shop_id', $filter['shop_id']);
         }
+        // 是否结算检索
+        if (isset($filter["is_settlement"]) && $filter['is_settlement'] > -1) {
+            $query->where('is_settlement', $filter['is_settlement']);
+        }
 
         // 支付状态
         if (isset($filter["pay_status"]) && $filter["pay_status"] != -1) {

@@ -57,6 +57,7 @@ class ShopService extends BaseService
         return $query;
     }
 
+
     /**
      * 获取详情
      *
@@ -81,7 +82,7 @@ class ShopService extends BaseService
      * @return array
      * @throws ApiException
      */
-    public function getAllStore(): array
+    public function getAllShop(): array
     {
         $result = $this->model->field('shop_id,store_title')->select();
         return $result->toArray();

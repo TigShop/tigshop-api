@@ -95,7 +95,7 @@ class Shop extends AdminBaseController
      */
     public function all(): \think\Response
     {
-        $store = $this->shopService->getAllStore();
+        $store = $this->shopService->getAllShop();
         return $this->success([
             'store' => $store,
         ]);

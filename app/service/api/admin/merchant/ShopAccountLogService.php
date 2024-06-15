@@ -27,31 +27,8 @@ class ShopAccountLogService extends BaseService
         $this->shopAccountLog = $shopAccountLog;
     }
 
-    /**
-     * 获取筛选结果
-     *
-     * @param array $filter
-     * @return array
-     */
-    public function getFilterResult(array $filter): array
-    {
-        $query = $this->filterQuery($filter);
-        $result = $query->page($filter['page'], $filter['size'])->select();
-        return $result;
-    }
 
-    /**
-     * 获取筛选结果数量
-     *
-     * @param array $filter
-     * @return int
-     */
-    public function getFilterCount(array $filter): int
-    {
-        $query = $this->filterQuery($filter);
-        $count = $query->count();
-        return $count;
-    }
+
 
     /**
      * 筛选查询
@@ -64,7 +41,7 @@ class ShopAccountLogService extends BaseService
         $query = $this->shopAccountLog->query();
         // 处理筛选条件
 
-        if (isset($filter['shop_id']) && $filter['shop_id'] > 0) {
+        if (isset($filter['shop_id']) && $filter['shop_id'] > -1) {
             $query->where('shop_id', $filter['shop_id']);
         }
 

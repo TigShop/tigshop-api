@@ -63,6 +63,8 @@ Route::group('merchant', function () {
     })->prefix('merchant.shop/');
 
     Route::group('shop_account', function () {
+        // 总览
+        Route::get('index', 'index');
         // 列表
         Route::get('list', 'list');
         // 列表

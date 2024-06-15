@@ -34,6 +34,15 @@ abstract class BaseService
     }
 
     /**
+     * @return float
+     */
+    public function getFilterSum(array $filter, string $column): float
+    {
+        $query = $this->filterQuery($filter);
+        return $query->sum($column);
+    }
+
+    /**
      * 获取筛选结果
      *
      * @param array $filter
