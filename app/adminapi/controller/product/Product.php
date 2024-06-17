@@ -74,8 +74,10 @@ class Product extends AdminBaseController
             'check_status/d' => -1, // 审核状态
         ], 'get');
 
-        $filter['shop_id'] = $this->shopId;
-
+        if(request()->adminType == 'shop')
+        {
+            $filter['shop_id'] = request()->shopId;
+        }
         $filterResult = $this->productService->getFilterResult($filter);
         $total = $this->productService->getFilterCount($filter);
         $waiting_checked_count = $this->productService->getWaitingCheckedCount();
