@@ -176,6 +176,15 @@ npm run build:prod
 
 3，构建打包成功之后，会在根目录生成 admin-dist 文件夹，里面就是构建打包好的admin-dist文件夹复制里面的文件到API项目的public下并重命名为admin
 
+4，nginx 增加配置转发支持服务端渲染
+
+```shell
+location /admin{
+  try_files $uri $uri/ /admin/index.html;
+}
+
+```
+
 ```shell
 #管理后台访问地址
 https://yourwebsite.com/admin
@@ -198,6 +207,15 @@ npm run build:h5
 ```
 
 3，构建打包成功之后，会在根目录生成 dist/h5 文件夹，里面就是构建打包好的h5文件夹复制里面的文件到API项目的public下并重命名为mobile
+
+4，nginx 增加配置转发支持服务端渲染
+
+```shell
+location /mobile{
+  try_files $uri $uri/ /mobile/index.html;
+}
+
+```
 
 ```shell
 #H5端访问地址
@@ -230,17 +248,12 @@ npm run build
 4，nginx 增加配置转发支持服务端渲染
 
 ```shell
- location =/
+ location /
 {
     proxy_pass http://127.0.0.1:3000;
     
 }
 
- location /_nuxt/
-{
-    proxy_pass http://127.0.0.1:3000;
-    
-}
 ```
 
 ```shell
