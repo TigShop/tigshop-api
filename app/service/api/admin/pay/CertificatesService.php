@@ -39,7 +39,7 @@ class CertificatesService extends BaseService
             $data = json_decode($back, true);
             $cert = $data['data'][0]['encrypt_certificate'];
             $platform_cert = self::decrypt($cert['ciphertext'], $apiV3Key, $cert['nonce'], $cert['associated_data']);
-            file_put_contents(app()->getRootPath() . '/app/common/certs/wechat/cert.pem', $platform_cert);
+            file_put_contents(app()->getRootPath() . '/runtime/certs/wechat/cert.pem', $platform_cert);
         } catch (\Exception $exception) {
             throw  new ApiException($exception->getMessage());
         }
@@ -79,7 +79,7 @@ class CertificatesService extends BaseService
      */
     public function getPrivateKey(): object
     {
-        $private_key_file = app()->getRootPath() . '/app/common/certs/wechat/apiclient_key.pem';
+        $private_key_file = app()->getRootPath() . '/runtime/certs/wechat/apiclient_key.pem';
         $mch_private_key = openssl_get_privatekey(file_get_contents($private_key_file));//获取私钥
 
         return $mch_private_key;
