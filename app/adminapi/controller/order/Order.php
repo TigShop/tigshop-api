@@ -65,6 +65,7 @@ class Order extends AdminBaseController
             'size/d' => 15,
             'sort_field' => 'order_id',
             'sort_order' => 'desc',
+            'is_settlement' => -1
         ], 'get');
 
         $filter['shop_id'] = $this->shopId;
