@@ -491,7 +491,7 @@ class OrderService extends BaseService
     }
 
     // 组装订单导出数据
-    public function getOrderExportData(array $data = [],array $exportItem): array
+    public function getOrderExportData(array $exportItem,array $data = []): array
     {
         $row = [];
         $product_info = false;
@@ -549,7 +549,7 @@ class OrderService extends BaseService
         // 组装导出数据
         $export_data = [];
         foreach ($data as $k => $v) {
-            $export_data[] = $this->getOrderExportData($v,$exportItem);
+            $export_data[] = $this->getOrderExportData($exportItem,$v);
         }
         $file_name = "订单导出" . Time::getCurrentDatetime("Ymd") . rand(1000, 9999);
         Excel::export($export_title, $file_name, $export_data);
