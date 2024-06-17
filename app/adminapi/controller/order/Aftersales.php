@@ -131,29 +131,6 @@ class Aftersales extends AdminBaseController
         }
     }
 
-    /**
-     * 更新单个字段
-     *
-     * @return \think\Response
-     */
-    public function updateField(): \think\Response
-    {
-        $id = input('id/d', 0);
-        $field = input('field', '');
-
-        if (!in_array($field, ['aftersales_name', 'sort_order', 'is_show'])) {
-            return $this->error('#field 错误');
-        }
-
-        $data = [
-            'aftersale_id' => $id,
-            $field => input('val'),
-        ];
-
-        $this->aftersalesService->updateAftersalesField($id, $data);
-
-        return $this->success('更新成功');
-    }
 
     /**
      * 删除

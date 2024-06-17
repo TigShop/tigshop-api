@@ -14,10 +14,6 @@ Route::group('order', function () {
         Route::post('update', 'order.aftersales/update');
         // 售后确认收货接口
         Route::post('receive', 'order.aftersales/receive');
-        // 更新单个字段
-        Route::post('update_field', 'order.aftersales/updateField');
-        // 售后确认收货接口
-        Route::post('receive', 'order.aftersales/receive');
         // 提交售后反馈记录
         Route::post('record', 'order.aftersales/record');
     });

@@ -49,7 +49,7 @@ class AftersalesService extends BaseService
             'aftersales_items',
             'aftersales_items.items',
             'orderSn'
-        ])->append(['aftersales_type_name', "status_name", 'user_name', 'shipping_time']);
+        ])->append(['aftersales_type_name', "status_name"]);
         $result = $query->page($filter['page'], $filter['size'])->select();
         return $result->toArray();
     }
@@ -83,7 +83,7 @@ class AftersalesService extends BaseService
         $query = Aftersales::query();
         // 处理筛选条件
 
-        // 订单号或姓名
+        // 订单号
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->keywords($filter['keyword']);
         }
@@ -127,7 +127,10 @@ class AftersalesService extends BaseService
     public function getDetail(int $id): array
     {
         $result = Aftersales::with(["aftersales_items" => ['items'], "aftersales_log", 'orders', 'refund'])
-            ->append(['aftersales_type_name', "status_name", 'user_name', 'shipping_time'])->findOrEmpty($id);
+            ->append(['aftersales_type_name', "status_name"])->findOrEmpty($id);
+        if ($result->isEmpty()) {
+            throw new ApiException('参数错误#id');
+        }
         $result->can_cancel = $result->canCancel();
         $result->step_status = $this->getStepStatus($result);
 
@@ -407,24 +410,6 @@ class AftersalesService extends BaseService
         return true;
     }
 
-    /**
-     * 更新单个字段
-     *
-     * @param int $id
-     * @param array $data
-     * @return int|bool
-     * @throws ApiException
-     */
-    public function updateAftersalesField(int $id, array $data)
-    {
-        validate(AftersalesValidate::class)->only(array_keys($data))->check($data);
-        if (!$id) {
-            throw new ApiException(/** LANG */'#id错误');
-        }
-        $result = Aftersales::where('aftersale_id', $id)->save($data);
-        AdminLog::add('更新退换货:' . $this->getName($id));
-        return $result !== false;
-    }
 
     /**
      * 删除退换货

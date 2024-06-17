@@ -146,41 +146,15 @@ class Aftersales extends Model
         ]);
     }
 
-    // 关键词检索 -- 订单号 + 姓名
+    // 关键词检索 -- 订单号
     public function scopeKeywords($query, $value)
     {
         if (!empty($value)) {
-            $query->join("order", "order.order_id = aftersales.order_id")
-                ->field("aftersales.*")
-                ->where("order.order_sn", 'like', "%$value%")
-                ->whereOr("order.consignee", 'like', "%$value%");
+            return $query->hasWhere('orders', function ($query) use ($value) {
+                    $query->where('order_sn', 'like', "%$value%");
+                });
         }
         return $query;
     }
 
-    // 申请人
-    public function getUserNameAttr($value, $data): string
-    {
-        if (!empty($data["order_item_id"])) {
-            $name = Order::hasWhere('items', function ($query) use ($data) {
-                $query->where('item_id', $data["order_item_id"]);
-            })->value('consignee');
-            if (!empty($name)) {
-                return $name;
-            }
-        }
-        return '';
-    }
-
-    // 订单发货时间
-    public function getShippingTimeAttr($value, $data): string
-    {
-        if (!empty($data["order_item_id"])) {
-            $time = Order::hasWhere('items', function ($query) use ($data) {
-                $query->where('item_id', $data["order_item_id"]);
-            })->value('shipping_time');
-            return Time::format($time);
-        }
-        return '';
-    }
 }
