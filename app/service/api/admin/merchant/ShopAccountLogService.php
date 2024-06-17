@@ -14,17 +14,17 @@ namespace app\service\api\admin\merchant;
 use app\model\merchant\Shop;
 use app\model\merchant\ShopAccountLog;
 use app\service\core\BaseService;
+use think\Db;
 
 /**
  * 店铺资金服务类
  */
 class ShopAccountLogService extends BaseService
 {
-    protected ShopAccountLog $shopAccountLog;
 
     public function __construct(ShopAccountLog $shopAccountLog)
     {
-        $this->shopAccountLog = $shopAccountLog;
+        $this->model = $shopAccountLog;
     }
 
 
@@ -38,7 +38,7 @@ class ShopAccountLogService extends BaseService
      */
     protected function filterQuery(array $filter): object
     {
-        $query = $this->shopAccountLog->query();
+        $query = $this->model->query();
         // 处理筛选条件
 
         if (isset($filter['shop_id']) && $filter['shop_id'] > -1) {
@@ -59,8 +59,26 @@ class ShopAccountLogService extends BaseService
      */
     public function create(array $data): Shop|\think\Model
     {
-        $result = $this->shopAccountLog->create($data);
+        $result = $this->model->create($data);
         return $result;
+    }
+
+    /**
+     * @return void
+     */
+    public function addWithDrawLog($data)
+    {
+        $shop = Shop::where('shop_id', $data['shop_id'])->dec('shop_money', $data['amount'])->update();
+        $new_shop_money = bcsub($shop['shop_money'], $data['amount'], 2);
+        $this->create([
+            'shop_money' => $shop['shop_money'],
+            'frozen_money' => $shop['frozen_money'],
+            'new_shop_money' => $new_shop_money,
+            'new_frozen_money' => $shop['frozen_money'],
+            'shop_id' => $data['shop_id'],
+            'type' => 1,
+        ]);
+
     }
 
 

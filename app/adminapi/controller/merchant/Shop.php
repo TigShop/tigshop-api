@@ -33,7 +33,6 @@ class Shop extends AdminBaseController
     {
         parent::__construct($app);
         $this->shopService = $shopService;
-        $this->checkAuthor('storeManage'); //权限检查
     }
 
     /**
@@ -44,7 +43,6 @@ class Shop extends AdminBaseController
     public function list(): \think\Response
     {
         $filter = $this->request->only([
-            'keyword' => '',
             'shop_id' => 0,
             'page/d' => 1,
             'size/d' => 15,

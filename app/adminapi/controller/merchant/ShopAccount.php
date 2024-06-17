@@ -21,7 +21,7 @@ use app\service\api\admin\order\OrderService;
 use think\App;
 
 /**
- * 店铺控制器
+ * 资产控制器
  */
 class ShopAccount extends AdminBaseController
 {

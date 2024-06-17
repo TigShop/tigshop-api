@@ -91,6 +91,20 @@ Route::group('merchant', function () {
         // 详情
         Route::get('detail', 'detail');
     })->prefix('merchant.shopProductCategory/');
-
+    // 店铺提现
+    Route::group('shop_withdraw', function () {
+        // 列表
+        Route::get('list', 'list');
+        // 列表
+        Route::get('config', 'config');
+        // 添加
+        Route::post('create', 'create');
+        // 编辑
+        Route::post('update', 'update');
+        // 删除
+        Route::post('del', 'del');
+        // 详情
+        Route::get('detail', 'detail');
+    })->prefix('merchant.shopWithdraw/');
 
 });
