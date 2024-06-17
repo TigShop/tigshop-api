@@ -56,7 +56,7 @@ class ProductPromotion extends AdminBaseController
             'sort_field' => 'promotion_id',
             'sort_order' => 'desc',
         ], 'get');
-
+        $filter['shop_id'] = request()->shopId;
         $filterResult = $this->productPromotionService->getFilterResult($filter);
         $total = $this->productPromotionService->getFilterCount($filter);
 
@@ -111,7 +111,6 @@ class ProductPromotion extends AdminBaseController
             'promotion_type' => '',
             'promotion_type_data' => '',
             'is_available' => '',
-            'store_id' => '',
             'product_time' => '',
             'sort_order/d' => 50,
         ], 'post');
@@ -135,6 +134,8 @@ class ProductPromotion extends AdminBaseController
         } catch (ValidateException $e) {
             return $this->error($e->getError());
         }
+
+        $data['shop_id'] = request()->shopId;
 
         $result = $this->productPromotionService->createProductPromotion($data);
         if ($result) {

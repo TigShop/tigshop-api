@@ -97,6 +97,11 @@ class CouponService extends BaseService
             $query->where('send_start_date', '<=', Time::now());
             $query->where('send_end_date', '>=', Time::now());
         }
+
+        //shop_id
+        if (isset($filter["shop_id"])) {
+            $query->where('shop_id', '=', $filter["shop_id"]);
+        }
         return $query;
     }
 

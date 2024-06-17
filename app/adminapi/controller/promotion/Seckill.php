@@ -54,7 +54,7 @@ class Seckill extends AdminBaseController
             'sort_field' => 'seckill_id',
             'sort_order' => 'desc',
         ], 'get');
-
+        $filter['shop_id'] = request()->shopId;
         $filterResult = $this->seckillService->getFilterResult($filter);
         $total = $this->seckillService->getFilterCount($filter);
 
@@ -135,6 +135,7 @@ class Seckill extends AdminBaseController
         } catch (ValidateException $e) {
             return $this->error($e->getError());
         }
+        $data['shop_id'] = request()->shopId;
 
         $result = $this->seckillService->createSeckill($data);
         if ($result) {
