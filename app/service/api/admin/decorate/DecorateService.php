@@ -264,6 +264,30 @@ class DecorateService extends BaseService
     }
 
     /**
+     * 获取店铺模块信息
+     * @param integer $shop_id
+     * @param integer $status 是否已发布
+     * @return array
+     */
+    public function getShopDecorateModule(int $shop_id, int $status = 1): array
+    {
+        $result = $this->model
+            ->where('shop_id', $shop_id)
+            ->where('status', $status)->find();
+        $result = $result ? $result->toArray() : $result;
+        if (!$result) {
+            throw new ApiException(/** LANG */ '模板不存在');
+        }
+        foreach ($result['data']['moduleList'] as $key => $item) {
+            $result['data']['moduleList'][$key]['module'] = $this->formatModule($item['type'], $item['module']);
+        }
+        return [
+            'decorate_id' => $result['decorate_id'],
+            'module_list' => $result['data']['moduleList'],
+        ];
+    }
+
+    /**
      * 获取页面模块信息
      * @param string $type
      * @param boolean $is_home 是否首页

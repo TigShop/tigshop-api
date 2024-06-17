@@ -1,0 +1,57 @@
+<?php
+//**---------------------------------------------------------------------+
+//** 通用接口控制器文件 -- 首页
+//**---------------------------------------------------------------------+
+//** 版权所有：江西佰商科技有限公司. 官网：https://www.tigshop.com
+//**---------------------------------------------------------------------+
+//** 作者：Tigshop团队，yq@tigshop.com
+//**---------------------------------------------------------------------+
+//** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
+//**---------------------------------------------------------------------+
+
+namespace app\api\controller\shop;
+
+use app\api\IndexBaseController;
+use app\service\api\admin\decorate\DecorateDiscreteService;
+use app\service\api\admin\decorate\DecorateService;
+use app\service\api\admin\decorate\MobileCatNavService;
+use app\service\api\admin\promotion\CouponService;
+use app\service\api\admin\promotion\SeckillService;
+use app\service\api\admin\setting\FriendLinksService;
+use think\App;
+use think\Response;
+use utils\Config;
+
+/**
+ * 店铺控制器
+ */
+class Shop extends IndexBaseController
+{
+    /**
+     * 构造函数
+     *
+     * @param App $app
+     */
+    public function __construct(App $app)
+    {
+        parent::__construct($app);
+    }
+
+    /**
+     * 装修
+     *
+     * @return Response
+     */
+    public function decorate(): Response
+    {
+        // 获取首页发布版
+        $shopId = input('shop_id/d', 0);
+        $decorate = app(DecorateService::class)->getShopDecorateModule($shopId);
+        return $this->success([
+            'decorate_id' => $decorate['decorate_id'],
+            'module_list' => $decorate['module_list'],
+        ]);
+    }
+
+
+}
