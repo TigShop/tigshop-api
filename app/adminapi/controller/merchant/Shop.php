@@ -12,6 +12,7 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
+use app\service\api\admin\merchant\MerchantService;
 use app\service\api\admin\merchant\ShopService;
 use app\validate\shop\ShopValidate;
 use think\App;
@@ -22,17 +23,20 @@ use think\App;
 class Shop extends AdminBaseController
 {
     protected ShopService $shopService;
+    protected MerchantService $merchantService;
 
     /**
      * 构造函数
      *
      * @param App $app
      * @param ShopService $shopService
+     * @param MerchantService $merchantService
      */
-    public function __construct(App $app, ShopService $shopService)
+    public function __construct(App $app, ShopService $shopService, MerchantService $merchantService)
     {
         parent::__construct($app);
         $this->shopService = $shopService;
+        $this->merchantService = $merchantService;
     }
 
     /**
@@ -156,6 +160,64 @@ class Shop extends AdminBaseController
             return $this->success('店铺更新成功');
         } else {
             return $this->error('店铺更新失败');
+        }
+    }
+
+    /**
+     * 店铺设置
+     *
+     * @return \think\Response
+     */
+    public function setting(): \think\Response
+    {
+        $shopId= input('shop_id/d', 0);
+        $data = $this->request->only([
+            'status' => 1,
+            'contact_mobile' => '',
+            'kefu_phone' => '',
+            'kefu_weixin' => '',
+            'kefu_link' => '',
+        ], 'post');
+
+        if($shopId != request()->shopId)
+        {
+            return $this->error('没有此店铺');
+        }
+
+        $result = $this->shopService->updateShop($shopId, $data, false);
+        if ($result) {
+            return $this->success('店铺更新成功');
+        } else {
+            return $this->error('店铺更新失败');
+        }
+    }
+
+
+    /**
+     * 店铺信息
+     *
+     * @return \think\Response
+     */
+    public function updateInfo(): \think\Response
+    {
+        $shopId= input('shop_id/d', 0);
+
+        $data = $this->request->only([
+            'shop_title' => '',
+            'shop_logo' => '',
+            'description' => '',
+        ], 'post');
+
+        if($shopId != request()->shopId)
+        {
+            return $this->error('没有此店铺');
+        }
+
+        $result = $this->shopService->updateShop($shopId, $data, false);
+        if ($result) {
+            return $this->success('店铺更新信息成功');
+        } else {
+            return $this->error('店铺更新信息失败');
         }
     }
 

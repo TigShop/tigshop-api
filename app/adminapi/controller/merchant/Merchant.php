@@ -101,5 +101,19 @@ class Merchant extends AdminBaseController
         ]);
     }
 
+    /**
+     * 详情
+     *
+     * @return \think\Response
+     */
+    public function userCount(): \think\Response
+    {
+        $id = input('id/d', 0);
+        $item = app(AdminUserService::class)->getFilterCount(['merchant_id'=>$id]);
+        return $this->success([
+            'item' => $item,
+        ]);
+    }
+
 
 }
