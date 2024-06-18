@@ -51,6 +51,8 @@ Route::group('merchant', function () {
     Route::group('shop', function () {
         // 列表
         Route::get('list', 'list');
+        // 新增
+        Route::post('create', 'create');
         // 编辑
         Route::post('update', 'update');
         // 详情
