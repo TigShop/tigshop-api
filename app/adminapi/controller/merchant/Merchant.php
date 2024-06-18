@@ -72,7 +72,7 @@ class Merchant extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field, ['status'])) {
+        if (!in_array($field, ['status', 'settlement_cycle'])) {
             return $this->error('#field 错误');
         }
 

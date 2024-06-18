@@ -125,7 +125,6 @@ class Shop extends AdminBaseController
             'shop_title' => '',
             'shop_logo' => '',
         ], 'post');
-        validate(ShopValidate::class)->only(array_keys($data))->check($data);
         $result = $this->shopService->updateShop(0, $data, true);
         if ($result) {
             return $this->success('店铺添加成功');
