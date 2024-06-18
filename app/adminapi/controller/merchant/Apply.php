@@ -12,6 +12,7 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
+use app\model\merchant\MerchantAccount;
 use app\service\api\admin\authority\AdminUserService;
 use app\service\api\admin\merchant\ApplyService;
 use app\service\api\admin\merchant\MerchantAccountService;
@@ -177,7 +178,7 @@ class Apply extends AdminBaseController
                     'shop_logo' => isset($item['shop_data']['shop_logo']) ? $item['shop_data']['shop_logo'] : '',
                     'shop_title' => $item['shop_title']
                 ]);
-                app(MerchantAccountService::class)->create([
+                app(MerchantAccount::class)->create([
                     'account_type' => 1,
                     'account_name' => $item['type'] == 1 ? $item['corporate_name'] : $item['company_name'],
                     'account_no' => isset($item['merchant_data']['bank_card']) ? $item['merchant_data']['bank_card'] : '',

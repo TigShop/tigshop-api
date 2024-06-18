@@ -48,7 +48,9 @@ class AdminMsg extends AdminBaseController
             'sort_field' => ['is_readed' => 'asc', 'msg_id' => 'desc'],
             'sort_order' => '',
         ], 'get');
-
+        if (request()->adminType == 'shop') {
+            $filter['shop_id'] = $this->shopId;
+        }
         $filterResult = $this->AdminMsgService->getFilterResult($filter);
         $total = $this->AdminMsgService->getFilterCount($filter);
         $msg_type_arr = $this->AdminMsgService->getMsgType();
