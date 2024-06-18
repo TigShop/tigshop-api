@@ -80,6 +80,10 @@ class AdminUserService extends BaseService
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
+
+        if (isset($filter['merchant_id'])) {
+            $query->where('c.merchant_id', $filter['merchant_id']);
+        }
         return $query;
     }
 

@@ -61,6 +61,11 @@ class AdminUser extends AdminBaseController
             'admin_type' => request()->adminType
         ], 'get');
 
+        if(request()->adminType == 'shop')
+        {
+            $filter['merchant_id'] = request()->merchantId;
+        }
+
         $filterResult = $this->adminUserService->getFilterResult($filter);
         $total = $this->adminUserService->getFilterCount($filter);
 
