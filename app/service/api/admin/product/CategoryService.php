@@ -108,27 +108,26 @@ class CategoryService extends BaseService
     }
 
     /**
-     * 执行分类添加或更新
-     *
+     * 执行分类更新
      * @param int $id
      * @param array $data
-     * @param bool $isAdd
-     * @return int|bool
-     * @throws ApiException
+     * @return bool
      */
-    public function updateCategory(int $id, array $data, bool $isAdd = false)
+    public function updateCategory(int $id, array $data): bool
     {
-        validate(CategoryValidate::class)->only(array_keys($data))->check($data);
-        if ($isAdd) {
-            $result = $this->categoryModel->save($data);
-            AdminLog::add('新增分类:' . $data['category_name']);
-            return $this->categoryModel->getKey();
-        } else {
-            $result = $this->categoryModel->where('category_id', $id)->save($data);
-            AdminLog::add('更新分类:' . $this->getName($id));
+        $result = $this->categoryModel->where('category_id', $id)->save($data);
+        return $result !== false;
+    }
 
-            return $result !== false;
-        }
+    /**
+     * 添加分类
+     * @param array $data
+     * @return int
+     */
+    public function createCategory(array $data):int
+    {
+        $result = $this->categoryModel->save($data);
+        return $this->categoryModel->getKey();
     }
 
     /**

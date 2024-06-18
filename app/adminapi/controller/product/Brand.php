@@ -121,6 +121,7 @@ class Brand extends AdminBaseController
     {
         $id = input('id/d', 0);
         $data = $this->requestData();
+        $data['brand_id'] = $id;
         try {
             validate(BrandValidate::class)
                 ->scene('update')
