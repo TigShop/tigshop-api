@@ -64,11 +64,7 @@ Route::group('order', function () {
     Route::group('order_log', function () {
         // 列表
         Route::get('list', 'order.orderLog/list');
-        // 详情接口
-        Route::get('detail', 'order.orderLog/detail');
-        // 同意或拒接售后接口
-        Route::post('update', 'order.orderLog/update');
-        // 更新单个字段
-        Route::post('update_field', 'order.orderLog/updateField');
+        // 添加日志
+        Route::post('create', 'order.orderLog/create');
     });
 });

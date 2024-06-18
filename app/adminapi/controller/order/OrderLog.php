@@ -62,66 +62,23 @@ class OrderLog extends AdminBaseController
     }
 
     /**
-     * 详情页面
+     * 执行添加操作
      *
      * @return \think\Response
      */
-    public function detail(): \think\Response
+    public function create(): \think\Response
     {
-
-        $id = input('id/d', 0);
-        $item = $this->orderLogService->getDetail($id);
-        return $this->success([
-            'item' => $item,
-        ]);
-    }
-
-    /**
-     * 执行添加或更新操作
-     *
-     * @return \think\Response
-     */
-    public function update(): \think\Response
-    {
-        $id = input('id/d', 0);
         $data = $this->request->only([
-            'log_id' => $id,
             'description' => '',
             'order_id/d' => 0,
-            'order_sn' => '',
-            'store_id/d' => 0,
+            'order_sn' => ''
         ], 'post');
 
-        $result = $this->orderLogService->addOrderLog($id, $data);
+        $result = $this->orderLogService->addOrderLog($data);
         if ($result) {
             return $this->success('订单日志添加成功');
         } else {
-            return $this->error('订单日志更新失败');
+            return $this->error('订单日志添加失败');
         }
     }
-
-    /**
-     * 更新单个字段
-     *
-     * @return \think\Response
-     */
-    public function updateField(): \think\Response
-    {
-        $id = input('id/d', 0);
-        $field = input('field', '');
-
-        if (!in_array($field, ['description', 'is_show', 'sort_order'])) {
-            return $this->error('#field 错误');
-        }
-
-        $data = [
-            'log_id' => $id,
-            $field => input('val'),
-        ];
-
-        $this->orderLogService->addOrderLog($id, $data);
-
-        return $this->success('更新成功');
-    }
-
 }

@@ -165,7 +165,7 @@ class OrderDetailService extends BaseService
             'order_sn' => $this->getOrder()->order_sn,
             'order_id' => $this->getOrder()->order_id,
         ];
-        $result = app(OrderLogService::class)->addOrderLog($data['order_id'], $data);
+        $result = app(OrderLogService::class)->addOrderLog($data);
         return true;
     }
 
