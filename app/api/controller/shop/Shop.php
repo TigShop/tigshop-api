@@ -12,6 +12,7 @@
 namespace app\api\controller\shop;
 
 use app\api\IndexBaseController;
+use app\model\user\CollectShop;
 use app\service\api\admin\decorate\DecorateDiscreteService;
 use app\service\api\admin\decorate\DecorateService;
 use app\service\api\admin\decorate\MobileCatNavService;
@@ -20,6 +21,7 @@ use app\service\api\admin\product\ProductService;
 use app\service\api\admin\promotion\CouponService;
 use app\service\api\admin\promotion\SeckillService;
 use app\service\api\admin\setting\FriendLinksService;
+use app\service\api\index\user\CollectShopService;
 use think\App;
 use think\Response;
 use utils\Config;
@@ -71,9 +73,40 @@ class Shop extends IndexBaseController
             'shop_id' => $id,
             'is_new' => 1,
         ]);
+        $item['collect_shop'] = false;
+        if (request()->userId > 0) {
+            $item['collect_shop'] = (bool)app(CollectShopService::class)->getDetail([
+                'shop_id' => $id,
+                'user_id' => request()->userId,
+            ]);
+        }
         return $this->success([
             'item' => $item,
         ]);
+    }
+
+    /**
+     * 收藏
+     * @return Response
+     */
+    public function collect(): \think\Response
+    {
+        $id = input('shop_id/d', 0);
+        $userId = request()->userId;
+        $service = app(CollectShopService::class);
+        $item = $service->getDetail([
+            'shop_id' => $id,
+            'user_id' => $userId,
+        ]);
+        if ($item) {
+            $service->delete($item->getKey());
+        } else {
+            $service->create([
+                'shop_id' => $id,
+                'user_id' => $userId,
+            ]);
+        }
+        return $this->success();
     }
 
 
