@@ -94,6 +94,7 @@ class StatisticsUser extends AdminBaseController
             "start_time" => "",
             "end_time" => "",
         ], 'get');
+        $filter["shop_id"] = $this->shopId;
 
         $filterResult = $this->statisticsUserService->getUserStatisticsPanel($filter);
 

@@ -561,9 +561,13 @@ class OrderService extends BaseService
      * @param array $data
      * @return mixed
      */
-    public function getPayOrderUserTotal(array $data): mixed
+    public function getPayOrderUserTotal(array $data,int $shopId = 0): mixed
     {
-        return Order::payTime($data)->storePlatform()->paid()->where("is_del", 0)->group("user_id")->count();
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->group("user_id")->count();
     }
 
     /**

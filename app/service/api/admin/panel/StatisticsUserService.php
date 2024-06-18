@@ -107,7 +107,7 @@ class StatisticsUserService extends BaseService
                 "pay_status" => Order::PAYMENT_PAID,
                 'add_start_time' => $filter["start_time"] ?? "",
                 'add_end_time' => $filter['end_time'] ?? "",
-                "shop_id" => $filter['shop_id'] ? $filter['shop_id'] : -1,
+                "shop_id" => $filter['shop_id'],
             ])
             ->leftJoin("user", "user.user_id = order.user_id")
             ->field("user.username,user.mobile,COUNT(order.order_id) as order_num,SUM(order.total_amount) AS order_amount")
@@ -150,13 +150,17 @@ class StatisticsUserService extends BaseService
         $view_growth_rate = $this->getGrowthRate($view_num, $prev_view_num);
 
         // 新增用户数
-        $add_user_num = User::RegTime($start_end_time)->count();
-        $prev_add_user_num = User::RegTime($prev_date)->count();
+        $add_user_num = app(UserService::class)->getFilterCount([
+            'reg_time' => $start_end_time
+        ]);
+        $prev_add_user_num = app(UserService::class)->getFilterCount([
+            'reg_time' => $prev_date
+        ]);
         $add_user_growth_rate = $this->getGrowthRate($add_user_num, $prev_add_user_num);
 
         //成交用户数
-        $deal_user_num = app(OrderService::class)->getPayOrderUserTotal($start_end_time);
-        $prev_deal_user_num = app(OrderService::class)->getPayOrderUserTotal($prev_date);
+        $deal_user_num = app(OrderService::class)->getPayOrderUserTotal($start_end_time,$filter["shop_id"]);
+        $prev_deal_user_num = app(OrderService::class)->getPayOrderUserTotal($prev_date,$filter["shop_id"]);
         $deal_user_growth_rate = $this->getGrowthRate($deal_user_num, $prev_deal_user_num);
 
         // 充值用户数

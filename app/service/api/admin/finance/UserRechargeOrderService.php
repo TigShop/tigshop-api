@@ -209,7 +209,10 @@ class UserRechargeOrderService extends BaseService
      */
     public function getRechargeUserTotal(array $data)
     {
-        return UserRechargeOrder::paidTime($data)->paid()->group("user_id")->count();
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'status' => UserRechargeOrder::STATUS_SUCCESS
+        ])->group("user_id")->count();
     }
 
     /**
