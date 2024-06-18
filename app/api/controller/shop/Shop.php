@@ -15,6 +15,8 @@ use app\api\IndexBaseController;
 use app\service\api\admin\decorate\DecorateDiscreteService;
 use app\service\api\admin\decorate\DecorateService;
 use app\service\api\admin\decorate\MobileCatNavService;
+use app\service\api\admin\merchant\ShopService;
+use app\service\api\admin\product\ProductService;
 use app\service\api\admin\promotion\CouponService;
 use app\service\api\admin\promotion\SeckillService;
 use app\service\api\admin\setting\FriendLinksService;
@@ -50,6 +52,27 @@ class Shop extends IndexBaseController
         return $this->success([
             'decorate_id' => $decorate['decorate_id'],
             'module_list' => $decorate['module_list'],
+        ]);
+    }
+
+    /**
+     * 详情
+     *
+     * @return \think\Response
+     */
+    public function detail(): \think\Response
+    {
+        $id = input('shop_id/d', 0);
+        $item = app(ShopService::class)->getDetail($id);
+        $item['product_count'] = app(ProductService::class)->getFilterCount([
+            'shop_id' => $id,
+        ]);
+        $item['new_product_count'] = app(ProductService::class)->getFilterCount([
+            'shop_id' => $id,
+            'is_new' => 1,
+        ]);
+        return $this->success([
+            'item' => $item,
         ]);
     }
 

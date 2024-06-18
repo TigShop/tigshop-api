@@ -125,6 +125,7 @@ class Shop extends AdminBaseController
             'shop_title' => '',
             'shop_logo' => '',
         ], 'post');
+        $data['merchant_id'] = request()->merchantId;
         $result = $this->shopService->updateShop(0, $data, true);
         if ($result) {
             return $this->success('店铺添加成功');

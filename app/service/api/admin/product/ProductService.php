@@ -197,6 +197,9 @@ class ProductService extends BaseService
         if (isset($filter["is_delete"]) && $filter["is_delete"] != -1) {
             $query->where('is_delete', $filter["is_delete"]);
         }
+        if (isset($filter["is_new"])) {
+            $query->where('is_new', $filter["is_new"]);
+        }
         // 审核状态
         if (isset($filter["check_status"]) && $filter["check_status"] != -1) {
             $query->where('check_status', $filter["check_status"]);

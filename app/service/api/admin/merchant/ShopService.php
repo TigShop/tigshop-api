@@ -115,15 +115,14 @@ class ShopService extends BaseService
      * @param int $id
      * @param array $data
      * @param bool $isAdd
-     * @return int|bool
+     * @return \think\Model|Shop
      * @throws ApiException
      */
-    public function updateShop(int $id, array $data, bool $isAdd = false): bool|int
+    public function updateShop(int $id, array $data, bool $isAdd = false): Shop|bool
     {
 
         if ($isAdd) {
-            $result = $this->model->create($data);
-            return $this->model->getKey();
+            return $this->model->create($data);
         } else {
             if (!$id) {
                 throw new ApiException('#id错误');
@@ -167,4 +166,5 @@ class ShopService extends BaseService
 
         return $result !== false;
     }
+
 }
