@@ -47,6 +47,7 @@ class AdminMsg extends AdminBaseController
             'size/d' => 15,
             'sort_field' => ['is_readed' => 'asc', 'msg_id' => 'desc'],
             'sort_order' => '',
+            'shop_id/d' => -2, // 店铺id
         ], 'get');
         if (request()->adminType == 'shop') {
             $filter['shop_id'] = $this->shopId;
