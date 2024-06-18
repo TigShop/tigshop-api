@@ -72,6 +72,9 @@ class LogisticsCompanyService extends BaseService
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
+        if (isset($filter['shop_id'])) {
+            $query->where('shop_id', '=',$filter['shop_id']);
+        }
         return $query;
     }
 

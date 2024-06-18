@@ -55,6 +55,8 @@ class LogisticsCompany extends AdminBaseController
             'sort_order' => 'desc',
         ], 'get');
 
+        $filter['shop_id'] = request()->shopId;
+
         $filterResult = $this->logisticsCompanyService->getFilterResult($filter);
         $total = $this->logisticsCompanyService->getFilterCount($filter);
 
@@ -121,7 +123,7 @@ class LogisticsCompany extends AdminBaseController
         } catch (ValidateException $e) {
             return $this->error($e->getError());
         }
-
+        $data["shop_id"] = request()->shopId;
         $result = $this->logisticsCompanyService->createLogisticsCompany($data);
         if ($result) {
             return $this->success(/** LANG */'物流公司添加成功');
