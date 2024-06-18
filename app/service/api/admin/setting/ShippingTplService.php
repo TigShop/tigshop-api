@@ -69,6 +69,10 @@ class ShippingTplService extends BaseService
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
+
+        if (isset($filter['shop_id'])) {
+            $query->where('shop_id', '=',$filter['shop_id']);
+        }
         return $query;
     }
 
@@ -135,7 +139,7 @@ class ShippingTplService extends BaseService
         $shipping_tpl_arr = $this->getCommonShippingData($data);
 
         $shipping_tpl_arr["shop_id"] = $data["shop_id"];
-        $shipping_tpl = ShippingTpl::createAll($shipping_tpl_arr);
+        $shipping_tpl = ShippingTpl::create($shipping_tpl_arr);
         $id = $shipping_tpl->shipping_tpl_id;
         // 保存运费模板信息
         $this->saveShippingTplInfo($shipping_tpl_info, $id, $data);

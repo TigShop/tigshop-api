@@ -47,11 +47,9 @@ class Order extends AdminBaseController
     public function list(): \think\Response
     {
         $filter = $this->request->only([
-            'is_del/d' => -1,
             'keyword' => '',
             'user_id/d' => 0,
             'order_status/d' => -1,
-            'shop_id' => 0,
             'pay_status/d' => -1,
             'shipping_status/d' => -1,
             'address' => '',
@@ -187,7 +185,7 @@ class Order extends AdminBaseController
             'tracking_no' => '',
         ], 'post');
         $this->orderService->modifyOrderShipping($id, $data);
-        return $this->success('订单收货人信息已修改');
+        return $this->success('订单配送信息已修改');
     }
 
     //修改商品信息
@@ -276,11 +274,9 @@ class Order extends AdminBaseController
     public function orderExport(): \think\Response
     {
         $filter = $this->request->only([
-            'is_del/d' => -1,
             'keyword' => '',
             'user_id/d' => 0,
             'order_status/d' => -1,
-            'shop_id' => 0,
             'pay_status/d' => -1,
             'shipping_status/d' => -1,
             'comment_status/d' => -1,
