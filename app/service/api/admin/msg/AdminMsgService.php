@@ -71,8 +71,9 @@ class AdminMsgService extends BaseService
             $query->where('msg_type', $filter['msg_type']);
         }
 
-        if (!empty($filter['shop_id'])) {
-            $query->where('shop_id', $filter['shop_id']);
+        // 店铺id
+        if (isset($filter["shop_id"]) && $filter["shop_id"] > 0) {
+            $query->where('shop_id', $filter["shop_id"]);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field'])) {
