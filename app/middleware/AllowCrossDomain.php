@@ -53,6 +53,7 @@ class AllowCrossDomain
         }
         if ($request->method() == 'OPTIONS') {
             header("HTTP/1.1 200 OK");
+            return response('', 200, $header);
         }
 
         return $next($request)->header($header);
