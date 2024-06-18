@@ -27,14 +27,10 @@ Route::group('order', function () {
         Route::post('deliver', 'order.order/deliver');
         //订单收货
         Route::post('confirm_receipt', 'order.order/confirmReceipt');
-        //订单更新
-        Route::post('update', 'order.order/update');
         //订单修改收货人信息
         Route::post('modify_consignee', 'order.order/modifyConsignee');
         //修改配送信息
         Route::post('modify_shipping', 'order.order/modifyShipping');
-        //修改订单金额
-        Route::post('modify_money', 'order.order/modifyMoney');
         //修改订单金额
         Route::post('modify_money', 'order.order/modifyMoney');
         //取消订单
@@ -45,13 +41,13 @@ Route::group('order', function () {
         Route::post('del_order', 'order.order/delOrder');
         //订单拆分
         Route::post('split_store_order', 'order.order/splitStoreOrder');
-        //订单拆分
+        //订单设置为已支付
         Route::post('set_paid', 'order.order/setPaid');
         //修改商品信息
         Route::post('modify_product', 'order.order/modifyProduct');
         //添加商品时获取商品信息
-        Route::get('get_add_product_info', 'order.order/getAddProductInfo');
-        //添加商品时获取商品信息
+        Route::post('get_add_product_info', 'order.order/getAddProductInfo');
+        //设置商家备注
         Route::post('set_admin_note', 'order.order/setAdminNote');
         //打印订单
         Route::get('order_print', 'order.order/orderPrint');
