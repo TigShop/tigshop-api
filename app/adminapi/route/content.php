@@ -7,10 +7,7 @@ Route::group('content', function () {
     // 文章管理
     Route::group('article', function () {
         // 文章列表
-        Route::get('list', 'content.article/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'articleManage'
-        ]);
+        Route::get('list', 'content.article/list');
         // 文章详情
         Route::get('detail', 'content.article/detail');
         // 文章添加
@@ -23,7 +20,10 @@ Route::group('content', function () {
         Route::post('update_field', 'content.article/updateField');
         // 批量操作
         Route::post('batch', 'content.article/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'articleManage'
+    ]);
 
     // 文章分类管理
     Route::group('article_category', function () {

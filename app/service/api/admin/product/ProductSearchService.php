@@ -32,6 +32,10 @@ class ProductSearchService extends BaseService
     protected $pageType;
     protected $couponId;
 
+    protected $shopId;
+
+    protected $shopCategoryId;
+
     public function __construct($params, $pageType = 'search')
     {
         if (isset($params['page'])) {
@@ -65,6 +69,14 @@ class ProductSearchService extends BaseService
             $this->couponId = $params['coupon_id'];
         }
 
+        if (isset($params['shop_id'])) {
+            $this->shopId = $params['shop_id'];
+        }
+        if (isset($params['shop_category_id'])) {
+            $this->shopCategoryId = $params['shop_category_id'];
+        }
+
+
 
         $this->pageType = $pageType;
         $this->filterParams = [
@@ -76,6 +88,8 @@ class ProductSearchService extends BaseService
             'intro_type' => $this->introType,
             'is_delete' => 0,
             'coupon_id' => $this->couponId,
+            'shop_category_id' => $this->shopCategoryId,
+            'shop_id' => $this->shopId,
         ];
     }
 

@@ -16,10 +16,7 @@ Route::group('authority', function () {
     // 角色管理
     Route::group('admin_role', function () {
         // 角色列表
-        Route::get('list', 'authority.adminRole/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'adminRoleManage'
-        ]);
+        Route::get('list', 'authority.adminRole/list');
         // 角色详情
         Route::get('detail', 'authority.adminRole/detail');
         // 角色添加
@@ -32,15 +29,15 @@ Route::group('authority', function () {
         Route::post('update_field', 'authority.adminRole/updateField');
         // 批量操作
         Route::post('batch', 'authority.adminRole/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'adminRoleManage'
+    ]);
 
     // 管理员
     Route::group('admin_user', function () {
         // 管理员列表
-        Route::get('list', 'authority.adminUser/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'adminUserManage'
-        ]);
+        Route::get('list', 'authority.adminUser/list');
         // 指定管理员详情
         Route::get('detail', 'authority.adminUser/detail');
         // 当前管理员详情
@@ -61,15 +58,15 @@ Route::group('authority', function () {
         Route::post('modify_manage_accounts', 'authority.adminUser/modifyManageAccounts');
         // 获取验证码
         Route::get('get_code', 'authority.adminUser/getCode');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'adminUserManage'
+    ]);
 
     // 权限管理
     Route::group('authority', function () {
         // 权限列表
-        Route::get('list', 'authority.authority/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'authorityManage'
-        ]);
+        Route::get('list', 'authority.authority/list');
         // 权限详情
         Route::get('detail', 'authority.authority/detail');
         // 权限添加
@@ -84,15 +81,15 @@ Route::group('authority', function () {
         Route::post('update_field', 'authority.authority/updateField');
         // 批量操作
         Route::post('batch', 'authority.authority/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'authorityManage'
+    ]);
 
     // 供应商管理
     Route::group('suppliers', function () {
         // 供应商列表
-        Route::get('list', 'authority.suppliers/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'suppliersManage'
-        ]);
+        Route::get('list', 'authority.suppliers/list');
         // 供应商详情
         Route::get('detail', 'authority.suppliers/detail');
         // 供应商添加
@@ -105,7 +102,10 @@ Route::group('authority', function () {
         Route::post('update_field', 'authority.suppliers/updateField');
         // 批量操作
         Route::post('batch', 'authority.suppliers/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'suppliersManage'
+    ]);
 
 })->middleware([
     \app\adminapi\middleware\CheckAuthor::class
