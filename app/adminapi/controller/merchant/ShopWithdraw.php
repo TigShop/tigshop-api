@@ -12,8 +12,7 @@
 namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
-use app\service\api\admin\merchant\shopWithdrawService;
-use app\validate\shop\ShopValidate;
+use app\service\api\admin\merchant\ShopWithdrawService;
 use think\App;
 
 /**
@@ -27,7 +26,7 @@ class ShopWithdraw extends AdminBaseController
      * 构造函数
      *
      * @param App $app
-     * @param shopWithdrawService $shopWithdrawService
+     * @param ShopWithdrawService $shopWithdrawService
      */
     public function __construct(App $app, ShopWithdrawService $shopWithdrawService)
     {
