@@ -82,10 +82,6 @@ class CommentService extends BaseService
             $query->where('content', 'like', '%' . $filter['keyword'] . '%');
         }
 
-        if (isset($filter['is_show']) && $filter['is_show'] > -1) {
-            $query->where('is_show', $filter['is_show']);
-        }
-
         if (isset($filter['product_id'])) {
             $query->where('product_id', $filter['product_id']);
         }
@@ -181,36 +177,44 @@ class CommentService extends BaseService
     }
 
     /**
-     * 执行评论晒单添加或更新
+     * 执行评论晒单更新
      *
      * @param int $id
      * @param array $data
-     * @param bool $isAdd
-     * @return int|bool
+     * @return bool
      * @throws ApiException
      */
-    public function updateComment(int $id, array $data, bool $isAdd = false)
+    public function updateComment(int $id, array $data): bool
     {
-        validate(CommentValidate::class)->only(array_keys($data))->check($data);
+        if (!$id) {
+            throw new ApiException('#id错误');
+        }
         $data["user_id"] = request()->userId ?? 0;
         $data["shop_id"] = request()->shopId ?? 0;
         if (!empty($data["show_pics"])) {
             $data["is_showed"] = 1;
         }
-        if ($isAdd) {
-            $this->commentModel->save($data);
-            $result = $this->commentModel->getKey();
-            AdminLog::add('新增评论晒单:' . $data['content']);
-            return $result !== false;
-        } else {
-            if (!$id) {
-                throw new ApiException('#id错误');
-            }
-            $result = $this->commentModel->where('comment_id', $id)->save($data);
-            AdminLog::add('更新评论晒单:' . $this->getName($id));
+        $result = $this->commentModel->where('comment_id', $id)->save($data);
+        AdminLog::add('更新评论晒单:' . $this->getName($id));
+        return $result !== false;
+    }
 
-            return $result !== false;
+    /**
+     * 添加评论晒单
+     * @param array $data
+     * @return int
+     */
+    public function createComment(array $data): int
+    {
+        $data["user_id"] = request()->userId ?? 0;
+        $data["shop_id"] = request()->shopId ?? 0;
+        if (!empty($data["show_pics"])) {
+            $data["is_showed"] = 1;
         }
+        $this->commentModel->save($data);
+        $result = $this->commentModel->getKey();
+        AdminLog::add('新增评论晒单:' . $data['content']);
+        return $result;
     }
 
     /**

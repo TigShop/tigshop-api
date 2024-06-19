@@ -23,4 +23,9 @@ class CommentValidate extends Validate
         'content.require' => '评论内容不能为空',
         'content.max' => '评论名称最多500个字符',
     ];
+
+    protected $scene = [
+        'create' => ['content'],
+        'update' => ['content'],
+    ];
 }
