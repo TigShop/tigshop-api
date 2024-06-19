@@ -95,8 +95,7 @@ class AdminUser extends AdminBaseController
     {
         $id = input('id/d', 0);
         $item = $this->adminUserService->getDetail($id);
-        $item['open_mobile'] = $item['mobile'];
-        $item['mobile'] = Format::dimMobile($item->mobile);
+        $item['encipher_mobile'] = Format::dimMobile($item->mobile);
 
         return $this->success([
             'item' => $item,
