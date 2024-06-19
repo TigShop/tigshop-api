@@ -6,160 +6,207 @@ Route::group('product', function () {
     // 品牌
     Route::group('brand', function () {
         // 品牌列表
-        Route::get('list', 'product.brand/list');
+        Route::get('list', 'list');
         // 品牌详情
-        Route::get('detail', 'product.brand/detail');
+        Route::get('detail', 'detail');
         // 品牌添加
-        Route::post('create', 'product.brand/create');
+        Route::post('create', 'create');
         // 品牌编辑
-        Route::post('update', 'product.brand/update');
+        Route::post('update', 'update');
         // 选择品牌
-        Route::get('search', 'product.brand/search');
+        Route::get('search', 'search');
         // 品牌删除
-        Route::post('del', 'product.brand/del');
+        Route::post('del', 'del');
         // 更新字段
-        Route::post('update_field', 'product.brand/updateField');
+        Route::post('update_field', 'updateField');
         // batch批量操作
-        Route::post('batch', 'product.brand/batch');
+        Route::post('batch', 'batch');
         // 批量更新首字母
-        Route::post('update_first_word', 'product.brand/updateFirstWord');
-    });
+        Route::post('update_first_word', 'updateFirstWord');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'brandManage'
+    ])->prefix('product.brand/');
     // 分类
     Route::group('category', function () {
         // 列表
-        Route::get('list', 'product.category/list');
+        Route::get('list', 'list');
         // 商品转移
-        Route::post('move_cat', 'product.category/moveCat');
+        Route::post('move_cat', 'moveCat');
         // 添加
-        Route::post('create', 'product.category/create');
+        Route::post('create', 'create');
         // 编辑
-        Route::post('update', 'product.category/update');
+        Route::post('update', 'update');
         // 选择分类
-        Route::get('get_all_category', 'product.category/getAllCategory');
+        Route::get('get_all_category', 'getAllCategory');
         // 删除
-        Route::post('del', 'product.category/del');
+        Route::post('del', 'del');
         // 更新字段
-        Route::post('update_field', 'product.category/updateField');
+        Route::post('update_field', 'updateField');
         // batch批量操作
-        Route::post('batch', 'product.category/batch');
+        Route::post('batch', 'batch');
         // 详情
-        Route::get('detail', 'product.category/detail');
-    });
+        Route::get('detail', 'detail');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'categoryManage'
+    ])->prefix('product.category/');
     // 评论
     Route::group('comment', function () {
         // 列表
-        Route::get('list', 'product.comment/list');
+        Route::get('list', 'list');
+        // 添加
+        Route::post('create', 'create');
         // 编辑
-        Route::post('create', 'product.comment/create');
-        // 编辑
-        Route::post('update', 'product.comment/update');
+        Route::post('update', 'update');
         // 回复评论
-        Route::post('reply_comment', 'product.comment/replyComment');
+        Route::post('reply_comment', 'replyComment');
         // 删除
-        Route::post('del', 'product.comment/del');
+        Route::post('del', 'del');
         // 更新字段
-        Route::post('update_field', 'product.comment/updateField');
+        Route::post('update_field', 'updateField');
         // batch批量操作
-        Route::post('batch', 'product.comment/batch');
+        Route::post('batch', 'batch');
         // 详情
-        Route::get('detail', 'product.comment/detail');
-    });
+        Route::get('detail', 'detail');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'commentManage'
+    ])->prefix('product.comment/');
     // 商品管理
     Route::group('product', function () {
         // 商品列表
-        Route::get('list', 'product.product/list');
+        Route::get('list', 'list');
         // 商品详情
-        Route::get('detail', 'product.product/detail');
+        Route::get('detail', 'detail');
         // 商品新增
-        Route::post('create', 'product.product/create');
+        Route::post('create', 'create');
         // 商品复制
-        Route::post('copy', 'product.product/copy');
+        Route::post('copy', 'copy');
         // 商品配置型词典
-        Route::get('config', 'product.product/config');
+        Route::get('config', 'config');
         // 商品编辑
-        Route::post('update', 'product.product/update');
+        Route::post('update', 'update');
         // 商品删除
-        Route::post('del', 'product.product/del');
+        Route::post('del', 'del');
         // 商品分词
-        Route::post('get_participle', 'product.product/getParticiple');
+        Route::post('get_participle', 'getParticiple');
         // 运费模板列表
-        Route::get('shipping_tpl_list', 'product.product/shippingTplList');
+        Route::get('shipping_tpl_list', 'shippingTplList');
         // 更新字段
-        Route::post('update_field', 'product.product/updateField');
+        Route::post('update_field', 'updateField');
         // 回收站
-        Route::post('recycle', 'product.product/recycle');
+        Route::post('recycle', 'recycle');
         // 批量操作
-        Route::post('batch', 'product.product/batch');
-    });
+        Route::post('batch', 'batch');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productManage'
+    ])->prefix('product.product/');
+    // 商品分组
+    Route::group('product_group', function () {
+        // 列表
+        Route::get('list', 'list');
+        // 编辑
+        Route::post('create', 'create');
+        // 编辑
+        Route::post('update', 'update');
+        // 删除
+        Route::post('del', 'del');
+        // batch批量操作
+        Route::post('batch', 'batch');
+        // 详情
+        Route::get('detail', 'detail');
+    })->prefix('product.productGroup/')->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productGroupManage'
+    ]);
     // 商品属性
     Route::group('product_attributes', function () {
         // 列表
-        Route::get('list', 'product.productAttributes/list');
+        Route::get('list', 'list');
         // 详情
-        Route::get('detail', 'product.productAttributes/detail');
+        Route::get('detail', 'detail');
         // 编辑
-        Route::post('create', 'product.productAttributes/create');
+        Route::post('create', 'create');
         // 编辑
-        Route::post('update', 'product.productAttributes/update');
+        Route::post('update', 'update');
         // 删除
-        Route::post('del', 'product.productAttributes/del');
+        Route::post('del', 'del');
         // 更新字段
-        Route::post('update_field', 'product.productAttributes/updateField');
+        Route::post('update_field', 'updateField');
         // batch批量操作
-        Route::post('batch', 'product.productAttributes/batch');
-    });
+        Route::post('batch', 'batch');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productAttributesTplManage'
+    ])->prefix('product.productAttributes/');
     // 商品属性模板
     Route::group('product_attributes_tpl', function () {
         // 列表
-        Route::get('list', 'product.productAttributesTpl/list');
+        Route::get('list', 'list');
         // 详情
-        Route::get('detail', 'product.productAttributesTpl/detail');
+        Route::get('detail', 'detail');
         // 编辑
-        Route::post('create', 'product.productAttributesTpl/create');
+        Route::post('create', 'create');
         // 编辑
-        Route::post('update', 'product.productAttributesTpl/update');
+        Route::post('update', 'update');
         // 删除
-        Route::post('del', 'product.productAttributesTpl/del');
+        Route::post('del', 'del');
         // 更新字段
-        Route::post('update_field', 'product.productAttributesTpl/updateField');
+        Route::post('update_field', 'updateField');
         // batch批量操作
-        Route::post('batch', 'product.productAttributesTpl/batch');
-    });
+        Route::post('batch', 'batch');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productAttributesTplManage'
+    ])->prefix('product.productAttributesTpl/');
+
     // 商品库存日志
     Route::group('product_inventory_log', function () {
         // 列表
-        Route::get('list', 'product.productInventoryLog/list');
+        Route::get('list', 'list');
         // 删除
-        Route::post('del', 'product.productAttributesTpl/del');
+        Route::post('del', 'del');
         // batch批量操作
-        Route::post('batch', 'product.productAttributesTpl/batch');
-    });
+        Route::post('batch', 'batch');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productInventoryLogManage'
+    ])->prefix('product.productInventoryLog/');
+
     // 商品批量处理
     Route::group('product_batch', function () {
         // 图片批量处理
-        Route::get('product_batch_deal', 'product.productBatch/productBatchDeal');
+        Route::get('product_batch_deal', 'productBatchDeal');
         // 商品批量上传 / 修改
-        Route::post('product_batch_modify', 'product.productBatch/productBatchModify');
+        Route::post('product_batch_modify', 'productBatchModify');
         // 批量修改商品
-        Route::post('product_batch_edit', 'product.productBatch/productBatchEdit');
+        Route::post('product_batch_edit', 'productBatchEdit');
         // 下载模版文件
-        Route::post('download_template', 'product.productBatch/downloadTemplate');
-    });
+        Route::post('download_template', 'downloadTemplate');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productBatch'
+    ])->prefix('product.productBatch/');
     // 商品服务
     Route::group('product_services', function () {
         // 列表
-        Route::get('list', 'product.productServices/list');
+        Route::get('list', 'list');
         // 详情
-        Route::get('detail', 'product.productServices/detail');
+        Route::get('detail', 'detail');
         // 编辑
-        Route::post('create', 'product.productServices/create');
+        Route::post('create', 'create');
         // 编辑
-        Route::post('update', 'product.productServices/update');
+        Route::post('update', 'update');
         // 删除
-        Route::post('del', 'product.productServices/del');
+        Route::post('del', 'del');
         // 更新字段
-        Route::post('update_field', 'product.productServices/updateField');
+        Route::post('update_field', 'updateField');
         // batch批量操作
-        Route::post('batch', 'product.productServices/batch');
-    });
+        Route::post('batch', 'batch');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productServicesManage'
+    ])->prefix('product.productServices/');
 });

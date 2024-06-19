@@ -14,13 +14,14 @@ namespace app\service\api\admin\panel;
 use app\model\finance\UserRechargeOrder;
 use app\model\order\Order;
 use app\model\order\OrderItem;
-use app\model\product\Comment;
-use app\model\product\Product;
 use app\model\user\User;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\finance\RefundApplyService;
+use app\service\api\admin\finance\UserRechargeOrderService;
 use app\service\api\admin\order\OrderService;
+use app\service\api\admin\product\CommentService;
+use app\service\api\admin\product\ProductService;
 use app\service\api\admin\sys\AccessLogService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 
@@ -31,22 +32,38 @@ use utils\Time;
  */
 class SalesStatisticsService extends BaseService
 {
+
+
     /**
      * 面板控制台 - 控制台数据
      * @return array
      */
-    public function getConsoleData(): array
+    public function getConsoleData(int $shopId): array
     {
-        // 待付款的订单
-        $await_pay = Order::awaitPay()->storePlatform()->count();
+        // 待付款订单
+        $awaitPayTotal = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => Order::ORDER_PENDING
+        ]);
         // 待发货的订单
-        $await_ship = Order::awaitShip()->storePlatform()->count();
+        $await_ship = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => Order::ORDER_CONFIRMED
+        ]);
         // 待售后的订单
-        $await_after_sale = Order::completed()->storePlatform()->count();
+        $await_after_sale = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED,Order::ORDER_PROCESSING,Order::ORDER_COMPLETED]
+        ]);
         // 待回复的订单
-        $await_comment = Comment::awaitComment()->storePlatform()->count();
+        $await_comment = app(CommentService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'status' => 0,
+            'parent_id' => 0,
+            'order_id' => -1
+        ]);
         $result = [
-            'await_pay' => $await_pay,
+            'await_pay' => $awaitPayTotal,
             'await_ship' => $await_ship,
             'await_after_sale' => $await_after_sale,
             'await_comment' => $await_comment,
@@ -58,7 +75,7 @@ class SalesStatisticsService extends BaseService
      * 面板控制台 - 实时数据
      * @return array
      */
-    public function getRealTimeData(): array
+    public function getRealTimeData(int $shopId): array
     {
         // 当天时间段
         $today = Time::getCurrentDatetime("Y-m-d");
@@ -66,40 +83,74 @@ class SalesStatisticsService extends BaseService
         // 获取环比时间区间
         $prev_date = app(StatisticsUserService::class)->getPrevDate([$today, Time::format(strtotime('+ 1 days'), "Y-m-d")]);
         // 支付金额
-        $today_order_amount = Order::payTime($start_end_time)->paid()->storePlatform()->where("is_del", 0)->sum("total_amount");
-        $yesterday_order_amount = Order::payTime($prev_date)->paid()->storePlatform()->where("is_del", 0)->sum("total_amount");
+        $today_order_amount = app(OrderService::class)->filterQuery([
+            'shop_id' => $shopId,
+            'pay_time' => $start_end_time,
+            'pay_status' => Order::PAYMENT_PAID
+        ])->sum('total_amount');
+
+        $yesterday_order_amount = app(OrderService::class)->filterQuery([
+            'shop_id' => $shopId,
+            'pay_time' => $prev_date,
+            'pay_status' => Order::PAYMENT_PAID
+        ])->sum('total_amount');
+
         $order_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_order_amount, $yesterday_order_amount);
 
         // 访客数
-        $today_visit_num = app(AccessLogService::class)->getVisitNum($start_end_time);
-        $yesterday_visit_num = app(AccessLogService::class)->getVisitNum($prev_date);
+        $today_visit_num = app(AccessLogService::class)->getVisitNum($start_end_time,0,0,$shopId);
+        $yesterday_visit_num = app(AccessLogService::class)->getVisitNum($prev_date,0,0,$shopId);
         $visit_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_visit_num, $yesterday_visit_num);
 
         //支付买家数
-        $today_buyer_num = Order::payTime($start_end_time)->paid()->storePlatform()->where("is_del", 0)->group("user_id")->count();
-        $yesterday_buyer_num = Order::payTime($prev_date)->paid()->storePlatform()->where("is_del", 0)->group("user_id")->count();
+        $today_buyer_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $start_end_time,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->group("user_id")->count();
+
+        $yesterday_buyer_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $prev_date,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->group("user_id")->count();
+
         $buyer_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_buyer_num, $yesterday_buyer_num);
 
         // 浏览量
-        $today_view_num = app(AccessLogService::class)->getVisitNum($start_end_time, 1);
-        $yesterday_view_num = app(AccessLogService::class)->getVisitNum($prev_date, 1);
+        $today_view_num = app(AccessLogService::class)->getVisitNum($start_end_time, 1,0,$shopId);
+        $yesterday_view_num = app(AccessLogService::class)->getVisitNum($prev_date, 1,0,$shopId);
         $view_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_view_num, $yesterday_view_num);
 
         // 支付订单数
-        $today_order_num = Order::payTime($start_end_time)->paid()->storePlatform()->where("is_del", 0)->count();
-        $yesterday_order_num = Order::payTime($prev_date)->paid()->storePlatform()->where("is_del", 0)->count();
+        $today_order_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $start_end_time,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->count();
+
+        $yesterday_order_num = app(OrderService::class)->filterQuery([
+            'pay_time' => $prev_date,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->count();
         $order_growth_rate = app(StatisticsUserService::class)->getGrowthRate($today_order_num, $yesterday_order_num);
 
         $result = [
             "today_order_amount" => $today_order_amount,
+            "yesterday_order_amount" => $yesterday_order_amount,
             "order_amount_growth_rate" => $order_amount_growth_rate,
             "today_visit_num" => $today_visit_num,
+            "yesterday_visit_num" => $yesterday_visit_num,
             "visit_growth_rate" => $visit_growth_rate,
             "today_buyer_num" => $today_buyer_num,
+            "yesterday_buyer_num" => $yesterday_buyer_num,
             "buyer_growth_rate" => $buyer_growth_rate,
             "today_view_num" => $today_view_num,
+            "yesterday_view_num" => $yesterday_view_num,
             "view_growth_rate" => $view_growth_rate,
             "today_order_num" => $today_order_num,
+            "yesterday_order_num" => $yesterday_order_num,
             "order_growth_rate" => $order_growth_rate,
         ];
         return $result;
@@ -109,7 +160,7 @@ class SalesStatisticsService extends BaseService
      * 面板控制台 - 统计图表
      * @return array
      */
-    public function getPanelStatisticalData(): array
+    public function getPanelStatisticalData(int $shopId = 0): array
     {
         // 默认为一个月的数据
         $today = Time::getCurrentDatetime("Y-m-d");
@@ -117,15 +168,16 @@ class SalesStatisticsService extends BaseService
         $start_end_time = app(StatisticsUserService::class)->getDateRange(0, [$month_day, $today]);
 
         // 访问统计
-        $access_data = app(AccessLogService::class)->getVisitList($start_end_time, 1);
+        $access_data = app(AccessLogService::class)->getVisitList($start_end_time, 1,0,$shopId);
 
         // 订单统计 -- 订单数量/ 订单金额
-        $order_data = Order::field("DATE_FORMAT(FROM_UNIXTIME(pay_time), '%Y-%m-%d') AS period")
+        $order_data = app(OrderService::class)->filterQuery([
+                'pay_time' => $start_end_time,
+                'pay_status' => Order::PAYMENT_PAID,
+                'shop_id' => $shopId
+            ])
+            ->field("DATE_FORMAT(FROM_UNIXTIME(pay_time), '%Y-%m-%d') AS period")
             ->field("COUNT(*) AS order_count,SUM(total_amount) AS order_amount")
-            ->payTime($start_end_time)
-            ->paid()
-            ->where("is_del", 0)
-            ->storePlatform()
             ->group("period")
             ->select()->toArray();
 
@@ -162,18 +214,25 @@ class SalesStatisticsService extends BaseService
         $prev_date = app(StatisticsUserService::class)->getPrevDate($start_end_time);
 
         // 商品支付金额
-        $product_payment = app(OrderService::class)->getPayMoneyTotal($start_end_time);
-        $prev_product_payment = app(OrderService::class)->getPayMoneyTotal($prev_date);
+        $product_payment = app(OrderService::class)->getPayMoneyTotal($start_end_time,$filter['shop_id']);
+        $prev_product_payment = app(OrderService::class)->getPayMoneyTotal($prev_date,$filter['shop_id']);
         $product_payment_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_payment, $prev_product_payment);
 
         // 商品退款金额
-        $product_refund = app(RefundApplyService::class)->getRefundTotal($start_end_time);
-        $prev_product_refund = app(RefundApplyService::class)->getRefundTotal($prev_date);
+        $product_refund = app(RefundApplyService::class)->getRefundTotal($start_end_time,$filter['shop_id']);
+        $prev_product_refund = app(RefundApplyService::class)->getRefundTotal($prev_date,$filter['shop_id']);
         $product_refund_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_refund, $prev_product_refund);
 
         // 充值金额
-        $recharge_amount = UserRechargeOrder::paidTime($start_end_time)->paid()->sum('amount');
-        $prev_recharge_amount = UserRechargeOrder::paidTime($prev_date)->paid()->sum('amount');
+        $recharge_amount = app(UserRechargeOrderService::class)->filterQuery([
+            'pay_time' => $start_end_time,
+            'status' => UserRechargeOrder::STATUS_SUCCESS
+        ])->sum('amount');
+
+        $prev_recharge_amount = app(UserRechargeOrderService::class)->filterQuery([
+            'pay_time' => $prev_date,
+            'status' => UserRechargeOrder::STATUS_SUCCESS
+        ])->sum('amount');
         $recharge_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($recharge_amount, $prev_recharge_amount);
 
         // 营业额
@@ -182,8 +241,8 @@ class SalesStatisticsService extends BaseService
         $turnover_growth_rate = app(StatisticsUserService::class)->getGrowthRate($turnover, $prev_turnover);
 
         // 余额支付金额
-        $balance_payment = app(OrderService::class)->getPayBalanceTotal($start_end_time);
-        $prev_balance_payment = app(OrderService::class)->getPayBalanceTotal($prev_date);
+        $balance_payment = app(OrderService::class)->getPayBalanceTotal($start_end_time,$filter['shop_id']);
+        $prev_balance_payment = app(OrderService::class)->getPayBalanceTotal($prev_date,$filter['shop_id']);
         $balance_payment_growth_rate = app(StatisticsUserService::class)->getGrowthRate($balance_payment, $prev_balance_payment);
 
         $result["sales_data"] = [
@@ -200,7 +259,7 @@ class SalesStatisticsService extends BaseService
         ];
 
         // 获取统计图表数据
-        $result["sales_statistics_data"] = $this->getSalesStatisticsData($filter["date_type"], $start_end_time, $filter["statistic_type"]);
+        $result["sales_statistics_data"] = $this->getSalesStatisticsData($filter["date_type"], $start_end_time, $filter["statistic_type"],$filter['shop_id']);
         // 导出
         if ($filter["is_export"]) {
             // 导出
@@ -220,12 +279,12 @@ class SalesStatisticsService extends BaseService
      * @param int $statistic_type
      * @return array
      */
-    public function getSalesStatisticsData(int $date_type, array $start_end_time, int $statistic_type): array
+    public function getSalesStatisticsData(int $date_type, array $start_end_time, int $statistic_type,int $shopId = 0): array
     {
         list($start_date, $end_date) = $start_end_time;
         // 横轴
         $horizontal_axis = app(StatisticsUserService::class)->getHorizontalAxis($date_type, $start_date, $end_date);
-        $order_statistics_list = app(OrderService::class)->getPayMoneyList($start_end_time);
+        $order_statistics_list = app(OrderService::class)->getPayMoneyList($start_end_time,$shopId);
         if ($statistic_type) {
             // 订单金额统计
             $longitudinal_axis = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $order_statistics_list, $date_type, 4);
@@ -256,33 +315,33 @@ class SalesStatisticsService extends BaseService
         $prev_date = app(StatisticsUserService::class)->getPrevDate($start_end_time);
 
         // 商品浏览量
-        $product_view = app(AccessLogService::class)->getVisitNum($start_end_time, 1, 1);
-        $prev_product_view = app(AccessLogService::class)->getVisitNum($prev_date, 1, 1);
+        $product_view = app(AccessLogService::class)->getVisitNum($start_end_time, 1, 1,$filter['shop_id']);
+        $prev_product_view = app(AccessLogService::class)->getVisitNum($prev_date, 1, 1,$filter['shop_id']);
         $product_view_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_view, $prev_product_view);
 
         // 商品访客数
-        $product_visitor = app(AccessLogService::class)->getVisitNum($start_end_time, 0, 1);
-        $prev_product_visitor = app(AccessLogService::class)->getVisitNum($prev_date, 0, 1);
+        $product_visitor = app(AccessLogService::class)->getVisitNum($start_end_time, 0, 1,$filter['shop_id']);
+        $prev_product_visitor = app(AccessLogService::class)->getVisitNum($prev_date, 0, 1,$filter['shop_id']);
         $product_visitor_growth_rate = app(StatisticsUserService::class)->getGrowthRate($product_visitor, $prev_product_visitor);
 
         // 下单件数
-        $order_num = app(OrderService::class)->getOrderTotal($start_end_time);
-        $prev_order_num = app(OrderService::class)->getOrderTotal($prev_date);
+        $order_num = app(OrderService::class)->getOrderTotal($start_end_time,$filter['shop_id']);
+        $prev_order_num = app(OrderService::class)->getOrderTotal($prev_date,$filter['shop_id']);
         $order_num_growth_rate = app(StatisticsUserService::class)->getGrowthRate($order_num, $prev_order_num);
 
         // 支付金额
-        $payment_amount = app(OrderService::class)->getPayMoneyTotal($start_end_time);
-        $prev_payment_amount = app(OrderService::class)->getPayMoneyTotal($prev_date);
+        $payment_amount = app(OrderService::class)->getPayMoneyTotal($start_end_time,$filter['shop_id']);
+        $prev_payment_amount = app(OrderService::class)->getPayMoneyTotal($prev_date,$filter['shop_id']);
         $payment_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($payment_amount, $prev_payment_amount);
 
         // 退款金额
-        $refund_amount = app(RefundApplyService::class)->getRefundTotal($start_end_time);
-        $prev_refund_amount = app(RefundApplyService::class)->getRefundTotal($prev_date);
+        $refund_amount = app(RefundApplyService::class)->getRefundTotal($start_end_time,$filter['shop_id']);
+        $prev_refund_amount = app(RefundApplyService::class)->getRefundTotal($prev_date,$filter['shop_id']);
         $refund_amount_growth_rate = app(StatisticsUserService::class)->getGrowthRate($refund_amount, $prev_refund_amount);
 
         // 退款件数
-        $refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($start_end_time);
-        $prev_refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($prev_date);
+        $refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($start_end_time,$filter['shop_id']);
+        $prev_refund_quantity = app(RefundApplyService::class)->getRefundItemTotal($prev_date,$filter['shop_id']);
         $refund_quantity_growth_rate = app(StatisticsUserService::class)->getGrowthRate($refund_quantity, $prev_refund_quantity);
 
         $result["sales_data"] = [
@@ -300,7 +359,7 @@ class SalesStatisticsService extends BaseService
             "refund_quantity_growth_rate" => $refund_quantity_growth_rate,
         ];
 
-        $result["sales_statistics_data"] = $this->getSalesStatisticsDetail($start_end_time);
+        $result["sales_statistics_data"] = $this->getSalesStatisticsDetail($start_end_time,$filter['shop_id']);
         return $result;
     }
 
@@ -309,7 +368,7 @@ class SalesStatisticsService extends BaseService
      * @param array $start_end_time
      * @return array
      */
-    public function getSalesStatisticsDetail(array $start_end_time): array
+    public function getSalesStatisticsDetail(array $start_end_time,int $shopId = 0): array
     {
         list($start_date, $end_date) = $start_end_time;
         // 横轴
@@ -320,15 +379,15 @@ class SalesStatisticsService extends BaseService
         $longitudinal_axis_payment_amount = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $payment_amount_list, 0, 4);
 
         // 退款金额
-        $refund_amount_list = app(RefundApplyService::class)->getRefundList($start_end_time);
+        $refund_amount_list = app(RefundApplyService::class)->getRefundList($start_end_time,$shopId);
         $longitudinal_axis_refund_amount = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $refund_amount_list, 0, 6);
 
         // 商品浏览量
-        $product_view_list = app(AccessLogService::class)->getVisitList($start_end_time, 1, 1);
+        $product_view_list = app(AccessLogService::class)->getVisitList($start_end_time, 1, 1,$shopId);
         $longitudinal_axis_product_view = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $product_view_list, 0, 2);
 
         // 商品访客量
-        $product_visitor_list = app(AccessLogService::class)->getVisitList($start_end_time, 0, 1);
+        $product_visitor_list = app(AccessLogService::class)->getVisitList($start_end_time, 0, 1,$shopId);
         $longitudinal_axis_product_visitor = app(StatisticsUserService::class)->getLongitudinalAxis($horizontal_axis, $product_visitor_list, 0, 2);
 
         $result = [
@@ -352,13 +411,24 @@ class SalesStatisticsService extends BaseService
         if (!empty($filter["start_time"]) && !empty($filter["end_time"])) {
             $start_end_time = [$filter["start_time"], $filter["end_time"]];
         }
-        $query = OrderItem::hasWhere("orders", function ($query) use ($start_end_time) {
-            $query->where("is_del", 0)->addTime($start_end_time)->validOrder()->storePlatform();
-        })
-            ->with("orders")
+
+        $query = OrderItem::with(["orders"])
+            ->hasWhere('orders',function ($query) use ($start_end_time) {
+                $query->where("is_del", 0)
+                    ->whereIn('order_status', [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED])
+                    ->addTime($start_end_time);
+            })
             ->visible(['orders' => ['order_sn', 'add_time']])
-            ->keyword($filter["keyword"])
-            ->field("(quantity * price) AS subtotal");
+            ->field("(quantity * price) AS subtotal")
+            ->where(function ($query) use ($filter) {
+                if(!empty($filter["keyword"])){
+                    $query->where("product_name|product_sn", "like", "%{$filter["keyword"]}%");
+                }
+                if(isset($filter['shop_id']) && $filter['shop_id'] > -1){
+                    $query->where("OrderItem.shop_id", $filter['shop_id']);
+                }
+            });
+
         $count = $query->count();
         $total_list = $query->select()->toArray();
         $list = $query->page($filter["page"], $filter["size"])->order($filter["sort_field"], $filter["sort_order"])->select()->toArray();
@@ -371,15 +441,20 @@ class SalesStatisticsService extends BaseService
             // 导出
             $data = [];
             foreach ($total_list as $item) {
+                if (!empty($item['sku_data'])) {
+                    $sku_data = implode('|', array_map(function ($data) {
+                        return $data['name'] . ':' . $data['value'];
+                    }, $item['sku_data']));
+                }
                 $data[] = [
                     "product_name" => $item["product_name"],
                     "product_sn" => $item["product_sn"],
-                    "sku_data" => is_array($item["sku_data"]) ? implode(":", $item["sku_data"]) : "",
-                    "order_sn" => $item["order"]["order_sn"],
+                    "sku_data" => $sku_data ?? '',
+                    "order_sn" => $item["orders"]["order_sn"],
                     "quantity" => $item["quantity"],
                     "price" => $item["price"],
                     "subtotal" => $item["subtotal"],
-                    "add_time" => $item["order"]["add_time"],
+                    "add_time" => $item["orders"]["add_time"],
                 ];
             }
             app(StatisticsUserService::class)->executeExport($data, 0, 6);
@@ -392,32 +467,56 @@ class SalesStatisticsService extends BaseService
      * @return array
      * @throws \think\db\exception\DbException
      */
-    public function getSaleIndicators(): array
+    public function getSaleIndicators(int $shopId = 0): array
     {
         //订单总数
-        $order_num = Order::where("is_del", 0)->ValidOrder()->storePlatform()->count();
+        $order_num = app(OrderService::class)->getFilterCount([
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED],
+        ]);
         //订单商品总数
         $order_product_num = OrderItem::hasWhere("orders", function ($query) {
-            $query->where("is_del", 0)->validOrder()->paid()->storePlatform();
-        })->count();
+                $query->where("is_del", 0)
+                    ->whereIn('order_status',[Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED])
+                    ->where('pay_status',Order::PAYMENT_PAID);
+            })
+            ->where(function ($query) use ($shopId) {
+                if ($shopId > -1) {
+                    $query->where('OrderItem.shop_id', $shopId);
+                }
+            })
+            ->count();
+
         //订单总金额
-        $order_total_amount = Order::where("is_del", 0)->ValidOrder()->storePlatform()->sum('total_amount');
+        $order_total_amount = app(OrderService::class)->filterQuery([
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED],
+        ])->sum('total_amount');
+
         //会员总数
         $user_num = User::count();
         //消费会员总数
-        $consumer_membership_num = Order::where("is_del", 0)->ValidOrder()->storePlatform()->group('user_id')->count();
+        $consumer_membership_num = app(OrderService::class)->filterQuery([
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED],
+            'shop_id' => $shopId
+        ])->group('user_id')->count();
+
         //人均消费数
-        $capita_consumption = number_format($order_total_amount / $user_num, 2, '.', '');
+        $capita_consumption = $user_num > 0 ? number_format($order_total_amount / $user_num, 2, '.', '') : 0;
         //访问数 -- 商品点击数
-        $click_count = Product::where("is_delete", 0)->storePlatform()->sum('click_count');
+        $click_count = app(ProductService::class)->filterQuery([
+            'shop_id' => $shopId,
+            'is_delete' => 0
+        ])->sum('click_count');
+
         //访问转化率
-        $click_rate = number_format(($order_num / $click_count) * 100, 2, '.', '');
+        $click_rate = $click_count > 0 ? number_format(($order_num / $click_count) * 100, 2, '.', '') : 0;
         //订单转化率
-        $order_rate = number_format(($order_total_amount / $click_count) * 100, 2, '.', '');
+        $order_rate = $click_count > 0 ? number_format(($order_total_amount / $click_count) * 100, 2, '.', '') : 0;
         //消费会员比率
-        $consumer_membership_rate = number_format(($consumer_membership_num / $user_num) * 100, 2, '.', '');
+        $consumer_membership_rate = $user_num > 0 ? number_format(($consumer_membership_num / $user_num) * 100, 2, '.', '') : 0;
         //购买率
-        $purchase_rate = number_format(($order_num / $user_num) * 100, 2, '.', '');
+        $purchase_rate = $user_num > 0 ? number_format(($order_num / $user_num) * 100, 2, '.', '') : 0;
         $result = [
             "order_num" => $order_num,
             "order_product_num" => $order_product_num,
@@ -445,11 +544,21 @@ class SalesStatisticsService extends BaseService
         if (!empty($filter["start_time"]) && !empty($filter["end_time"])) {
             $start_end_time = [$filter["start_time"], $filter["end_time"]];
         }
-        $query = OrderItem::hasWhere("orders", function ($query) use ($start_end_time) {
-            $query->where("is_del", 0)->addTime($start_end_time)->validOrder()->storePlatform();
-        })
-            ->keyword($filter["keyword"])
+
+        $query = OrderItem::hasWhere('orders',function ($query) use ($start_end_time) {
+                $query->where("is_del", 0)
+                    ->whereIn('order_status', [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING, Order::ORDER_COMPLETED])
+                    ->addTime($start_end_time);
+            })
             ->field("SUM(quantity * price) AS total_sales_amount,SUM(quantity) AS total_sales_num")
+            ->where(function ($query) use ($filter) {
+                if(!empty($filter["keyword"])){
+                    $query->where("product_name|product_sn", "like", "%{$filter["keyword"]}%");
+                }
+                if(isset($filter['shop_id']) && $filter['shop_id'] > -1){
+                    $query->where("OrderItem.shop_id", $filter['shop_id']);
+                }
+            })
             ->group("product_id");
 
         $count = $query->count();
@@ -464,9 +573,7 @@ class SalesStatisticsService extends BaseService
             // 导出
             $data = [];
             foreach ($total_list as $item) {
-                $sku_data = "";
-                if(!empty($item["sku_data"])){
-                    // 平铺数组并以:分隔
+                if (!empty($item["sku_data"])) {
                     $sku_data = array_map(function ($subArray) {
                         return implode(':', $subArray);
                     }, $item["sku_data"]);
@@ -475,7 +582,7 @@ class SalesStatisticsService extends BaseService
                 $data[] = [
                     "product_name" => $item["product_name"],
                     "product_sn" => $item["product_sn"],
-                    "sku_data" => $sku_data,
+                    "sku_data" => $sku_data ?? "",
                     "total_sales_num" => $item["total_sales_num"],
                     "total_sales_amount" => $item["total_sales_amount"],
                 ];

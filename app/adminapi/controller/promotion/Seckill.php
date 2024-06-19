@@ -37,7 +37,6 @@ class Seckill extends AdminBaseController
     {
         parent::__construct($app);
         $this->seckillService = $seckillService;
-        $this->checkAuthor('seckillManage'); //权限检查
     }
 
     /**
@@ -54,7 +53,7 @@ class Seckill extends AdminBaseController
             'sort_field' => 'seckill_id',
             'sort_order' => 'desc',
         ], 'get');
-
+        $filter['shop_id'] = request()->shopId;
         $filterResult = $this->seckillService->getFilterResult($filter);
         $total = $this->seckillService->getFilterCount($filter);
 
@@ -62,6 +61,29 @@ class Seckill extends AdminBaseController
             'filter_result' => $filterResult,
             'filter' => $filter,
             'total' => $total,
+        ]);
+    }
+
+    /**
+     * 列表页面
+     *
+     * @return Response
+     */
+    public function listForDecorate(): Response
+    {
+        $filter = $this->request->only([
+            'keyword' => '',
+            'page/d' => 1,
+            'size/d' => 15,
+            'sort_field' => 'seckill_id',
+            'sort_order' => 'desc',
+            ''
+        ], 'get');
+
+        $filterResult = $this->seckillService->getSeckillProductList($filter);
+
+        return $this->success([
+            'filter_result' => $filterResult['list'],
         ]);
     }
 
@@ -112,6 +134,7 @@ class Seckill extends AdminBaseController
         } catch (ValidateException $e) {
             return $this->error($e->getError());
         }
+        $data['shop_id'] = request()->shopId;
 
         $result = $this->seckillService->createSeckill($data);
         if ($result) {

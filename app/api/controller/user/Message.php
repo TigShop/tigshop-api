@@ -30,7 +30,6 @@ class Message extends IndexBaseController
     public function __construct(App $app, UserMessageService $userMessageService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->userMessageService = $userMessageService;
     }
 

@@ -14,7 +14,7 @@ namespace app\service\api\admin\finance;
 use app\model\finance\UserRechargeOrder;
 use app\model\finance\UserWithdrawApply;
 use app\model\promotion\RechargeSetting;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 
@@ -74,6 +74,15 @@ class UserRechargeOrderService extends BaseService
 
         if (isset($filter["status"]) && $filter["status"] != -1) {
             $query->where('status', $filter["status"]);
+        }
+
+        // 支付时间
+        if (isset($filter['pay_time']) && !empty($filter['pay_time'])) {
+            $filter['pay_time'] = is_array($filter['pay_time']) ? $filter['pay_time'] : explode(',', $filter['pay_time']);
+            list($start_date, $end_date) = $filter['pay_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('paid_time', 'between', [$start_date, $end_date]);
         }
 
         if(isset($filter["user_id"]) && $filter["user_id"] > 0){
@@ -200,7 +209,10 @@ class UserRechargeOrderService extends BaseService
      */
     public function getRechargeUserTotal(array $data)
     {
-        return UserRechargeOrder::paidTime($data)->paid()->group("user_id")->count();
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'status' => UserRechargeOrder::STATUS_SUCCESS
+        ])->group("user_id")->count();
     }
 
     /**

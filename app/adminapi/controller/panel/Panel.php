@@ -39,14 +39,15 @@ class Panel extends AdminBaseController
      *
      * @return Response
      */
-    public function list(): Response
+    public function index(): Response
     {
         // 控制台数据
-        $console_data = app(SalesStatisticsService::class)->getConsoleData();
+        $console_data = app(SalesStatisticsService::class)->getConsoleData($this->shopId);
+
         // 实时数据
-        $real_time_data = app(SalesStatisticsService::class)->getRealTimeData();
+        $real_time_data = app(SalesStatisticsService::class)->getRealTimeData($this->shopId);
         //统计图表
-        $panel_statistical_data = app(SalesStatisticsService::class)->getPanelStatisticalData();
+        $panel_statistical_data = app(SalesStatisticsService::class)->getPanelStatisticalData($this->shopId);
         return $this->success([
             'console_data' => $console_data,
             'real_time_data' => $real_time_data,

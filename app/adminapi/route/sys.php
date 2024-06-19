@@ -20,5 +20,8 @@ Route::group('sys', function () {
         Route::post('update_field', 'sys.accessLog/updateField');
         // batch批量操作
         Route::post('batch', 'sys.accessLog/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'accessLogManage'
+    ]);
 });

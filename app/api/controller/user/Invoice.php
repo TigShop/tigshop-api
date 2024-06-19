@@ -28,7 +28,6 @@ class Invoice extends IndexBaseController
     public function __construct(App $app, UserInvoiceService $userInvoiceService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->userInvoiceService = $userInvoiceService;
     }
 

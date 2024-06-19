@@ -11,8 +11,8 @@
 
 namespace app\service\api\admin\product;
 
-use app\model\promotion\Coupon;
-use app\service\api\admin\BaseService;
+use app\service\api\admin\merchant\ShopProductCategoryService;
+use app\service\core\BaseService;
 
 /**
  * 商品服务类
@@ -32,6 +32,10 @@ class ProductSearchService extends BaseService
     protected $filterParams;
     protected $pageType;
     protected $couponId;
+
+    protected $shopId;
+
+    protected $shopCategoryId;
 
     public function __construct($params, $pageType = 'search')
     {
@@ -66,6 +70,14 @@ class ProductSearchService extends BaseService
             $this->couponId = $params['coupon_id'];
         }
 
+        if (isset($params['shop_id'])) {
+            $this->shopId = $params['shop_id'];
+        }
+        if (isset($params['shop_category_id'])) {
+            $this->shopCategoryId = $params['shop_category_id'];
+        }
+
+
 
         $this->pageType = $pageType;
         $this->filterParams = [
@@ -77,6 +89,8 @@ class ProductSearchService extends BaseService
             'intro_type' => $this->introType,
             'is_delete' => 0,
             'coupon_id' => $this->couponId,
+            'shop_category_id' => $this->shopCategoryId,
+            'shop_id' => $this->shopId,
         ];
     }
 
@@ -108,7 +122,7 @@ class ProductSearchService extends BaseService
         return $count;
     }
     // 筛选列表
-    public function getFilterList(): array
+    public function getFilterLists(): array
     {
         $filter = [
             'category' => [],
@@ -128,7 +142,9 @@ class ProductSearchService extends BaseService
                 }
             }
         }
-        $filter['brand'] = app(ProductService::class)->getProductBrands($this->filterParams);
+        $params = $this->filterParams;
+        unset($params['brand_ids']);
+        $filter['brand'] = app(ProductService::class)->getProductBrands($params);
 
         return $filter;
     }
@@ -139,6 +155,7 @@ class ProductSearchService extends BaseService
             'brand' => '',
             'keyword' => '',
             'intro' => '',
+            'shop_category' => ''
         ];
         if ($this->categoryId > 0) {
             $seleted['category'] = app(CategoryService::class)->getName($this->categoryId);
@@ -152,6 +169,9 @@ class ProductSearchService extends BaseService
         }
         if ($this->introType) {
             $seleted['intro'] = $this->introType;
+        }
+        if ($this->shopCategoryId) {
+            $seleted['shop_category'] = app(ShopProductCategoryService::class)->getName($this->shopCategoryId);
         }
 
         return $seleted;

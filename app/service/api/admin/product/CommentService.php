@@ -16,9 +16,9 @@ use app\model\order\Order;
 use app\model\order\OrderItem;
 use app\model\product\Comment;
 use app\model\user\User;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\order\OrderStatusService;
 use app\service\api\admin\user\UserService;
+use app\service\core\BaseService;
 use app\validate\product\CommentValidate;
 use exceptions\ApiException;
 use log\AdminLog;
@@ -82,10 +82,6 @@ class CommentService extends BaseService
             $query->where('content', 'like', '%' . $filter['keyword'] . '%');
         }
 
-        if (isset($filter['is_show']) && $filter['is_show'] > -1) {
-            $query->where('is_show', $filter['is_show']);
-        }
-
         if (isset($filter['product_id'])) {
             $query->where('product_id', $filter['product_id']);
         }
@@ -117,6 +113,31 @@ class CommentService extends BaseService
         if (isset($filter['user_id']) && $filter['user_id'] > 0) {
             $query->where('user_id', $filter['user_id']);
         }
+
+        // 店铺检索
+        if (isset($filter["shop_id"]) && !empty($filter['shop_id'])) {
+            $query->where('shop_id', $filter['shop_id']);
+        }
+
+        // 状态检索
+        if (isset($filter['status']) && $filter['status'] != -1) {
+            $query->where('status', $filter['status']);
+        }
+
+        // 是否为回复
+        if (isset($filter['parent_id']) && $filter['parent_id'] != -1) {
+            $query->where('parent_id', $filter['parent_id']);
+        }
+
+        // 订单评论
+        if(isset($filter['order_id']) && $filter['order_id'] != -2) {
+            if($filter['order_id'] >= 0){
+                $query->where('order_id', $filter['order_id']);
+            }else{
+                $query->where('order_id','>', 0);
+            }
+        }
+
 
         $query->where('parent_id', 0);
         return $query;
@@ -156,36 +177,44 @@ class CommentService extends BaseService
     }
 
     /**
-     * 执行评论晒单添加或更新
+     * 执行评论晒单更新
      *
      * @param int $id
      * @param array $data
-     * @param bool $isAdd
-     * @return int|bool
+     * @return bool
      * @throws ApiException
      */
-    public function updateComment(int $id, array $data, bool $isAdd = false)
+    public function updateComment(int $id, array $data): bool
     {
-        validate(CommentValidate::class)->only(array_keys($data))->check($data);
+        if (!$id) {
+            throw new ApiException('#id错误');
+        }
         $data["user_id"] = request()->userId ?? 0;
         $data["shop_id"] = request()->shopId ?? 0;
         if (!empty($data["show_pics"])) {
             $data["is_showed"] = 1;
         }
-        if ($isAdd) {
-            $this->commentModel->save($data);
-            $result = $this->commentModel->getKey();
-            AdminLog::add('新增评论晒单:' . $data['content']);
-            return $result !== false;
-        } else {
-            if (!$id) {
-                throw new ApiException('#id错误');
-            }
-            $result = $this->commentModel->where('comment_id', $id)->save($data);
-            AdminLog::add('更新评论晒单:' . $this->getName($id));
+        $result = $this->commentModel->where('comment_id', $id)->save($data);
+        AdminLog::add('更新评论晒单:' . $this->getName($id));
+        return $result !== false;
+    }
 
-            return $result !== false;
+    /**
+     * 添加评论晒单
+     * @param array $data
+     * @return int
+     */
+    public function createComment(array $data): int
+    {
+        $data["user_id"] = request()->userId ?? 0;
+        $data["shop_id"] = request()->shopId ?? 0;
+        if (!empty($data["show_pics"])) {
+            $data["is_showed"] = 1;
         }
+        $this->commentModel->save($data);
+        $result = $this->commentModel->getKey();
+        AdminLog::add('新增评论晒单:' . $data['content']);
+        return $result;
     }
 
     /**

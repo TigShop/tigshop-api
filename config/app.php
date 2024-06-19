@@ -38,8 +38,12 @@ return [
     'show_error_msg'   => false,
 
     'allow_cross_domain' => [
-        'http://demo.tigshop.com',
-        'https://demo.tigshop.com',
+        'http://demo.tigshop.cn',
+        'https://demo.tigshop.cn',
+        'http://localhost:5173',
+        'http://192.168.5.91:5173',
+        'http://192.168.5.96:5173',
+        'http://192.168.5.111:5173',
     ],
 
     'kf'    =>  [

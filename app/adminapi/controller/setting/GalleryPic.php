@@ -42,7 +42,6 @@ class GalleryPic extends AdminBaseController
         parent::__construct($app);
         $this->galleryPicService = $galleryPicService;
         $this->galleryService = $galleryService;
-        $this->checkAuthor('galleryPicManage'); //权限检查
     }
 
     /**
@@ -107,7 +106,9 @@ class GalleryPic extends AdminBaseController
             'is_show/d' => 1,
             'sort_order/d' => 50,
         ], 'post');
-
+        if (request()->adminType == 'shop') {
+            $data['shop_id'] = request()->shopId;
+        }
         try {
             validate(GalleryPicValidate::class)
                 ->scene('create')
@@ -212,7 +213,7 @@ class GalleryPic extends AdminBaseController
             'pic_thumb' => $thumb_img,
             'pic_name' => $image->orgName,
             'add_time' => Time::now(),
-            'pic_store_id' => Request()->shopId,
+            'shop_id' => Request()->shopId,
         ];
 
         $id = $this->galleryPicService->createGalleryPic($data);

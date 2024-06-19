@@ -53,11 +53,14 @@ class Search extends IndexBaseController
             'keyword' => '',
             'max/d' => 0,
             'min/d' => 0,
-            'intro' => ""
+            'intro' => "",
+            'coupon_id' => 0,
+            'shop_category_id' => 0,
+            'shop_id' => 0
         ]);
         $product_search = new ProductSearchService($params, 'list');
         $filter_selected = $product_search->getFilterSeleted();
-        $filter_list = $product_search->getFilterList();
+        $filter_list = $product_search->getFilterLists();
         return $this->success([
             'filter' => $filter_list,
             'filter_selected' => $filter_selected,
@@ -82,7 +85,9 @@ class Search extends IndexBaseController
             'page' => 1,
             'size' => 25,
             'intro' => "",
-            'coupon_id' => 0
+            'coupon_id' => 0,
+            'shop_category_id' => 0,
+            'shop_id' => -1
         ]);
         $product_search = new ProductSearchService($params, 'list');
         $product_list = $product_search->getProductList();

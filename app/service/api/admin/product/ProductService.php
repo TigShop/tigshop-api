@@ -15,8 +15,8 @@ use app\model\product\Product;
 use app\model\product\ProductArticle;
 use app\model\product\ProductSku;
 use app\model\promotion\Coupon;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\participle\ParticipleService;
+use app\service\core\BaseService;
 use app\validate\product\ProductValidate;
 use exceptions\ApiException;
 use log\AdminLog;
@@ -55,6 +55,7 @@ class ProductService extends BaseService
             $query->order('sort_order', 'asc')->order('product_id', 'desc');
         }
         $result = $query->page($filter['page'], $filter['size'])->select();
+        $result->load(['productSku']);
         return $result->toArray();
     }
 
@@ -84,7 +85,7 @@ class ProductService extends BaseService
         $filter['page'] = !empty($filter['page']) ? intval($filter['page']) : 1;
         $filter['size'] = !empty($filter['size'] && $filter['size'] < 999) ? intval($filter['size']) : 999;
         $filter['product_status'] = 1;
-        $query = $this->filterQuery($filter)->with(['seckillMinPrice', "product_sku"])
+        $query = $this->filterQuery($filter)->with(['seckillMinPrice', "product_sku", "shopIdAndName"])
             ->field('product_id,pic_thumb,pic_url,product_name,check_status,shop_id,suppliers_id,product_type,product_sn,product_price,market_price,product_status,is_best,is_new,is_hot,product_stock,sort_order');
         if (isset($filter['sort_field']) && !empty($filter['sort_field'])) {
             $query->order($filter['sort_field'], $filter['sort_order'] ?? 'desc');
@@ -179,13 +180,13 @@ class ProductService extends BaseService
         }
 
         // 店铺id
-        if (isset($filter["shop_id"]) && $filter["shop_id"] != -2) {
-            if ($filter["shop_id"] == -1) {
-                // 店铺商品列表
-                $query->where('shop_id', ">", 0);
-            } else {
-                $query->where('shop_id', $filter["shop_id"]);
-            }
+        if (isset($filter["shop_id"]) && $filter["shop_id"] > -1) {
+            $query->where('shop_id', $filter["shop_id"]);
+        }
+
+        // 店铺id
+        if (isset($filter["shop_category_id"]) && $filter["shop_category_id"] > -1) {
+            $query->where('shop_category_id', $filter["shop_category_id"]);
         }
 
         // 商品类型
@@ -200,6 +201,9 @@ class ProductService extends BaseService
         //是否删除
         if (isset($filter["is_delete"]) && $filter["is_delete"] != -1) {
             $query->where('is_delete', $filter["is_delete"]);
+        }
+        if (isset($filter["is_new"])) {
+            $query->where('is_new', $filter["is_new"]);
         }
         // 审核状态
         if (isset($filter["check_status"]) && $filter["check_status"] != -1) {
@@ -418,6 +422,18 @@ class ProductService extends BaseService
         AdminLog::add('更新商品:' . $this->getName($id));
         return $result !== false;
     }
+
+    /**
+     * @param int $sku_id
+     * @param int $stock
+     * @return mixed
+     */
+    public function updateSkuStock(int $sku_id, int $stock): mixed
+    {
+        return ProductSku::where('sku_id', $sku_id)->update(['sku_stock' => $stock]);
+    }
+
+
 
     /**
      * 移至回收站

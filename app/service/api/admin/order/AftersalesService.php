@@ -18,8 +18,8 @@ use app\model\order\AftersalesLog;
 use app\model\order\Order;
 use app\model\order\OrderItem;
 use app\model\user\User;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\finance\RefundApplyService;
+use app\service\core\BaseService;
 use app\validate\order\AftersalesValidate;
 use exceptions\ApiException;
 use log\AdminLog;
@@ -49,7 +49,7 @@ class AftersalesService extends BaseService
             'aftersales_items',
             'aftersales_items.items',
             'orderSn'
-        ])->append(['aftersales_type_name', "status_name", 'user_name', 'shipping_time']);
+        ])->append(['aftersales_type_name', "status_name"]);
         $result = $query->page($filter['page'], $filter['size'])->select();
         return $result->toArray();
     }
@@ -83,7 +83,7 @@ class AftersalesService extends BaseService
         $query = Aftersales::query();
         // 处理筛选条件
 
-        // 订单号或姓名
+        // 订单号
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->keywords($filter['keyword']);
         }
@@ -95,6 +95,20 @@ class AftersalesService extends BaseService
         // 申请类型
         if (isset($filter['aftersale_type']) && !empty($filter['aftersale_type'])) {
             $query->where('aftersale_type', $filter['aftersale_type']);
+        }
+
+        // 店铺检索
+        if (isset($filter['shop_id']) && $filter['shop_id'] > -1) {
+            $query->where('shop_id', $filter['shop_id']);
+        }
+
+        // 添加时间
+        if (isset($filter['add_time']) && !empty($filter['add_time'])) {
+            $filter['add_time'] = is_array($filter['add_time']) ? $filter['add_time'] : explode(',', $filter['add_time']);
+            list($start_date, $end_date) = $filter['add_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('add_time', 'between', [$start_date, $end_date]);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
@@ -113,13 +127,12 @@ class AftersalesService extends BaseService
     public function getDetail(int $id): array
     {
         $result = Aftersales::with(["aftersales_items" => ['items'], "aftersales_log", 'orders', 'refund'])
-            ->append(['aftersales_type_name', "status_name", 'user_name', 'shipping_time'])->findOrEmpty($id);
+            ->append(['aftersales_type_name', "status_name"])->findOrEmpty($id);
+        if ($result->isEmpty()) {
+            throw new ApiException('参数错误#id');
+        }
         $result->can_cancel = $result->canCancel();
         $result->step_status = $this->getStepStatus($result);
-
-        if (!$result) {
-            throw new ApiException('退换货不存在');
-        }
 
         return $result->toArray();
     }
@@ -309,6 +322,7 @@ class AftersalesService extends BaseService
                     "order_id" => $aftersales->order_id,
                     "user_id" => $aftersales->user_id,
                     "aftersale_id" => $aftersales_id,
+                    'shop_id' => $aftersales->shop_id
                 ];
                 if (!app(RefundApplyService::class)->applyRefund($apply_data)) {
                     throw new \Exception('创建退款申请失败');
@@ -348,6 +362,7 @@ class AftersalesService extends BaseService
                 "order_id" => $aftersales->order_id,
                 "user_id" => $aftersales->user_id,
                 "aftersale_id" => $aftersales_id,
+                'shop_id' => $aftersales->shop_id
             ];
             if (!app(RefundApplyService::class)->applyRefund($apply_data)) {
                 throw new \Exception('创建退款申请失败');
@@ -395,66 +410,6 @@ class AftersalesService extends BaseService
         return true;
     }
 
-    /**
-     * 执行退换货添加或更新
-     *
-     * @param int $id
-     * @param array $data
-     * @param bool $isAdd
-     * @return int|bool
-     * @throws ApiException
-     */
-    public function updateAftersales(int $id, array $data, bool $isAdd = false)
-    {
-        validate(AftersalesValidate::class)->only(array_keys($data))->check($data);
-        $data["number"] = $data["modify_number"];
-        unset($data["modify_number"]);
-        if ($isAdd) {
-            unset($data['aftersale_id']);
-            $result = Aftersales::create($data);
-            AdminLog::add('新增退换货' . $this->getName($result->aftersale_id));
-            $aftersale_id = $result->aftersale_id;
-        } else {
-            if (!$id) {
-                throw new ApiException('#id错误');
-            }
-            $result = Aftersales::where('aftersale_id', $id)->save($data);
-            AdminLog::add('更新退换货:' . $this->getName($id));
-            $aftersale_id = $id;
-        }
-        if ($result !== false) {
-            $admin_name = AdminUser::where('admin_id', request()->adminUid)->value("username");
-            $log_info = Aftersales::STATUS_NAME[$data['status']] . ":" . $data["reply"];
-            // 生成售后记录
-            $aftersales_log = [
-                "aftersale_id" => $aftersale_id,
-                "log_info" => $log_info,
-                "admin_name" => $admin_name,
-            ];
-            AftersalesLog::create($aftersales_log);
-            return true;
-        }
-        return false;
-    }
-
-    /**
-     * 更新单个字段
-     *
-     * @param int $id
-     * @param array $data
-     * @return int|bool
-     * @throws ApiException
-     */
-    public function updateAftersalesField(int $id, array $data)
-    {
-        validate(AftersalesValidate::class)->only(array_keys($data))->check($data);
-        if (!$id) {
-            throw new ApiException(/** LANG */'#id错误');
-        }
-        $result = Aftersales::where('aftersale_id', $id)->save($data);
-        AdminLog::add('更新退换货:' . $this->getName($id));
-        return $result !== false;
-    }
 
     /**
      * 删除退换货
@@ -481,16 +436,15 @@ class AftersalesService extends BaseService
      * 可售后的订单列表过滤 -- PC 端
      * @return Order
      */
-    public function afterSalesOrderFilter()
+    public function afterSalesOrderFilter(int $user_id = 0): Order
     {
-        $in_return_time = Time::now() - 3600 * 24 * 30 * 12; //默认12个月内可退换货
         $query = Order::with([
             "items" => function ($query) {
                 $query->field("item_id,order_id,product_id,price,quantity,product_name,product_sn,pic_thumb");
             },
         ])
             ->field("order_id,order_sn,shipping_time")
-            ->where(["is_del" => 0, "user_id" => request()->userId])
+            ->where(["is_del" => 0, "user_id" => $user_id])
             ->whereIn("order_status", [1, 2, 5]);
         return $query;
     }
@@ -502,7 +456,7 @@ class AftersalesService extends BaseService
      */
     public function afterSalesOrderList(array $filter): object
     {
-        $query = $this->afterSalesOrderFilter();
+        $query = $this->afterSalesOrderFilter($filter['user_id']);
         $list = $query->page($filter['page'], $filter['size'])->order($filter["sort_field"],
             $filter["sort_order"])->select();
 
@@ -584,6 +538,7 @@ class AftersalesService extends BaseService
         $data['aftersales_sn'] = date("YmdHis") . rand(1000, 99999);
         $aftersale_items = $data['items'];
         $order = Order::where('order_id', $data['order_id'])->find();
+        $data["shop_id"] = $order->shop_id;
         if (!$order->hasPay()) {
             throw new ApiException(/** LANG */'未支付订单不允许售后');
         }

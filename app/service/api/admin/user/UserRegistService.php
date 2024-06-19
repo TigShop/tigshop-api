@@ -14,8 +14,9 @@ declare (strict_types = 1);
 namespace app\service\api\admin\user;
 
 use app\model\user\User;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
+use Fastknife\Utils\RandomUtils;
 use utils\Config;
 use utils\Time;
 
@@ -56,7 +57,7 @@ class UserRegistService extends BaseService
             'email' => $params['email'] ?? '',
             'password' => password_hash($params['password'], PASSWORD_DEFAULT),
             'avatar' => isset($params['avatar']) ? $params['avatar'] : '',
-            'nickname' => isset($params['nickname']) ? $params['nickname'] : '',
+            'nickname' => isset($params['nickname']) ? $params['nickname'] : 'USER_' . RandomUtils::getRandomCode(8, 3),
             'reg_time' => Time::now(),
             'referrer_user_id' => isset($params['referrer_user_id']) ? $params['referrer_user_id'] : 0, //推荐人
         ];
@@ -96,6 +97,20 @@ class UserRegistService extends BaseService
     {
         $count = User::where('email', $email)->count();
         return $count > 0;
+    }
+
+    /**
+     * 生成用户名
+     * @return string
+     */
+    public function generateUsername(): string
+    {
+        while (true) {
+            $username = Config::get('username_prefix') . RandomUtils::getRandomCode(8, 3);
+            if (!User::where('username', $username)->count()) {
+                return $username;
+            }
+        }
     }
 
 }

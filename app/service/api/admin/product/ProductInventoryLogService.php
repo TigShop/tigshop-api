@@ -12,7 +12,7 @@
 namespace app\service\api\admin\product;
 
 use app\model\product\ProductInventoryLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\product\ProductInventoryLogValidate;
 use exceptions\ApiException;
 

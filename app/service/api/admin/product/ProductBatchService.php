@@ -14,7 +14,7 @@ namespace app\service\api\admin\product;
 use app\model\category\Category;
 use app\model\product\Brand;
 use app\model\product\Product;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use think\Exception;
 use think\facade\Db;

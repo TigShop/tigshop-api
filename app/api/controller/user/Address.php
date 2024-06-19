@@ -31,7 +31,6 @@ class Address extends IndexBaseController
     public function __construct(App $app)
     {
         parent::__construct($app);
-        $this->checkLogin();
     }
 
     /**
@@ -81,6 +80,7 @@ class Address extends IndexBaseController
             'postcode' => '',
             'email' => '',
             'address_tag' => '',
+            'is_default' => 0,
         ]);
         return $data;
     }

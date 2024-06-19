@@ -12,7 +12,7 @@
 namespace app\service\api\admin\order;
 
 use app\model\order\Order;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\order\OrderValidate;
 
 /**

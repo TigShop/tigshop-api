@@ -32,7 +32,6 @@ class WithdrawApply extends IndexBaseController
     public function __construct(App $app, UserWithdrawApplyService $userWithdrawApplyService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->userWithdrawApplyService = $userWithdrawApplyService;
     }
 

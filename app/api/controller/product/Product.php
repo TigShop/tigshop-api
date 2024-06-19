@@ -146,7 +146,6 @@ class Product extends IndexBaseController
 
     public function addToCart(): \think\Response
     {
-        $this->checkLogin();
         $id = input('id/d', 0);
         $number = input('number/d', 0);
         $sku_id = input('sku_id/d', 0);
@@ -176,7 +175,8 @@ class Product extends IndexBaseController
             'ids' => null,
             'shop_id/d' => -2, // 店铺id
             'intro_type' => '', // 商品类型
-            'coupon_id' => 0
+            'coupon_id' => 0,
+            'shop_category_id' => -1
         ], 'get');
         $filterResult = app(ProductService::class)->getFilterResult($filter);
         $total = app(ProductService::class)->getFilterCount($filter);

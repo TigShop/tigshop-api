@@ -13,6 +13,7 @@ namespace app\api\controller\cart;
 
 use app\api\IndexBaseController;
 use app\service\api\admin\order\CartService;
+use app\service\api\admin\promotion\CouponService;
 use think\App;
 use think\Response;
 
@@ -29,7 +30,6 @@ class Cart extends IndexBaseController
     public function __construct(App $app)
     {
         parent::__construct($app);
-        $this->checkLogin();
     }
 
     /**
@@ -108,6 +108,46 @@ class Cart extends IndexBaseController
     public function clear(): Response
     {
         app(CartService::class)->clearCart();
-        return $this->success(/** LANG */'购物车已清空');
+        return $this->success(/** LANG */ lang('购物车已清空'));
+    }
+
+    /**
+     * 获得购物车优惠卷折扣信息
+     * @return Response
+     */
+    public function getCouponDiscount(): Response
+    {
+        $coupon_id = input('coupon_id/d', 0);
+        $carts = app(CartService::class)->getCartList(true);
+        $coupon = app(CouponService::class)->getDetail($coupon_id);
+        $checkedProductPriceSum = 0;
+        foreach ($carts as $cart) {
+            if ($coupon['send_range'] == 1) {
+                if (!in_array($cart['category_id'], $coupon['send_range_data'])) {
+                    continue;
+                }
+            } elseif ($coupon['send_range'] == 2) {
+                if (!in_array($cart['brand_id'], $coupon['send_range_data'])) {
+                    continue;
+                }
+            } elseif ($coupon['send_range'] == 3) {
+                if (!in_array($cart['product_id'], $coupon['send_range_data'])) {
+                    continue;
+                }
+            } elseif ($coupon['send_range'] == 4) {
+                if (in_array($cart['product_id'], $coupon['send_range_data'])) {
+                    continue;
+                }
+            }
+            $checkedProductPriceSum = bcadd($cart['product_price'] * $cart['quantity'], $checkedProductPriceSum, 2);
+        }
+        $discount_money = $coupon['coupon_type'] == 1 ? $coupon['coupon_money'] : bcmul($checkedProductPriceSum,
+            $coupon['coupon_discount'] / 10, 2);
+        return $this->success([
+            'min_order_amount' => $coupon['min_order_amount'],
+            'coupon_money' => $coupon['coupon_money'],
+            'product_price' => $checkedProductPriceSum,
+            'discount_money' => $discount_money,
+        ]);
     }
 }

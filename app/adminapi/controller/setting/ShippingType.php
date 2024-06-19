@@ -37,7 +37,6 @@ class ShippingType extends AdminBaseController
     {
         parent::__construct($app);
         $this->shippingTypeService = $shippingTypeService;
-        $this->checkAuthor('shippingTypeManage'); //权限检查
     }
 
     /**

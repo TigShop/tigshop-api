@@ -12,7 +12,7 @@
 namespace app\service\api\admin\authority;
 
 use app\model\authority\AdminRole;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**
@@ -65,6 +65,13 @@ class AdminRoleService extends BaseService
             $query->where('role_name', 'like', '%' . $filter['keyword'] . '%');
         }
 
+        if (!empty($filter['admin_type'])) {
+            $query->where('admin_type', $filter['admin_type']);
+        }
+        if (isset($filter['merchant_id'])) {
+            $query->where('merchant_id', $filter['merchant_id']);
+        }
+
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
@@ -111,6 +118,8 @@ class AdminRoleService extends BaseService
             'role_name' => $data['role_name'],
             'role_desc' => $data['role_desc'],
             'authority_list' => $data["authority_list"],
+            'admin_type' => $data['admin_type'],
+            'merchant_id' => $data['merchant_id'],
         ];
         return $arr;
     }

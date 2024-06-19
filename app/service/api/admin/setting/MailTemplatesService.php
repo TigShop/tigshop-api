@@ -12,7 +12,7 @@
 namespace app\service\api\admin\setting;
 
 use app\model\setting\MailTemplates;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 use utils\Time;

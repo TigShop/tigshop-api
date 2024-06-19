@@ -13,8 +13,8 @@ namespace app\service\api\admin\promotion;
 
 use app\model\promotion\Seckill;
 use app\model\promotion\SeckillItem;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\product\ProductService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 use think\facade\Db;
@@ -72,6 +72,11 @@ class SeckillService extends BaseService
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
+        }
+
+        //shop_id
+        if (isset($filter["shop_id"])) {
+            $query->where('shop_id', '=', $filter["shop_id"]);
         }
         return $query;
     }
@@ -228,6 +233,7 @@ class SeckillService extends BaseService
                             "seckill_stock" => $val["seckill_stock"],
                             'seckill_start_time' => Time::toTime($data['seckill_start_time']),
                             'seckill_end_time' => Time::toTime($data['seckill_end_time']),
+                            'shop_id' => $data['shop_id']
                         ];
                     }
                 }

@@ -68,11 +68,16 @@ class Product extends AdminBaseController
             'category_id/d' => 0,
             'brand_id/d' => 0,
             'ids' => null,
-            'store_id/d' => -2, // 店铺id
+            'shop_id/d' => -2, // 店铺id
             'intro_type' => '', // 商品类型
             'product_status/d' => -1, // 上下架状态
             'check_status/d' => -1, // 审核状态
         ], 'get');
+
+        if(request()->adminType == 'shop')
+        {
+            $filter['shop_id'] = request()->shopId;
+        }
         $filterResult = $this->productService->getFilterResult($filter);
         $total = $this->productService->getFilterCount($filter);
         $waiting_checked_count = $this->productService->getWaitingCheckedCount();
@@ -117,7 +122,7 @@ class Product extends AdminBaseController
                 $item['check_status'] = 1;
                 $item['product_status'] = 1;
             }
-            $item['store_id'] = request()->shopId;
+            $item['shop_id'] = request()->shopId;
         }
         $item['product_service_ids'] = Db::name('product_services')->where('default_on',
             1)->column('product_service_id');
@@ -274,10 +279,11 @@ class Product extends AdminBaseController
             'product_care' => '',
             'is_support_return/d' => 0,
             'shipping_tpl_id/d' => 0,
-            'store_cat_id/d' => 0,
             'check_reason' => '',
             'product_article_list' => [],
             'img_list' => [],
+            'shop_id' => request()->shopId,
+            'shop_category_id' => 0
         ], 'post');
         validate(ProductValidate::class)->only(array_keys($data))->check($data);
         $result = $this->productService->updateProduct($id, $data, true);
@@ -349,10 +355,10 @@ class Product extends AdminBaseController
             'product_care' => '',
             'is_support_return/d' => 0,
             'shipping_tpl_id/d' => 0,
-            'store_cat_id/d' => 0,
             'check_reason' => '',
             'product_article_list' => [],
             'img_list' => [],
+            'shop_category_id' => 0
         ], 'post');
 
         /* 处理属性 */
@@ -398,16 +404,23 @@ class Product extends AdminBaseController
             'sort_order',
             'product_status',
             'is_delete',
+            'product_stock',
+            'productSku'
         ])) {
             return $this->error('#field 错误');
         }
-
+        $val = input('val');
         $data = [
             'product_id' => $id,
-            $field => input('val'),
+            $field => $val,
         ];
-
-        $this->productService->updateProductField($id, $data);
+        if ($field == 'productSku') {
+            foreach ($val as $k => $v) {
+                $this->productService->updateSkuStock($v['sku_id'], $v['sku_stock']);
+            }
+        } else {
+            $this->productService->updateProductField($id, $data);
+        }
 
         return $this->success('更新成功');
     }

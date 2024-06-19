@@ -3,7 +3,7 @@
 namespace app\service\api\admin\pay;
 
 use app\model\payment\PayLog as PayLogModel;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use Fastknife\Utils\RandomUtils;
 use utils\Time;
@@ -53,7 +53,7 @@ class PayLogService extends BaseService
         }
 
         // 支付状态
-        if (isset($filter["pay_status"]) && $filter["pay_status"] != -1 && !empty($filter["pay_status"])) {
+        if (isset($filter["pay_status"]) && $filter["pay_status"] != -1) {
             $query->where('pay_status', $filter["pay_status"]);
         }
 

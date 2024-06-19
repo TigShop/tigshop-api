@@ -12,7 +12,6 @@
 namespace app\service\api\admin\order;
 
 use app\model\order\Order;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\pay\PayLogService;
 use app\service\api\admin\pay\PaymentService;
 use app\service\api\admin\product\ProductService;
@@ -22,6 +21,7 @@ use app\service\api\admin\setting\LogisticsCompanyService;
 use app\service\api\admin\setting\RegionService;
 use app\service\api\admin\user\UserCouponService;
 use app\service\api\admin\user\UserService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use think\facade\Db;
 use utils\Time;
@@ -165,7 +165,7 @@ class OrderDetailService extends BaseService
             'order_sn' => $this->getOrder()->order_sn,
             'order_id' => $this->getOrder()->order_id,
         ];
-        $result = app(OrderLogService::class)->addOrderLog($data['order_id'], $data);
+        $result = app(OrderLogService::class)->addOrderLog($data);
         return true;
     }
 

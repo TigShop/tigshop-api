@@ -58,7 +58,13 @@ class AdminUser extends AdminBaseController
             'parent_id' => '',
             'sort_field' => 'admin_id',
             'sort_order' => 'desc',
+            'admin_type' => request()->adminType
         ], 'get');
+
+        if(request()->adminType == 'shop')
+        {
+            $filter['merchant_id'] = request()->merchantId;
+        }
 
         $filterResult = $this->adminUserService->getFilterResult($filter);
         $total = $this->adminUserService->getFilterCount($filter);
@@ -89,7 +95,7 @@ class AdminUser extends AdminBaseController
     {
         $id = input('id/d', 0);
         $item = $this->adminUserService->getDetail($id);
-        $item['mobile'] = Format::dimMobile($item->mobile);
+        $item['encipher_mobile'] = Format::dimMobile($item->mobile);
 
         return $this->success([
             'item' => $item,
@@ -126,9 +132,17 @@ class AdminUser extends AdminBaseController
             'role_id/d' => 0,
             'parent_id/d' => 0,
             'pwd_confirm' => '', // 确认密码
+            'old_password' => '', // 原密码
+            'admin_type' => request()->adminType
         ], 'post');
 
-        $data["store_id"] = request()->shopId;
+        $data["merchant_id"] = request()->merchantId;
+        if (request()->adminType == 'shop') {
+            $data['user_id'] = input('user_id/d', 0);
+            if (empty($data['user_id'])) {
+                return $this->error(lang('商户关联的用户必填'));
+            }
+        }
         try {
             validate(AdminUserValidate::class)
                 ->scene('create')
@@ -164,6 +178,8 @@ class AdminUser extends AdminBaseController
             'role_id/d' => 0,
             'parent_id/d' => 0,
             'pwd_confirm' => '', // 确认密码
+            'old_password' => '', // 原密码
+            'admin_type' => request()->adminType
         ], 'post');
         $data["shop_id"] = request()->shopId;
         try {
@@ -173,7 +189,13 @@ class AdminUser extends AdminBaseController
         } catch (ValidateException $e) {
             throw new ApiException($e->getError());
         }
-
+        $data["merchant_id"] = request()->merchantId;
+        if (request()->adminType == 'shop') {
+            $data['user_id'] = input('user_id/d', 0);
+            if (empty($data['user_id'])) {
+                return $this->error(lang('商户关联的用户必填'));
+            }
+        }
         $result = $this->adminUserService->updateAdminUser($data, $id);
         if ($result) {
             return $this->success(/** LANG */'管理员更新成功');

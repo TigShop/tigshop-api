@@ -14,10 +14,10 @@ namespace app\service\api\admin\promotion;
 use app\model\promotion\Coupon;
 use app\model\user\User;
 use app\model\user\UserCoupon;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\product\CategoryService;
 use app\service\api\admin\user\UserCouponService;
 use app\service\api\admin\user\UserService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 
@@ -46,7 +46,7 @@ class CouponService extends BaseService
             array_multisort(array_column($list, 'is_receive'), SORT_ASC, $list);
             $result = array_slice($list, (($filter["page"] ?? 1) - 1) * ($filter["size"] ?? 15), ($filter["size"] ?? 15));
         } else {
-            $result = $query->page($filter['page'], $filter['size'])->select()->toArray();
+            $result = $query->order('coupon_id', 'desc')->page($filter['page'], $filter['size'])->select()->toArray();
         }
 
         return $result;
@@ -96,6 +96,11 @@ class CouponService extends BaseService
         if (isset($filter["receive_date"]) && $filter["receive_date"] === 1) {
             $query->where('send_start_date', '<=', Time::now());
             $query->where('send_end_date', '>=', Time::now());
+        }
+
+        //shop_id
+        if (isset($filter["shop_id"])) {
+            $query->where('shop_id', '=', $filter["shop_id"]);
         }
         return $query;
     }

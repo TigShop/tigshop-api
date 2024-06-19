@@ -14,7 +14,10 @@ Route::group('setting', function () {
         Route::post('create', 'setting.appVersion/create');
         // 编辑
         Route::post('update', 'setting.appVersion/update');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'appVersionManage'
+    ]);
     // 设置项管理
     Route::group('config', function () {
         // 基础设置
@@ -35,7 +38,10 @@ Route::group('setting', function () {
         Route::post('upload_file', 'setting.config/uploadFile');
         // 生成平台证书
         Route::post('create_platform_certificate', 'setting.config/createPlatformCertificate');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'config'
+    ]);
     // 计划任务
     Route::group('crons', function () {
         // 列表
@@ -52,7 +58,10 @@ Route::group('setting', function () {
         Route::post('del', 'setting.crons/del');
         // 批量操作
         Route::post('batch', 'setting.crons/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'cronsManage'
+    ]);
     // 友情链接
     Route::group('friend_links', function () {
         // 列表
@@ -69,7 +78,10 @@ Route::group('setting', function () {
         Route::post('del', 'setting.friendLinks/del');
         // 批量操作
         Route::post('batch', 'setting.friendLinks/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'friendLinksManage'
+    ]);
     // 相册
     Route::group('gallery', function () {
         // 列表
@@ -86,7 +98,10 @@ Route::group('setting', function () {
         Route::post('del', 'setting.gallery/del');
         // 批量操作
         Route::post('batch', 'setting.gallery/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'galleryManage'
+    ]);
     // 相册图片
     Route::group('gallery_pic', function () {
         // 列表
@@ -105,7 +120,10 @@ Route::group('setting', function () {
         Route::post('del', 'setting.galleryPic/del');
         // 批量操作
         Route::post('batch', 'setting.galleryPic/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'galleryPicManage'
+    ]);
     // 物流公司
     Route::group('logistics_company', function () {
         // 分页列表
@@ -124,7 +142,10 @@ Route::group('setting', function () {
         Route::post('del', 'setting.logisticsCompany/del');
         // 批量操作
         Route::post('batch', 'setting.logisticsCompany/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'logisticsCompanyManage'
+    ]);
     // 邮件模板设置
     Route::group('mail_templates', function () {
         // 列表
@@ -141,7 +162,10 @@ Route::group('setting', function () {
         Route::post('batch', 'setting.mailTemplates/batch');
         // 获取所有的邮件模板
         Route::get('get_all_mail_templates', 'setting.mailTemplates/getAllMailTemplates');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'mailTemplateManage'
+    ]);
     // 消息设置
     Route::group('message_type', function () {
         // 列表
@@ -162,7 +186,14 @@ Route::group('setting', function () {
         Route::post('mini_program_message_template', 'setting.messageType/miniProgramMessageTemplate');
         // 同步小程序消息模板
         Route::post('mini_program_message_template_sync', 'setting.messageType/miniProgramMessageTemplateSync');
-    });
+        // 生成公众号消息模板
+        Route::post('wechat_message_template', 'setting.messageType/wechatMessageTemplate');
+        // 同步公众号消息模板
+        Route::post('wechat_message_template_sync', 'setting.messageType/wechatMessageTemplateSync');
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'messageTypeManage'
+    ]);
     // 地区管理
     Route::group('region', function () {
         // 列表
@@ -185,7 +216,10 @@ Route::group('setting', function () {
         Route::post('del', 'setting.region/del');
         // 批量操作
         Route::post('batch', 'setting.region/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'regionManage'
+    ]);
     // 运费模板管理
     Route::group('shipping_tpl', function () {
         // 列表
@@ -204,7 +238,10 @@ Route::group('setting', function () {
         Route::post('del', 'setting.shippingTpl/del');
         // 批量操作
         Route::post('batch', 'setting.shippingTpl/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'shippingTplManage'
+    ]);
     // 配送类型
     Route::group('shipping_type', function () {
         // 列表
@@ -221,5 +258,8 @@ Route::group('setting', function () {
         Route::post('del', 'setting.shippingType/del');
         // 批量操作
         Route::post('batch', 'setting.shippingType/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'shippingTypeManage'
+    ]);
 });

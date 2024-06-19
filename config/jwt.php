@@ -11,7 +11,7 @@ return [
     'ttl'         => env('JWT_TTL',60),
     //refreshToken 有效期，单位为分钟（在refreshToken有效期内AccessToken过期时可自动刷新，刷新时支持Redis二次验证）
     'refresh_ttl' => env('JWT_REFRESH_TTL', 20160),
-    //JWT hashing algorithm
+    //CheckLogin hashing algorithm
     'algo'        => env('JWT_ALGO', 'HS256'),
     //token获取方式，数组靠前值优先
     'token_mode'    => ['header', 'cookie', 'param'],

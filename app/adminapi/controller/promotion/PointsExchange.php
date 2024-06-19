@@ -37,7 +37,6 @@ class PointsExchange extends AdminBaseController
     {
         parent::__construct($app);
         $this->pointsExchangeService = $pointsExchangeService;
-        $this->checkAuthor('pointsExchangeManage'); //权限检查
     }
 
     /**

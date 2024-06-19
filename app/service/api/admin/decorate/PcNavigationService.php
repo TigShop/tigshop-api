@@ -12,7 +12,7 @@
 namespace app\service\api\admin\decorate;
 
 use app\model\decorate\PcNavigation;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

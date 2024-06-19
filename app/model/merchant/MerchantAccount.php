@@ -9,19 +9,24 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\model\shop;
+namespace app\model\merchant;
 
+use app\model\authority\AdminUser;
 use app\model\user\User;
 use think\Model;
 use utils\Time;
 
-class Shop extends Model
+class MerchantAccount extends Model
 {
-    protected $pk = 'shop_id';
-    protected $table = 'shop';
+    protected $pk = 'account_id';
+    protected $table = 'merchant_account';
 
     protected $createTime = 'add_time';
     protected $autoWriteTimestamp = 'int';
+
+    protected $append = [
+        'account_type_text',
+    ];
 
     // 字段处理
     public function getAddTimeAttr($value): string
@@ -29,9 +34,16 @@ class Shop extends Model
         return Time::format($value);
     }
 
-    // 用户名
-    public function userName()
+    const TYPE_LIST = [
+        1 => '银行卡',
+        2 => '支付宝',
+        3 => '微信'
+    ];
+
+
+    public function getAccountTypeTextAttr($value, $data): string
     {
-        return $this->hasOne(User::class, "user_id", "user_id")->bind(['user_name']);
+        return self::TYPE_LIST[$data['account_type']] ?: '';
     }
+
 }

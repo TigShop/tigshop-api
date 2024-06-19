@@ -1,6 +1,6 @@
 <?php
 //**---------------------------------------------------------------------+
-//** 后台控制器文件 -- 店铺
+//** 后台控制器文件 -- 账户添加
 //**---------------------------------------------------------------------+
 //** 版权所有：江西佰商科技有限公司. 官网：https://www.tigshop.com
 //**---------------------------------------------------------------------+
@@ -9,30 +9,30 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\adminapi\controller\store;
+namespace app\adminapi\controller\merchant;
 
 use app\adminapi\AdminBaseController;
-use app\service\api\admin\store\StoreService;
+use app\service\api\admin\merchant\MerchantAccountService;
 use think\App;
+use think\Response;
 
 /**
- * 店铺控制器
+ * 商户银行账户控制器
  */
-class Store extends AdminBaseController
+class Account extends AdminBaseController
 {
-    protected StoreService $storeService;
+    protected MerchantAccountService $merchantAccountService;
 
     /**
      * 构造函数
      *
      * @param App $app
-     * @param StoreService $storeService
+     * @param merchantAccountService $storeService
      */
-    public function __construct(App $app, StoreService $storeService)
+    public function __construct(App $app, MerchantAccountService $merchantAccountService)
     {
         parent::__construct($app);
-        $this->storeService = $storeService;
-        $this->checkAuthor('storeManage'); //权限检查
+        $this->merchantAccountService = $merchantAccountService;
     }
 
     /**
@@ -43,17 +43,14 @@ class Store extends AdminBaseController
     public function list(): \think\Response
     {
         $filter = $this->request->only([
-            'keyword' => '',
-            'store_id' => 0,
-            'is_self' => -1,
             'page/d' => 1,
             'size/d' => 15,
-            'sort_field' => 'store_id',
+            'sort_field' => 'add_time',
             'sort_order' => 'desc',
         ], 'get');
-
-        $filterResult = $this->storeService->getFilterResult($filter);
-        $total = $this->storeService->getFilterCount($filter);
+        $filter['merchant_id'] = request()->merchantId;
+        $filterResult = $this->merchantAccountService->getFilterList($filter);
+        $total = $this->merchantAccountService->getFilterCount($filter);
 
         return $this->success([
             'filter_result' => $filterResult,
@@ -63,15 +60,21 @@ class Store extends AdminBaseController
     }
 
     /**
-     * 列表页面
-     *
-     * @return \think\Response
+     * 配置型
+     * @return Response
      */
-    public function all(): \think\Response
+    public function config(): Response
     {
-        $store = $this->storeService->getAllStore();
+        $list = \app\model\merchant\MerchantAccount::TYPE_LIST;
+        $typeList = [];
+        foreach ($list as $k => $v) {
+            $typeList[] = [
+                'account_type' => $k,
+                'account_type_text' => $v,
+            ];
+        }
         return $this->success([
-            'store' => $store,
+            'account_type_list' => $typeList
         ]);
     }
 
@@ -82,31 +85,34 @@ class Store extends AdminBaseController
      */
     public function detail(): \think\Response
     {
-
         $id = input('id/d', 0);
-        $item = $this->storeService->getDetail($id);
+        $item = $this->merchantAccountService->getDetail($id);
+        $this->checkMerchantAuth($item['merchant_id']);
         return $this->success([
             'item' => $item,
         ]);
     }
 
     /**
-     * 执行添加操作
+     * 执行更新操作
      *
      * @return \think\Response
      */
     public function create(): \think\Response
     {
         $data = $this->request->only([
-            'store_title' => '',
-            'sort_order/d' => 50,
+            'account_type' => '',
+            'account_name' => '',
+            'bank_name' => '',
+            'account_no' => '',
+            'bank_branch' => ''
         ], 'post');
-
-        $result = $this->storeService->updateStore(0, $data, true);
+        $data['merchant_id'] = request()->merchantId;
+        $result = $this->merchantAccountService->update(0, $data, true);
         if ($result) {
-            return $this->success('店铺添加成功');
+            return $this->success(lang('账户添加更新成功'));
         } else {
-            return $this->error('店铺更新失败');
+            return $this->error('账户添加更新失败');
         }
     }
 
@@ -119,41 +125,21 @@ class Store extends AdminBaseController
     {
         $id = input('id/d', 0);
         $data = $this->request->only([
-            'store_id' => $id,
-            'store_title' => '',
-            'sort_order/d' => 50,
+            'account_id' => $id,
+            'account_type' => '',
+            'account_name' => '',
+            'bank_name' => '',
+            'account_no' => '',
+            'bank_branch' => ''
         ], 'post');
-
-        $result = $this->storeService->updateStore($id, $data, false);
+        $item = $this->merchantAccountService->getDetail($id);
+        $this->checkMerchantAuth($item['merchant_id']);
+        $result = $this->merchantAccountService->update($id, $data, false);
         if ($result) {
-            return $this->success('店铺更新成功');
+            return $this->success(lang('账户添加更新成功'));
         } else {
-            return $this->error('店铺更新失败');
+            return $this->error('账户添加更新失败');
         }
-    }
-
-    /**
-     * 更新单个字段
-     *
-     * @return \think\Response
-     */
-    public function updateField(): \think\Response
-    {
-        $id = input('id/d', 0);
-        $field = input('field', '');
-
-        if (!in_array($field, ['store_title', 'sort_order'])) {
-            return $this->error('#field 错误');
-        }
-
-        $data = [
-            'store_id' => $id,
-            $field => input('val'),
-        ];
-
-        $this->storeService->updateStoreField($id, $data);
-
-        return $this->success('更新成功');
     }
 
     /**
@@ -164,7 +150,7 @@ class Store extends AdminBaseController
     public function del(): \think\Response
     {
         $id = input('id/d', 0);
-        $this->storeService->deleteStore($id);
+        $this->merchantAccountService->delete($id);
         return $this->success('指定项目已删除');
     }
 
@@ -182,7 +168,7 @@ class Store extends AdminBaseController
         if (input('type') == 'del') {
             foreach (input('ids') as $key => $id) {
                 $id = intval($id);
-                $this->storeService->deleteStore($id);
+                $this->merchantAccountService->delete($id);
             }
             return $this->success('批量操作执行成功！');
         } else {

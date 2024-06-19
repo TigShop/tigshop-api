@@ -19,8 +19,8 @@ use app\model\user\UserGrowthPointsLog;
 use app\model\user\UserPointsLog;
 use app\model\user\UserRank;
 use app\service\api\admin\authority\AccessTokenService;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\common\sms\SmsService;
+use app\service\core\BaseService;
 use app\validate\user\UserValidate;
 use exceptions\ApiException;
 use log\AdminLog;
@@ -108,6 +108,15 @@ class UserService extends BaseService
         // 积分检索
         if (isset($filter['points_gt']) && !empty($filter["points_gt"])) {
             $query->where('points', '>', $filter["points_gt"]);
+        }
+
+        // 注册时间
+        if (isset($filter['reg_time']) && !empty($filter['reg_time'])) {
+            $filter['reg_time'] = is_array($filter['reg_time']) ? $filter['reg_time'] : explode(',',$filter['reg_time']);
+            list($start_date, $end_date) = $filter['reg_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('reg_time', "between", [$start_date, $end_date]);
         }
 
         if (isset($filter['points_lt']) && !empty($filter["points_lt"])) {
@@ -263,7 +272,7 @@ class UserService extends BaseService
      * @param string $mobile_code
      * @return array
      */
-    public function getUserByMobile(string $mobile, string $mobile_code): array
+    public function getUserByMobileCode(string $mobile, string $mobile_code): array
     {
         if (empty($mobile)) {
             throw new ApiException('手机号不能为空');
@@ -277,6 +286,24 @@ class UserService extends BaseService
         $item = $this->userModel->where('mobile', $mobile)->find();
         if (!$item) {
             throw new ApiException('不存在此管理员账号，请重试');
+        }
+        return $this->getDetail($item['user_id']);
+    }
+
+    /**
+     * 根据手机号获取会员
+     * @param string $mobile
+     * @return array
+     * @throws ApiException
+     * @throws \think\db\exception\DataNotFoundException
+     * @throws \think\db\exception\DbException
+     * @throws \think\db\exception\ModelNotFoundException
+     */
+    public function getUserByMobile(string $mobile): array
+    {
+        $item = $this->userModel->where('mobile', $mobile)->find();
+        if (!$item) {
+            return [];
         }
         return $this->getDetail($item['user_id']);
     }

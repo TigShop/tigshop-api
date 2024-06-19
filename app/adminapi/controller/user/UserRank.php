@@ -32,7 +32,6 @@ class UserRank extends AdminBaseController
     {
         parent::__construct($app);
         $this->userRankService = $userRankService;
-        //$this->checkAuthor('userRankManage'); //权限检查
     }
 
     /**

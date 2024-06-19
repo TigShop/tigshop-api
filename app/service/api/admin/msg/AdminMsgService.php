@@ -12,7 +12,7 @@
 namespace app\service\api\admin\msg;
 
 use app\model\msg\AdminMsg;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**
@@ -69,6 +69,11 @@ class AdminMsgService extends BaseService
 
         if (isset($filter['msg_type']) && !empty($filter['msg_type'])) {
             $query->where('msg_type', $filter['msg_type']);
+        }
+
+        // 店铺id
+        if (isset($filter["shop_id"]) && $filter["shop_id"] > 0) {
+            $query->where('shop_id', $filter["shop_id"]);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field'])) {

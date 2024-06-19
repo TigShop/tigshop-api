@@ -11,9 +11,10 @@
 
 namespace app\service\api\admin\order;
 
+use app\model\order\Order;
 use app\model\order\OrderLog;
 use app\model\order\OrderSplitLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\order\OrderLogValidate;
 use exceptions\ApiException;
 use log\AdminLog;
@@ -85,43 +86,32 @@ class OrderLogService extends BaseService
     }
 
     /**
-     * 获取详情
-     *
-     * @param int $id
-     * @return array
-     * @throws ApiException
-     */
-    public function getDetail(int $id): array
-    {
-        $result = $this->orderLogModel->where('log_id', $id)->find();
-
-        if (!$result) {
-            throw new ApiException('订单日志不存在');
-        }
-
-        return $result->toArray();
-    }
-
-    /**
-     * 执行订单日志添加或更新
-     *
-     * @param int $id
+     * 执行订单日志添加
      * @param array $data
-     * @param bool $isAdd
-     * @return int|bool
+     * @return bool
      * @throws ApiException
      */
-    public function addOrderLog(int $id, array $data)
+    public function addOrderLog(array $data):bool
     {
+        if (empty($data['order_id']) && empty($data['order_sn'])) {
+            throw new ApiException(/** LANG */'参数错误:订单ID和订单编号不能同时为空');
+        }
         $data['user_id'] = request()->userId > 0 ? request()->userId : 0;
         $data['admin_id'] = request()->adminUid > 0 ? request()->adminUid : 0;
         $data['log_time'] = Time::now();
+        $data['order_id'] = $data['order_id'] ?? 0;
+        $data['order_sn'] = $data['order_sn'] ?? '';
+
+        if ($data['order_id'] > 0 || !empty($data['order_sn'])){
+            $data['shop_id'] = Order::where('order_id|order_sn', $data['order_id'] > 0 ? $data['order_id'] : $data['order_sn'])
+                ->findOrEmpty()->shop_id ?? 0;
+        }
         $result = OrderLog::create($data);
         // 如果是后台操作
         if (request()->adminUid > 0) {
             AdminLog::add('订单：' . $data['order_sn'] . '，' . $data['description']);
         }
-        return true;
+        return $result !== false;
     }
     // 添加拆分日志
     public function addSplitLog(int $order_id, int $new_order_id)

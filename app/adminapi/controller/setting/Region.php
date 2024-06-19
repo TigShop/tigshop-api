@@ -37,7 +37,6 @@ class Region extends AdminBaseController
     {
         parent::__construct($app);
         $this->regionService = $regionService;
-        $this->checkAuthor('regionManage'); //权限检查
     }
 
     /**

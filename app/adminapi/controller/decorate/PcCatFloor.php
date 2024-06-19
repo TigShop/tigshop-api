@@ -158,7 +158,7 @@ class PcCatFloor extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field, ['cat_floor_name', 'sort_order', 'is_show'])) {
+        if (!in_array($field, ['sort_order', 'is_show'])) {
             return $this->error(/** LANG */'#field 错误');
         }
 

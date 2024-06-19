@@ -136,17 +136,13 @@ class RefundApply extends Model
         return $query;
     }
 
-    // 订单号 + 售后单号
+    // 售后单号
     public function scopeKeyword($query, $value)
     {
         if (!empty($value)) {
-            return $query->join('order', 'refund_apply.order_id = order.order_id')
-                ->join('aftersales', 'refund_apply.aftersale_id = aftersales.aftersale_id')
-                ->field('refund_apply.*')
-                ->where(function ($query) use ($value) {
-                    $query->where('order.order_sn', 'like', "%$value%")
-                        ->whereOr('aftersales.aftersales_sn', 'like', "%$value%");
-                });
+            return $query->hasWhere('aftersales',function ($query) use ($value) {
+                $query->where('aftersales_sn', 'like', "%$value%");
+            });
         }
         return $query;
     }

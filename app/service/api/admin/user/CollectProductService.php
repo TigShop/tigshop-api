@@ -14,7 +14,7 @@ namespace app\service\api\admin\user;
 use app\model\product\Product;
 use app\model\product\ProductMemberPrice;
 use app\model\user\CollectProduct;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Time;
 use utils\Util;

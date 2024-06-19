@@ -42,6 +42,12 @@ class Util
             case 'miniProgram':
                 //小程序
                 return 'miniProgram';
+            case 'android':
+                //安卓
+                return 'android';
+            case 'ios':
+                //ios
+                return 'ios';
             default:
                 return '';
         }

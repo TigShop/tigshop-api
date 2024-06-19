@@ -37,7 +37,6 @@ class Crons extends AdminBaseController
     {
         parent::__construct($app);
         $this->cronsService = $cronsService;
-        $this->checkAuthor('cronsManage'); //权限检查
     }
 
     /**

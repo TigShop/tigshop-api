@@ -12,7 +12,7 @@
 namespace app\service\api\admin\setting;
 
 use app\model\setting\LogisticsCompany;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 
@@ -71,6 +71,9 @@ class LogisticsCompanyService extends BaseService
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
+        }
+        if (isset($filter['shop_id'])) {
+            $query->where('shop_id', '=',$filter['shop_id']);
         }
         return $query;
     }

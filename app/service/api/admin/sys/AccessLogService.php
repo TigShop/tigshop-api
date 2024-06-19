@@ -12,9 +12,10 @@
 namespace app\service\api\admin\sys;
 
 use app\model\sys\AccessLog;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
+use utils\Time;
 
 /**
  * 访问日志服务类
@@ -63,6 +64,20 @@ class AccessLogService extends BaseService
         // 处理筛选条件
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->where('access_path', 'like', '%' . $filter['keyword'] . '%');
+        }
+
+        // 店铺检索
+        if (isset($filter['shop_id']) && $filter['shop_id'] > -1) {
+            $query->where('shop_id', $filter['shop_id']);
+        }
+
+        // 访问时间
+        if (isset($filter['access_time']) && !empty($filter['access_time'])) {
+            $filter['access_time'] = is_array($filter['access_time']) ? $filter['access_time'] : explode(',', $filter['access_time']);
+            list($start_date, $end_date) = $filter['access_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('access_time', "between", [$start_date, $end_date]);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
@@ -171,9 +186,12 @@ class AccessLogService extends BaseService
      * @param array $data
      * @return int
      */
-    public function getVisitNum(array $data, int $access_flag = 0, int $product_flag = 0)
+    public function getVisitNum(array $data, int $access_flag = 0, int $product_flag = 0, int $shopId = 0)
     {
-        $query = AccessLog::accessTime($data)->storePlatform();
+        $query = $this->filterQuery([
+            'access_time' => $data,
+            'shop_id' => $shopId,
+        ]);
         if ($access_flag) {
             // 浏览量
             if ($product_flag) {
@@ -195,20 +213,24 @@ class AccessLogService extends BaseService
      * @param array $data
      * @return int
      */
-    public function getVisitList(array $data, int $access_flag = 0, int $product_flag = 0)
+    public function getVisitList(array $data, int $access_flag = 0, int $product_flag = 0, int $shopId = 0)
     {
         if ($access_flag) {
             // 浏览量
-            $query = AccessLog::field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
-                ->field("COUNT(*) AS access_count")
-                ->accessTime($data)
-                ->storePlatform()
-                ->group("period");
+            $query = $this->filterQuery([
+                'access_time' => $data,
+                'shop_id' => $shopId,
+            ])->field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
+              ->field("COUNT(*) AS access_count")
+              ->group("period");
         } else {
             // 访客量
-            $query = AccessLog::field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
+            $query = $this->filterQuery([
+                'access_time' => $data,
+                'shop_id' => $shopId,
+            ])->field("DATE_FORMAT(FROM_UNIXTIME(access_time), '%Y-%m-%d') AS period")
                 ->field("COUNT(DISTINCT ip_address) as access_count")
-                ->accessTime($data)->storePlatform()->group("period");
+                ->group("period");
         }
         if ($product_flag) {
             $query = $query->where("product_id", ">", 0);

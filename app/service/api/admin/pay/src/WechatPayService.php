@@ -28,9 +28,9 @@ class WechatPayService extends PayService
 
     public function __construct()
     {
-        $appid = Config::get('lyecs_wechat_appId');
+        $appid = Config::get('wechat_appId');
         if ($this->payType == self::MINI_PROGRAM_PAY) {
-            $appid = Config::get('lyecs_wechat_miniProgram_appId');
+            $appid = Config::get('wechat_miniProgram_appId');
         }
         if ($this->payType == self::APP_PAY) {
             $appid = Config::get('mini_appid');
@@ -44,6 +44,10 @@ class WechatPayService extends PayService
         return $this;
     }
 
+    /**
+     * 获取平台类型
+     * @return string
+     */
     public function getPayType(): string
     {
         if ($this->payType === null) {
@@ -322,6 +326,7 @@ class WechatPayService extends PayService
     /**
      * 获取退款参数
      * @param string $out_trade_no
+     * @param string $refund_sn
      * @param float $refund
      * @param float $total
      * @return array

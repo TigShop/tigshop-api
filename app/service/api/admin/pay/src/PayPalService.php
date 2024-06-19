@@ -12,10 +12,10 @@ class PayPalService extends PayService
     public function pay(array $order): array
     {
         $data_amount = $order['order_amount'];
-        $data_return_url = urlencode(self::getReturnUrl($order['order_sn']));
+        $data_return_url = urlencode($this->getReturnUrl($order['order_sn']));
         $data_pay_account = Config::get('paypal_account');
         $currency_code = Config::get('paypal_currency');
-        $data_notify_url = self::getNotifyUrl($order['order_sn']);
+        $data_notify_url = $this->getNotifyUrl($order['order_sn']);
         $cancel_return = Url::app();
         $province = app(RegionService::class)->getName($order['province']);
         $city = app(RegionService::class)->getName($order['city']);;
@@ -66,21 +66,4 @@ class PayPalService extends PayService
         return [];
     }
 
-    /**
-     * 获取支付回调地址
-     * @return string
-     */
-    public static function getNotifyUrl(): string
-    {
-        return Url::app('');
-    }
-
-    /**
-     * 获取同步跳转地址
-     * @return string
-     */
-    public static function getReturnUrl(): string
-    {
-        return Url::app('');
-    }
 }

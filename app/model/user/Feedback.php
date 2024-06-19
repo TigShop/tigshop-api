@@ -11,9 +11,9 @@
 
 namespace app\model\user;
 
+use app\model\merchant\shop;
 use app\model\order\Order;
 use app\model\product\Product;
-use app\model\shop\shop;
 use think\Model;
 use utils\Time;
 

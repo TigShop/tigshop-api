@@ -47,11 +47,9 @@ class Order extends AdminBaseController
     public function list(): \think\Response
     {
         $filter = $this->request->only([
-            'is_del/d' => -1,
             'keyword' => '',
             'user_id/d' => 0,
             'order_status/d' => -1,
-            'store_id' => "",
             'pay_status/d' => -1,
             'shipping_status/d' => -1,
             'address' => '',
@@ -65,7 +63,10 @@ class Order extends AdminBaseController
             'size/d' => 15,
             'sort_field' => 'order_id',
             'sort_order' => 'desc',
+            'is_settlement' => -1
         ], 'get');
+
+        $filter['shop_id'] = $this->shopId;
 
         $filterResult = $this->orderService->getFilterResult($filter);
         $total = $this->orderService->getFilterCount($filter);
@@ -184,7 +185,7 @@ class Order extends AdminBaseController
             'tracking_no' => '',
         ], 'post');
         $this->orderService->modifyOrderShipping($id, $data);
-        return $this->success('订单收货人信息已修改');
+        return $this->success('订单配送信息已修改');
     }
 
     //修改商品信息
@@ -273,11 +274,9 @@ class Order extends AdminBaseController
     public function orderExport(): \think\Response
     {
         $filter = $this->request->only([
-            'is_del/d' => -1,
             'keyword' => '',
             'user_id/d' => 0,
             'order_status/d' => -1,
-            'store_id' => "",
             'pay_status/d' => -1,
             'shipping_status/d' => -1,
             'comment_status/d' => -1,
@@ -292,9 +291,17 @@ class Order extends AdminBaseController
             'sort_field' => 'order_id',
             'sort_order' => 'desc',
         ], 'get');
+        $filter['shop_id'] = $this->shopId;
+
+        //导出栏目
+        $exportItem = input('export_item', []);
+        if(empty($exportItem))
+        {
+            return $this->error('导出栏目不能为空！');
+        }
 
         $filterResult = $this->orderService->getFilterResult($filter);
-        $result = $this->orderService->orderExport($filterResult);
+        $result = $this->orderService->orderExport($filterResult,$exportItem);
         return $result ? $this->success("导出成功") : $this->error('导出失败');
     }
 

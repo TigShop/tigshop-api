@@ -12,7 +12,7 @@
 namespace app\service\api\admin\promotion;
 
 use app\model\promotion\ProductPromotion;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**
@@ -73,6 +73,12 @@ class ProductPromotionService extends BaseService
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
         }
+
+        //shop_id
+        if (isset($filter["shop_id"])) {
+            $query->where('shop_id', '=', $filter["shop_id"]);
+        }
+
         return $query;
     }
 

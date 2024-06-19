@@ -33,7 +33,6 @@ class AppVersion extends AdminBaseController
     {
         parent::__construct($app);
         $this->appVersionService = $appVersionService;
-        $this->checkAuthor('appVersionManage'); //权限检查
     }
 
     /**

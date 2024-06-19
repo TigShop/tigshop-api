@@ -53,6 +53,8 @@ class AdminRole extends AdminBaseController
             'size/d' => 15,
             'sort_field' => 'role_id',
             'sort_order' => 'desc',
+            'admin_type' => request()->adminType,
+            'merchant_id' => request()->merchantId
         ], 'get');
 
         $filterResult = $this->adminRoleService->getFilterResult($filter);
@@ -90,7 +92,10 @@ class AdminRole extends AdminBaseController
             'role_name' => '',
             'role_desc' => '',
             'authority_list' => [],
+            'checkall' => '', // 是否全选
+            'admin_type' => request()->adminType
         ], 'post');
+        $data["merchant_id"] = request()->merchantId;
 
         try {
             validate(AdminRoleValidate::class)
@@ -121,6 +126,8 @@ class AdminRole extends AdminBaseController
             'role_name' => '',
             'role_desc' => '',
             'authority_list' => [],
+            'checkall' => '', // 是否全选
+            'admin_type' => request()->adminType
         ], 'post');
 
         try {
@@ -149,7 +156,7 @@ class AdminRole extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field, ['role_name'])) {
+        if (!in_array($field, ['role_name', 'sort_order', 'is_show'])) {
             return $this->error(/** LANG */'#field 错误');
         }
 

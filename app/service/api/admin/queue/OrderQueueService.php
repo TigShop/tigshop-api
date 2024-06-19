@@ -3,7 +3,7 @@
 namespace app\service\api\admin\queue;
 
 use app\job\order\OrderCancelJob;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use utils\Config;
 use utils\TigQueue;
 

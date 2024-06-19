@@ -4,8 +4,10 @@ namespace app\service\api\admin\authority;
 
 use app\model\authority\AdminRole;
 use app\model\authority\AdminUser;
-use app\service\api\admin\BaseService;
+use app\model\merchant\MerchantUser;
+use app\model\merchant\Shop;
 use app\service\api\admin\common\sms\SmsService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 
@@ -63,7 +65,9 @@ class AdminUserService extends BaseService
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->where('c.username', 'like', '%' . $filter['keyword'] . '%');
         }
-
+        if (!empty($filter['admin_type'])) {
+            $query->where('c.admin_type', $filter['admin_type']);
+        }
         // 供应商查询
         if (isset($filter['suppliers_id']) && $filter['suppliers_id'] > 0) {
             $query->where('c.suppliers_id', $filter['suppliers_id']);
@@ -75,6 +79,10 @@ class AdminUserService extends BaseService
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
             $query->order($filter['sort_field'], $filter['sort_order']);
+        }
+
+        if (isset($filter['merchant_id'])) {
+            $query->where('c.merchant_id', $filter['merchant_id']);
         }
         return $query;
     }
@@ -124,8 +132,9 @@ class AdminUserService extends BaseService
             "mobile" => $data["mobile"],
             "email" => $data["email"],
             "role_id" => $data["role_id"],
-            "shop_id" => $data["shop_id"],
+            "merchant_id" => $data["merchant_id"] ?? 0,
             'avatar' => $data['avatar'],
+            'admin_type' => !empty($data['admin_type']) ? $data['admin_type'] : 'admin',
         ];
         if (empty($arr['avatar'])) {
             $rand = rand(1, 34);
@@ -154,12 +163,14 @@ class AdminUserService extends BaseService
      * @return int
      * @throws ApiException
      */
-    public function createAdminUser(array $data): int
+    public function createAdminUser(array $data): array|int
     {
         $arr = $this->getCommunalData($data);
-        $result = $this->adminUserModel->save($arr);
+        $result = $this->adminUserModel->create($arr);
         AdminLog::add('新增管理员:' . $data['username']);
-        return $this->adminUserModel->getKey();
+        $admin_id = $result->admin_id;
+        $this->updateMerchantUser($data, $admin_id);
+        return $admin_id;
     }
 
 
@@ -183,9 +194,34 @@ class AdminUserService extends BaseService
             $arr["mobile"] = AdminUser::findOrEmpty($id)->mobile;
         }
         $result = $this->adminUserModel->where('admin_id', $id)->save($arr);
-        AdminLog::add('更新管理员:' . $this->getName($id));
-
+        $this->updateMerchantUser($data, $id);
         return $result !== false;
+    }
+
+    /**
+     * 更新商户用户
+     * @param array $data
+     * @param int $id
+     * @return bool
+     * @throws \think\db\exception\DbException
+     */
+    public function updateMerchantUser(array $data, int $id): bool
+    {
+        if (empty($data['merchant_id']) || empty($data['user_id'])) {
+            return true;
+        }
+        if (MerchantUser::where('merchant_id', $data['merchant_id'])->where('admin_user_id', $id)->count() == 0) {
+            MerchantUser::where('merchant_id', $data['merchant_id'])->where('admin_user_id', $id)->update([
+                'user_id' => $data['user_id'],
+            ]);
+        } else {
+            MerchantUser::create([
+                'user_id' => $data['user_id'],
+                'merchant_id' => $data['merchant_id'],
+                'admin_user_id' => $id,
+            ]);
+        }
+        return true;
     }
 
     /**
@@ -260,9 +296,16 @@ class AdminUserService extends BaseService
         }
         $user = $this->getDetail($admin_id);
         request()->adminUid = $user['admin_id'];
-        request()->shopId = $user['shop_id'];
+        request()->merchantId = $user['merchant_id'];
+        request()->adminType = $user['admin_type'];
         request()->suppliersId = $user['suppliers_id'];
         request()->authList = $user['auth_list'] ?? [];
+        if ($user['admin_type'] == 'shop') {
+            request()->shopIds = Shop::where('merchant_id', $user['merchant_id'])->column('shop_id');
+            request()->shopId = request()->header('X-Shop-Id', 0);
+        } elseif ($user['admin_type'] == 'admin') {
+            request()->shopId = 0;
+        }
         if ($form_login) {
             AdminLog::add('管理员登录:' . $user['username']);
         }

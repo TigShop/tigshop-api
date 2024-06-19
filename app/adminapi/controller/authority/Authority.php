@@ -53,9 +53,11 @@ class Authority extends AdminBaseController
             'size' => 15,
             'sort_field' => 'c.authority_id',
             'sort_order' => 'asc',
-            'type' => -1
+            'admin_type' => -1
         ], 'get');
-
+        if (request()->adminType == 'shop') {
+            $filter['admin_type'] = request()->adminType;
+        }
         $filterResult = $this->authorityService->getFilterResult($filter);
         $total = $this->authorityService->getFilterCount($filter);
 
@@ -103,7 +105,7 @@ class Authority extends AdminBaseController
             'parent_id' => 0,
             'is_show' => 0,
             'sort_order' => 50,
-            'type' => 0
+            'admin_type' => 'admin'
         ], 'post');
 
         try {
@@ -140,7 +142,7 @@ class Authority extends AdminBaseController
             'parent_id' => 0,
             'is_show' => 0,
             'sort_order' => 50,
-            'type' => 0
+            'admin_type' => 'admin'
         ], 'post');
         try {
             validate(AuthorityValidate::class)
@@ -169,7 +171,11 @@ class Authority extends AdminBaseController
     public function getAllAuthority(): Response
     {
         $type = input('type/d', 0);
-        $cat_list = $this->authorityService->authorityList(0, $type, request()->authList);
+        $admin_type = input('admin_type', 'admin');
+        if (request()->adminType == 'shop') {
+            $admin_type = 'shop';
+        }
+        $cat_list = $this->authorityService->authorityList(0, $type, request()->authList, $admin_type);
 
         return $this->success([
             'item' => $cat_list,

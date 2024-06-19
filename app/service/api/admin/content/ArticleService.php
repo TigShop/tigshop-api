@@ -14,7 +14,7 @@ namespace app\service\api\admin\content;
 use app\model\content\Article;
 use app\model\content\ArticleCategory;
 use app\model\product\ProductArticle;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**
@@ -335,7 +335,7 @@ class ArticleService extends BaseService
      * @param array $filter
      * @return array
      */
-    public function getFilterList(array $filter): array
+    public function getFilterLists(array $filter): array
     {
         $query = $this->filterQuery($filter);
         $query = $query->where('is_show', 1);

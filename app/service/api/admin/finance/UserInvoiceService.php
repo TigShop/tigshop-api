@@ -12,7 +12,7 @@
 namespace app\service\api\admin\finance;
 
 use app\model\finance\UserInvoice;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\finance\UserInvoiceValidate;
 use exceptions\ApiException;
 
@@ -65,7 +65,9 @@ class UserInvoiceService extends BaseService
         // 处理筛选条件
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
-            $query->keyword($filter['keyword']);
+            $query->hasWhere('user', function ($query) use ($filter) {
+                $query->where('username', 'like', "%$filter[keyword]%");
+            })->whereOr('company_name', 'like', "%$filter[keyword]%");
         }
 
         // 审核状态

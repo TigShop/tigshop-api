@@ -2,8 +2,8 @@
 
 namespace app\service\api\admin\product;
 
-use app\service\api\admin\BaseService;
 use app\service\api\admin\promotion\SeckillService;
+use app\service\core\BaseService;
 
 class ProductPriceService extends BaseService
 {

@@ -18,8 +18,8 @@ use app\model\order\Order;
 use app\model\order\OrderItem;
 use app\model\setting\LogisticsCompany;
 use app\model\setting\Region;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\product\ProductService;
+use app\service\core\BaseService;
 use app\validate\order\OrderValidate;
 use exceptions\ApiException;
 use tig\Http;
@@ -39,6 +39,7 @@ class OrderService extends BaseService
 
     public function __construct()
     {
+        $this->model = new Order();
     }
 
     // 设置会员id
@@ -56,9 +57,8 @@ class OrderService extends BaseService
      */
     public function getFilterResult(array $filter): array
     {
-        $query = $this->filterQuery($filter)->with(['items', 'user'])
-            ->append(['order_status_name', "user_address", "shipping_status_name", "pay_status_name"]);
-        $result = $query->page($filter['page'], $filter['size'])->select();
+        $result = $this->getFilterList($filter, ['items', 'user'],
+            ['order_status_name', "user_address", "shipping_status_name", "pay_status_name"]);
         foreach ($result as $item) {
             $orderStatusService = new OrderStatusService();
             $item->available_actions = $orderStatusService->getAvailableActions($item);
@@ -72,19 +72,6 @@ class OrderService extends BaseService
     }
 
     /**
-     * 获取筛选结果数量
-     *
-     * @param array $filter
-     * @return int
-     */
-    public function getFilterCount(array $filter): int
-    {
-        $query = $this->filterQuery($filter);
-        $count = $query->count();
-        return $count;
-    }
-
-    /**
      * 筛选查询
      *
      * @param array $filter
@@ -92,7 +79,7 @@ class OrderService extends BaseService
      */
     protected function filterQuery(array $filter): object
     {
-        $query = Order::query();
+        $query = $this->model->query();
         // 处理筛选条件
 
         // 关键词检索 收货人 + 订单号 + 订单id
@@ -106,7 +93,8 @@ class OrderService extends BaseService
 
         //订单状态
         if (isset($filter["order_status"]) && $filter["order_status"] >= 0) {
-            $query->where('order_status', $filter['order_status']);
+            $query->whereIn('order_status',
+                is_array($filter['order_status']) ? $filter['order_status'] : [$filter['order_status']]);
         }
         if (isset($filter["order_status"]) && $filter["order_status"] == -2) {
             // 查询删除的订单
@@ -116,8 +104,12 @@ class OrderService extends BaseService
         }
 
         // 店铺检索
-        if (isset($filter["shop_id"]) && !empty($filter['shop_id'])) {
+        if (isset($filter["shop_id"]) && $filter['shop_id'] > -1) {
             $query->where('shop_id', $filter['shop_id']);
+        }
+        // 是否结算检索
+        if (isset($filter["is_settlement"]) && $filter['is_settlement'] > -1) {
+            $query->where('is_settlement', $filter['is_settlement']);
         }
 
         // 支付状态
@@ -163,6 +155,15 @@ class OrderService extends BaseService
         if (isset($filter["add_start_time"], $filter["add_end_time"]) && !empty($filter["add_start_time"]) && !empty($filter["add_end_time"])) {
             $add_time = [$filter["add_start_time"], $filter["add_end_time"]];
             $query->addTime($add_time);
+        }
+
+        // 支付时间
+        if (isset($filter['pay_time']) && !empty($filter['pay_time'])) {
+            $filter['pay_time'] = is_array($filter['pay_time']) ? $filter['pay_time'] : explode(',', $filter['pay_time']);
+            list($start_date, $end_date) = $filter['pay_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $query->whereTime('pay_time', 'between', [$start_date, $end_date]);
         }
 
         if (isset($filter["user_id"]) && $filter["user_id"] > 0) {
@@ -447,7 +448,7 @@ class OrderService extends BaseService
     // 保存标签的详情
     public function getExportItemInfo()
     {
-        $item = AdminUser::where("admin_id", request()->adminUid)->value("order_export");
+        $item = AdminUser::where("admin_id", request()->adminUid)->value("order_export") ?? [];
         // 获取订单导出标签列表
         $export_info = [];
         $export_list = $this->getExportItemList();
@@ -467,14 +468,13 @@ class OrderService extends BaseService
     }
 
     // 获取订单导出标题
-    public function getOrderExportTitle(): array
+    public function getOrderExportTitle(array $exportItem): array
     {
         // 获取订单标题
         $export_all_list = $this->getExportItemList();
         // 获取要导出的字段
-        $export_item = AdminUser::where("admin_id", request()->adminUid)->value("order_export");
         $export_title = [];
-        foreach ($export_item as $key => $value) {
+        foreach ($exportItem as $key => $value) {
             if (isset($export_all_list[$value])) {
                 $export_title[] = $export_all_list[$value];
                 if ($value == 'product_info') {
@@ -482,7 +482,7 @@ class OrderService extends BaseService
                 }
             }
         }
-        if (in_array("product_info", $export_item)) {
+        if (in_array("product_info", $exportItem)) {
             // 商品信息放在最后
             $export_title[] = "商品信息";
         }
@@ -491,13 +491,12 @@ class OrderService extends BaseService
     }
 
     // 组装订单导出数据
-    public function getOrderExportData(array $data = []): array
+    public function getOrderExportData(array $exportItem,array $data = []): array
     {
         $row = [];
         $product_info = false;
         // 获取要导出的字段
-        $export_item = AdminUser::where("admin_id", request()->adminUid)->value("order_export");
-        foreach ($export_item as $key => $value) {
+        foreach ($exportItem as $key => $value) {
             if (isset($data[$value])) {
                 $row[$value] = $data[$value];
             }
@@ -518,7 +517,7 @@ class OrderService extends BaseService
                 }
             } elseif ($value == "product_info") {
                 // 商品信息
-                unset($export_item[$key]);
+                unset($exportItem[$key]);
                 $product_info = true;
             }
 
@@ -544,13 +543,13 @@ class OrderService extends BaseService
     }
 
     // 订单导出
-    public function orderExport(array $data): bool
+    public function orderExport(array $data,array $exportItem): bool
     {
-        $export_title = $this->getOrderExportTitle();
+        $export_title = $this->getOrderExportTitle($exportItem);
         // 组装导出数据
         $export_data = [];
         foreach ($data as $k => $v) {
-            $export_data[] = $this->getOrderExportData($v);
+            $export_data[] = $this->getOrderExportData($exportItem,$v);
         }
         $file_name = "订单导出" . Time::getCurrentDatetime("Ymd") . rand(1000, 9999);
         Excel::export($export_title, $file_name, $export_data);
@@ -562,9 +561,13 @@ class OrderService extends BaseService
      * @param array $data
      * @return mixed
      */
-    public function getPayOrderUserTotal(array $data): mixed
+    public function getPayOrderUserTotal(array $data,int $shopId = 0): mixed
     {
-        return Order::payTime($data)->storePlatform()->paid()->where("is_del", 0)->group("user_id")->count();
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'pay_status' => Order::PAYMENT_PAID,
+            'shop_id' => $shopId
+        ])->group("user_id")->count();
     }
 
     /**
@@ -572,11 +575,16 @@ class OrderService extends BaseService
      * @param array $data
      * @return float
      */
-    public function getOrderTotal(array $data): float
+    public function getOrderTotal(array $data,int $shopId = 0): float
     {
         return OrderItem::hasWhere("orders", function ($query) use ($data) {
-            $query->storePlatform()->paid()->PayTime($data)->where("is_del", 0);
-        })->sum("quantity");
+                    $query->where('pay_status', Order::PAYMENT_PAID)->PayTime($data)->where("is_del", 0);
+                })
+                ->where(function ($query) use ($shopId) {
+                    if ($shopId) {
+                        $query->where("OrderItem.shop_id", $shopId);
+                    }
+                })->sum("OrderItem.quantity");
     }
 
     /**
@@ -584,9 +592,13 @@ class OrderService extends BaseService
      * @param array $data
      * @return float
      */
-    public function getPayMoneyTotal(array $data): float
+    public function getPayMoneyTotal(array $data,int $shopId = 0): float
     {
-        return Order::payTime($data)->storePlatform()->paid()->where("is_del", 0)->sum('total_amount');
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'shop_id' => $shopId,
+            'pay_status' => Order::PAYMENT_PAID
+        ])->sum('total_amount');
     }
 
     /**
@@ -594,9 +606,13 @@ class OrderService extends BaseService
      * @param array $data
      * @return mixed
      */
-    public function getPayBalanceTotal(array $data)
+    public function getPayBalanceTotal(array $data,int $shopId = 0)
     {
-        return Order::payTime($data)->storePlatform()->ValidOrder()->where("is_del", 0)->sum('balance');
+        return $this->filterQuery([
+            'pay_time' => $data,
+            'shop_id' => $shopId,
+            'order_status' => [Order::ORDER_CONFIRMED, Order::ORDER_PROCESSING,Order::ORDER_COMPLETED]
+        ])->sum('balance');
     }
 
     /**
@@ -604,13 +620,14 @@ class OrderService extends BaseService
      * @param array $data
      * @return array
      */
-    public function getPayMoneyList(array $data): array
+    public function getPayMoneyList(array $data,int $shopId = 0): array
     {
-        return Order::payTime($data)
+        return $this->filterQuery([
+                'pay_time' => $data,
+                'shop_id' => $shopId,
+                'pay_status' => Order::PAYMENT_PAID
+            ])
             ->field('total_amount,pay_time')
-            ->storePlatform()
-            ->paid()
-            ->where("is_del", 0)
             ->select()->toArray();
     }
 
@@ -644,7 +661,7 @@ class OrderService extends BaseService
         }
         $logistics = LogisticsCompany::where('logistics_id', $order_info['logistics_id'])->find();
         $param = [
-            'apiKey' => Config::get('lyecs_api_key'),
+            'apiKey' => Config::get('api_key'),
             'code' => $logistics['logistics_code'],
             'number' => $order_info['tracking_no'] ?? '',
         ];

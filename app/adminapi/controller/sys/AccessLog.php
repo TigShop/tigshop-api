@@ -32,7 +32,6 @@ class AccessLog extends AdminBaseController
     {
         parent::__construct($app);
         $this->accessLogService = $accessLogService;
-        $this->checkAuthor('accessLogManage'); //权限检查
     }
 
     /**

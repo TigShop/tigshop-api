@@ -11,7 +11,7 @@
 
 namespace app\service\api\admin\order;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\service\pay\AliPayService;
 use app\service\pay\WechatService;
 use common\Exception;

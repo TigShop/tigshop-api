@@ -1,6 +1,6 @@
 <?php
 //**---------------------------------------------------------------------+
-//** 验证器文件 -- 店铺
+//** 模型文件 -- 店铺
 //**---------------------------------------------------------------------+
 //** 版权所有：江西佰商科技有限公司. 官网：https://www.tigshop.com
 //**---------------------------------------------------------------------+
@@ -9,18 +9,28 @@
 //** 提示：Tigshop商城系统为非免费商用系统，未经授权，严禁使用、修改、发布
 //**---------------------------------------------------------------------+
 
-namespace app\validate\store;
+namespace app\model\merchant;
 
-use think\Validate;
+use app\model\user\User;
+use think\Model;
+use utils\Time;
 
-class StoreValidate extends Validate
+class ShopWithDraw extends Model
 {
-    protected $rule = [
-        'store_title' => 'require|max:100',
-    ];
+    protected $pk = 'shop_withdraw_log_id';
+    protected $table = 'shop_withdraw';
 
-    protected $message = [
-        'store_title.require' => '店铺名称不能为空',
-        'store_title.max' => '店铺名称最多100个字符',
-    ];
+    protected $createTime = 'add_time';
+    protected $autoWriteTimestamp = 'int';
+
+    protected $json = ['account_data'];
+    protected $jsonAssoc = true;
+
+    // 字段处理
+    public function getAddTimeAttr($value): string
+    {
+        return Time::format($value);
+    }
+
+
 }

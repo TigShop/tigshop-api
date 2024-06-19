@@ -17,5 +17,9 @@ Route::group('cart', function () {
         Route::post('remove_item', 'cart.cart/removeItem');
         // 清空购物车
         Route::post('clear', 'cart.cart/clear');
+        // 购物车列表
+        Route::get('get_coupon_discount', 'cart.cart/getCouponDiscount');
     });
-});
+})->middleware([
+    \app\api\middleware\CheckLogin::class,
+]);

@@ -13,7 +13,7 @@ namespace app\service\api\admin\finance;
 
 use app\model\finance\OrderInvoice;
 use app\model\order\Order;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**
@@ -96,8 +96,8 @@ class OrderInvoiceService extends BaseService
         }
 
         // 店铺分类
-        if (isset($filter["store_type"])) {
-            if ($filter['store_type']) {
+        if (isset($filter["shop_type"])) {
+            if ($filter['shop_type']) {
                 $query->where('order.shop_id', ">", 0);
             } else {
                 $query->where('order.shop_id', 0);
@@ -127,17 +127,6 @@ class OrderInvoiceService extends BaseService
     }
 
     /**
-     * 添加发票申请
-     * @param array $data
-     * @return int
-     */
-    public function createOrderInvoice(array $data): int
-    {
-        $result = OrderInvoice::create($data);
-        return $result->getKey();
-    }
-
-    /**
      * 执行发票申请更新
      *
      * @param int $id
@@ -161,22 +150,6 @@ class OrderInvoiceService extends BaseService
             $order->invoice_data = $invoice_data;
             $order->save();
         }
-        return $result !== false;
-    }
-    /**
-     * 更新单个字段
-     *
-     * @param int $id
-     * @param array $data
-     * @return int|bool
-     * @throws ApiException
-     */
-    public function updateOrderInvoiceField(int $id, array $data)
-    {
-        if (!$id) {
-            throw new ApiException(/** LANG */'#id错误');
-        }
-        $result = OrderInvoice::where('id', $id)->save($data);
         return $result !== false;
     }
 

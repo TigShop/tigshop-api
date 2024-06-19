@@ -262,12 +262,13 @@ https://yourwebsite.com/
 ```
 ---
 
-### 商城功能展示
+### 功能展示
 
-![输入图片说明](readme/pic/pc_02.png)
-![输入图片说明](readme/pic/pc_01.png)
-![输入图片说明](readme/pic/admin_01.png)
-![输入图片说明](readme/pic/admin_02.png)
+![输入图片说明](https://oss.tigshop.com/img/gallery/202406/1718593089qVOWlsKxHZOG7cAfYi.png)
+![输入图片说明](https://oss.tigshop.com/img/gallery/202406/1718593088fdr4Kqb3zoZmcuBUTa.png)
+![输入图片说明](https://oss.tigshop.com/img/gallery/202406/1718593089sFHFoF0yeiildte9g3.png)
+![输入图片说明](https://oss.tigshop.com/img/gallery/202406/1718593089vgxjJPgb85woG3iHfX.png)
+![输入图片说明](https://oss.tigshop.com/img/gallery/202406/17185930890UNTzD1OBwgqZJ1oZK.png)
 
 
 ---

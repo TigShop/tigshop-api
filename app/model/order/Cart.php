@@ -11,8 +11,8 @@
 
 namespace app\model\order;
 
+use app\model\merchant\Shop;
 use app\model\product\Product;
-use app\model\shop\Shop;
 use think\Model;
 
 class Cart extends Model
@@ -33,6 +33,15 @@ class Cart extends Model
 
     public function product()
     {
-        return $this->hasOne(Product::class, 'product_id', 'product_id')->bind(['product_weight', 'shipping_tpl_id', 'free_shipping', 'product_status', 'product_name', 'product_price']);
+        return $this->hasOne(Product::class, 'product_id', 'product_id')->bind([
+            'product_weight',
+            'shipping_tpl_id',
+            'free_shipping',
+            'product_status',
+            'product_name',
+            'product_price',
+            'category_id',
+            'brand_id'
+        ]);
     }
 }

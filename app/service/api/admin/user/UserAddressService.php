@@ -12,8 +12,8 @@
 namespace app\service\api\admin\user;
 
 use app\model\user\UserAddress;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\setting\RegionService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**
@@ -140,6 +140,9 @@ class UserAddressService extends BaseService
             $data['region_names'] = app(RegionService::class)->getNames($data['region_ids']);
         }
         $data['user_id'] = $user_id;
+        if (isset($data['is_default']) && $data['is_default'] == 1) {
+            UserAddress::where('user_id', $user_id)->update(['is_default' => 0]);
+        }
         $result = UserAddress::create($data);
         return $result->address_id;
     }
@@ -160,6 +163,9 @@ class UserAddressService extends BaseService
 
         if (!$id) {
             throw new ApiException(/** LANG */'#id错误');
+        }
+        if (isset($data['is_default']) && $data['is_default'] == 1) {
+            UserAddress::where('user_id', $user_id)->where('address_id', '<>', $id)->update(['is_default' => 0]);
         }
         $result = UserAddress::where('address_id', $id)->where('user_id', $user_id)->save($data);
         return $id;
@@ -190,7 +196,7 @@ class UserAddressService extends BaseService
     {
         $query = UserAddress::where('user_id', request()->userId)
             ->append(["region_name"])
-            ->field("address_id,user_id,consignee,email,region_names,address,telephone,mobile,is_selected");
+            ->field("address_id,user_id,consignee,email,region_names,address,telephone,mobile,is_selected,is_default");
 
         $count = $query->count();
         $list = $query->page($filter["page"], $filter["size"])->select();

@@ -31,7 +31,6 @@ class CollectProduct extends IndexBaseController
     public function __construct(App $app, CollectProductService $collectProductService)
     {
         parent::__construct($app);
-        $this->checkLogin();
         $this->collectProductService = $collectProductService;
     }
 

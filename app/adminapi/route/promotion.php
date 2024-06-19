@@ -21,7 +21,10 @@ Route::group('promotion', function () {
         Route::post('del', 'promotion.coupon/del');
         // 优惠券批量操作
         Route::post('batch', 'promotion.coupon/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'couponManage'
+    ]);
     // 积分商品管理
     Route::group('points_exchange', function () {
         // 积分商品列表
@@ -38,7 +41,10 @@ Route::group('promotion', function () {
         Route::post('del', 'promotion.pointsExchange/del');
         // 批量操作
         Route::post('batch', 'promotion.pointsExchange/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'pointsExchangeManage'
+    ]);
     // 优惠活动管理
     Route::group('product_promotion', function () {
         // 优惠活动列表
@@ -57,7 +63,10 @@ Route::group('promotion', function () {
         Route::post('del', 'promotion.productPromotion/del');
         // 批量操作
         Route::post('batch', 'promotion.productPromotion/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productPromotionManage'
+    ]);
     // 余额充值
     Route::group('recharge_setting', function () {
         // 列表
@@ -74,11 +83,16 @@ Route::group('promotion', function () {
         Route::post('del', 'promotion.rechargeSetting/del');
         // 批量操作
         Route::post('batch', 'promotion.rechargeSetting/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'rechargeSettingManage'
+    ]);
     // 秒杀活动
     Route::group('seckill', function () {
         // 列表
         Route::get('list', 'promotion.seckill/list');
+        // 装修秒杀列表
+        Route::get('list_for_decorate', 'promotion.seckill/listForDecorate');
         // 详情
         Route::get('detail', 'promotion.seckill/detail');
         // 添加
@@ -91,7 +105,10 @@ Route::group('promotion', function () {
         Route::post('del', 'promotion.seckill/del');
         // 批量操作
         Route::post('batch', 'promotion.seckill/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'seckillManage'
+    ]);
     // 积分签到
     Route::group('sign_in_setting', function () {
         // 列表
@@ -108,5 +125,8 @@ Route::group('promotion', function () {
         Route::post('del', 'promotion.signInSetting/del');
         // 批量操作
         Route::post('batch', 'promotion.signInSetting/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'signInSettingManage'
+    ]);
 });

@@ -11,7 +11,7 @@
 
 namespace app\service\api\admin\user;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 
 /**

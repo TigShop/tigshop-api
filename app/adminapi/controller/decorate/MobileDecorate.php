@@ -48,7 +48,6 @@ class MobileDecorate extends AdminBaseController
     public function list(): Response
     {
         $filter = $this->request->only([
-            'is_show/d' => -1,
             'keyword' => '',
             'page/d' => 1,
             'size/d' => 15,
@@ -170,7 +169,7 @@ class MobileDecorate extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field, ['decorate_title', 'is_show', 'sort_order'])) {
+        if (!in_array($field, ['decorate_title'])) {
             return $this->error(/** LANG */'#field 错误');
         }
 

@@ -12,7 +12,7 @@
 namespace app\service\api\admin\user;
 
 use app\model\user\UserRank;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use app\validate\user\UserRankValidate;
 use exceptions\ApiException;
 use log\AdminLog;

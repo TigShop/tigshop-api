@@ -32,7 +32,6 @@ class UserPointsLog extends AdminBaseController
     {
         parent::__construct($app);
         $this->userPointsLogService = $userPointsLogService;
-        $this->checkAuthor('userPointsLogManage'); //权限检查
     }
 
     /**

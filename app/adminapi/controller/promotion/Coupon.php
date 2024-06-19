@@ -38,7 +38,6 @@ class Coupon extends AdminBaseController
     {
         parent::__construct($app);
         $this->couponService = $couponService;
-        $this->checkAuthor('couponManage'); //权限检查
     }
 
     /**

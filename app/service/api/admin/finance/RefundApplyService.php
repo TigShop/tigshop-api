@@ -17,7 +17,7 @@ use app\model\order\Aftersales;
 use app\model\order\AftersalesItem;
 use app\model\order\Order;
 use app\model\payment\PayLogRefund;
-use app\service\api\admin\BaseService;
+use app\service\api\admin\order\AftersalesService;
 use app\service\api\admin\order\OrderService;
 use app\service\api\admin\pay\PayLogRefundService;
 use app\service\api\admin\pay\PayLogService;
@@ -25,6 +25,7 @@ use app\service\api\admin\pay\src\AliPayService;
 use app\service\api\admin\pay\src\PayPalService;
 use app\service\api\admin\pay\src\WechatPayService;
 use app\service\api\admin\user\UserService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use think\facade\Db;
 use utils\Time;
@@ -48,7 +49,7 @@ class RefundApplyService extends BaseService
      */
     public function getFilterResult(array $filter): array
     {
-        $query = $this->filterQuery($filter)->with(["aftersales", "order_info"])->append(["refund_type_name", "refund_status_name"]);
+        $query = $this->filterQuery($filter)->with(["aftersales"])->append(["refund_type_name", "refund_status_name"]);
         $result = $query->page($filter['page'], $filter['size'])->select();
 
         return $result->toArray();
@@ -79,12 +80,29 @@ class RefundApplyService extends BaseService
         // 处理筛选条件
 
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
-            $query->keyword($filter["keyword"]);
+            $query->hasWhere('aftersales', function ($query) use ($filter) {
+                $query->where('aftersales_sn', 'like', "%$filter[keyword]%");
+            });
         }
 
         // 退款状态
         if (isset($filter['refund_status']) && $filter["refund_status"] != -1) {
             $query->where('refund_status', $filter["refund_status"]);
+        }
+
+        // 申请退款时间
+        if (isset($filter['add_time']) && !empty($filter['add_time'])) {
+            $filter['add_time'] = is_array($filter['add_time']) ? $filter['add_time'] : explode(',', $filter['add_time']);
+            list($start_date, $end_date) = $filter['add_time'];
+            $start_date = Time::toTime($start_date);
+            $end_date = Time::toTime($end_date) + 86400;
+            $pay_time = [$start_date, $end_date];
+            $query->whereTime('add_time', 'between', $pay_time);
+        }
+
+        // 店铺检索
+        if (isset($filter['shop_id']) && $filter['shop_id'] > -1) {
+            $query->where('shop_id', $filter['shop_id']);
         }
 
         if (isset($filter['sort_field'], $filter['sort_order']) && !empty($filter['sort_field']) && !empty($filter['sort_order'])) {
@@ -180,9 +198,9 @@ class RefundApplyService extends BaseService
 
         try {
             Db::startTrans();
-            if ($data[""] == 1) {
+            if ($data["refund_status"] == 1) {
                 if ($data["online_balance"] > 0) {
-                    // 执行退款流refund_status程
+                    // 执行退款流程
                     $pay_params = [
                         "order_id" => $apply->order_id,
                         'refund_id' => $apply->refund_id,
@@ -218,7 +236,7 @@ class RefundApplyService extends BaseService
                     }
                 }
                 if ($data["offline_balance"] > 0) {
-                    RefundLog::create([
+                    RefundLog::create(
                         [
                             "order_id" => $apply->order_id,
                             "refund_apply_id" => $apply->refund_id,
@@ -226,7 +244,7 @@ class RefundApplyService extends BaseService
                             "refund_amount" => $data["offline_balance"],
                             "user_id" => $apply->user_id,
                         ],
-                    ]);
+                    );
                     $data["is_offline"] = 1;
                 }
             }
@@ -343,14 +361,14 @@ class RefundApplyService extends BaseService
      * @param array $data
      * @return mixed
      */
-    public function getRefundTotal(array $data): mixed
+    public function getRefundTotal(array $data,int $shopId = 0): mixed
     {
-        return RefundApply::hasWhere("orderInfo", function ($query) {
-            $query->storePlatform();
-        })
+        return $this->filterQuery([
+                "shop_id" => $shopId,
+                "refund_status" => RefundApply::REFUND_STATUS_PROCESSED,
+                'add_time' => $data
+            ])
             ->field("SUM(online_balance + offline_balance + refund_balance) AS refund_amount")
-            ->refundOrderStatus()
-            ->addTime($data)
             ->findOrEmpty()->refund_amount ?? 0;
     }
 
@@ -359,17 +377,18 @@ class RefundApplyService extends BaseService
      * @param array $data
      * @return array
      */
-    public function getRefundList(array $data): array
+    public function getRefundList(array $data,int $shopId = 0): array
     {
-        $list = RefundApply::hasWhere("orderInfo", function ($query) {
-            $query->storePlatform();
-        })
-            ->field("SUM(RefundApply.online_balance + RefundApply.offline_balance + RefundApply.refund_balance) AS refund_amount,RefundApply.add_time")
-            ->refundOrderStatus()
-            ->addTime($data)
+        $list = $this->filterQuery([
+                'shop_id' => $shopId,
+                'refund_status' => RefundApply::REFUND_STATUS_PROCESSED,
+                'add_time' => $data
+            ])
+            ->field("SUM(online_balance + offline_balance + refund_balance) AS refund_amount,add_time")
             ->select()->toArray();
+
         foreach ($list as $key => $item) {
-            if (empty($item['refund_id'])) {
+            if (empty($item['refund_amount'])) {
                 unset($list[$key]);
             }
         }
@@ -381,20 +400,20 @@ class RefundApplyService extends BaseService
      * @param array $data
      * @return int
      */
-    public function getRefundItemTotal(array $data): int
+    public function getRefundItemTotal(array $data,int $shopId = 0): int
     {
-        list($star, $end) = $data;
-        $rows = Aftersales::join("aftersales_item ai", "ai.aftersale_id = aftersales.aftersale_id", "LEFT")
-            ->join("order o", "o.order_id = aftersales.order_id", "LEFT")
-            ->where("aftersales.status", Aftersales::STATUS_COMPLETE)
-            ->whereBetween("aftersales.add_time", [Time::toTime($star), Time::toTime($end)])
-            ->field("SUM(ai.number) as total");
-        if (request()->shopId > 0) {
-            $rows->where("o.shop_id", request()->shopId);
-        }
-        $count = $rows->find()->total ?? 0;
-        $count = intval($count);
-        return $count;
+        $subQuery = app(AftersalesService::class)->filterQuery([
+            'status' => Aftersales::STATUS_COMPLETE,
+            'shop_id' => $shopId,
+            'add_time' => $data,
+        ])->field("aftersale_id")->buildSql();
+
+        $result = AftersalesItem::whereExists(function ($query) use ($subQuery) {
+                    $query->table($subQuery)->alias("sub")->whereRaw("sub.aftersale_id = aftersales_item.aftersale_id");
+                })
+                ->field("SUM(number) as total")
+                ->findOrEmpty();
+        return $result->total ?? 0;
     }
 
     /**
@@ -409,6 +428,7 @@ class RefundApplyService extends BaseService
             "order_id" => $data["order_id"],
             "user_id" => $data["user_id"],
             "aftersale_id" => $data["aftersale_id"],
+            'shop_id' => $data["shop_id"]
         ];
         $result = RefundApply::create($apply_data);
         return $result !== false;

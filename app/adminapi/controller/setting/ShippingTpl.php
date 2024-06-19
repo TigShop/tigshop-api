@@ -37,7 +37,6 @@ class ShippingTpl extends AdminBaseController
     {
         parent::__construct($app);
         $this->shippingTplService = $shippingTplService;
-        $this->checkAuthor('shippingTplManage'); //权限检查
     }
 
     /**
@@ -54,6 +53,8 @@ class ShippingTpl extends AdminBaseController
             'sort_field' => 'shipping_tpl_id',
             'sort_order' => 'desc',
         ], 'get');
+
+        $filter['shop_id'] = request()->shopId;
 
         $filterResult = $this->shippingTplService->getFilterResult($filter);
         $total = $this->shippingTplService->getFilterCount($filter);
@@ -126,7 +127,7 @@ class ShippingTpl extends AdminBaseController
         } catch (ValidateException $e) {
             return $this->error($e->getError());
         }
-        $data["store_id"] = request()->shopId;
+        $data["shop_id"] = request()->shopId;
         $result = $this->shippingTplService->createShippingTpl($data);
         if ($result) {
             return $this->success(/** LANG */'运费模板添加成功');

@@ -2,12 +2,13 @@
 
 namespace app\service\api\admin\captcha;
 
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use Fastknife\Exception\ParamException;
 use Fastknife\Service\BlockPuzzleCaptchaService;
 use Fastknife\Service\ClickWordCaptchaService;
 use think\facade\Cache;
+use utils\Util;
 
 /**
  * 验证码服务类
@@ -65,9 +66,13 @@ class CaptchaService extends BaseService
         $times = !empty($times) ? $times + 1 : 1;
         Cache::set('accessTimes:' . $this->tag, $times, 120);
     }
-    // 验证可不需要验证的最多次数，大于则
+
+    // 验证可不需要验证的最多次数，大于则需要或app wechat不需要
     public function isNeedCheck(): bool
     {
+        if (in_array(Util::getClientType(), ['miniProgram', 'ios', 'android'])) {
+            return true;
+        }
         $times = Cache::get('accessTimes:' . $this->tag);
         $times = !empty($times) ? intval($times) : 1;
         return $times <= $this->allowNoCheckTimes;

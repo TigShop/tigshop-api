@@ -3,7 +3,7 @@
 namespace app\service\api\admin\authority;
 
 use app\model\authority\Authority;
-use app\service\api\admin\BaseService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use log\AdminLog;
 
@@ -61,8 +61,8 @@ class AuthorityService extends BaseService
         if (isset($filter['keyword']) && !empty($filter['keyword'])) {
             $query->where('c.authority_name', 'like', '%' . $filter['keyword'] . '%');
         }
-        if (isset($filter['type']) && $filter['type'] != -1) {
-            $query->whereIn('c.type', explode(',', $filter['type']));
+        if (isset($filter['admin_type']) && $filter['admin_type'] != -1) {
+            $query->whereIn('c.admin_type', explode(',', $filter['admin_type']));
         }
         $query->where('c.parent_id', $filter['parent_id']);
 
@@ -177,9 +177,15 @@ class AuthorityService extends BaseService
      * @param bool $return_ids 是否返回权限id列表
      * @return array
      */
-    public function authorityList(int $authority_id = 0, int $type = 0, array $auth_list = []): array
+    public function authorityList(
+        int $authority_id = 0,
+        int $type = 0,
+        array $auth_list = [],
+        string $adminType = 'admin'
+    ): array
     {
-        $cat_list = Authority::alias('c')->field('c.authority_id, c.is_show,c.authority_sn,c.authority_name, c.parent_id, c.parent_id,c.authority_ico,c.route_link,c.child_auth')
+        $cat_list = Authority::alias('c')->where('admin_type',
+            $adminType)->field('c.authority_id, c.is_show,c.authority_sn,c.authority_name, c.parent_id, c.parent_id,c.authority_ico,c.route_link,c.child_auth')
             ->order('c.parent_id, c.sort_order ASC, c.authority_id ASC')->select();
         $cat_list = $cat_list ? $cat_list->toArray() : [];
         $res = $this->xmsbGetDataTree($cat_list, $authority_id);

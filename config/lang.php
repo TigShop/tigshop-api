@@ -13,18 +13,22 @@ return [
     // 是否使用Cookie记录
     'use_cookie'      => true,
     // 多语言cookie变量
-    'cookie_var'      => 'lyecs_lang',
+    'cookie_var' => 'tig_lang',
     // 多语言header变量
-    'header_var'      => 'lyecs-lang',
+    'header_var' => 'tig-lang',
     // 扩展语言包
     'extend_list'     => [
         'zh-cn' => [
+
+        ],
+        'en-us' => [
 
         ]
     ],
     // Accept-Language转义为对应语言包名称
     'accept_language' => [
-        'zh-hans-cn' => 'zh-cn',
+        'zh-cn' => 'zh-cn',
+        'en-us' => 'en-us',
     ],
     // 是否支持语言分组
     'allow_group'     => true,

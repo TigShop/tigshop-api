@@ -13,10 +13,11 @@ namespace app\service\api\admin\panel;
 
 use app\model\order\Order;
 use app\model\user\User;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\finance\UserRechargeOrderService;
 use app\service\api\admin\order\OrderService;
 use app\service\api\admin\sys\AccessLogService;
+use app\service\api\admin\user\UserService;
+use app\service\core\BaseService;
 use exceptions\ApiException;
 use utils\Excel;
 use utils\Time;
@@ -37,7 +38,11 @@ class StatisticsUserService extends BaseService
         $start_end_time = $this->getDateRange($filter["date_type"], $filter["start_end_time"]);
 
         list($start_date, $end_date) = $start_end_time;
-        $list = User::RegTime($start_end_time)->field("user_id,reg_time")->select()->toArray();
+        $list = app(UserService::class)->filterQuery([
+                "reg_time" => $start_end_time
+            ])
+            ->field("user_id,reg_time")
+            ->select()->toArray();
 
         // 横轴
         $horizontal_axis = $this->getHorizontalAxis($filter["date_type"], $start_date, $end_date);
@@ -98,31 +103,22 @@ class StatisticsUserService extends BaseService
      */
     public function getFilterData(array $filter): mixed
     {
-        $start_end_time = [];
-        if (!empty($filter["start_time"]) && !empty($filter["end_time"])) {
-            $start_end_time = [$filter["start_time"], $filter["end_time"]];
-        }
+        $query = app(OrderService::class)->filterQuery([
+                "pay_status" => Order::PAYMENT_PAID,
+                'add_start_time' => $filter["start_time"] ?? "",
+                'add_end_time' => $filter['end_time'] ?? "",
+                "shop_id" => $filter['shop_id'],
+            ])
+            ->leftJoin("user", "user.user_id = order.user_id")
+            ->field("user.username,user.mobile,COUNT(order.order_id) as order_num,SUM(order.total_amount) AS order_amount")
+            ->where(function ($query) use ($filter) {
+                if (!empty($filter['keyword'])) {
+                    $query->where('user.username|user.mobile', 'like', '%' . $filter['keyword'] . '%');
+                }
+            })
+            ->group("order.user_id")
+            ->order($filter["sort_field"], $filter["sort_order"]);
 
-        $query = Order::leftJoin("user", "user.user_id = order.user_id")
-            ->where("order.pay_status", ">", 0)
-            ->where("order.is_del", 0)
-            ->addTime($start_end_time)
-            ->storePlatform()
-            ->field("user.username,user.mobile,COUNT(order.order_id) as order_num,user.order_amount")
-            ->group("order.user_id");
-
-        if ($filter["sort_field"] == "order_amount") {
-            $query = $query->order("user.order_amount", $filter["sort_order"]);
-        } elseif ($filter["sort_field"] == "order_num") {
-            $query = $query->order("order_num", $filter["sort_order"]);
-        }
-
-        if (!empty($filter["keyword"])) {
-            $query->where(function ($query) use ($filter) {
-                $query->where('user.username', 'like', '%' . $filter['keyword'] . '%')
-                    ->whereOr('user.mobile', 'like', '%' . $filter['keyword'] . '%');
-            });
-        }
         return $query;
     }
 
@@ -154,13 +150,17 @@ class StatisticsUserService extends BaseService
         $view_growth_rate = $this->getGrowthRate($view_num, $prev_view_num);
 
         // 新增用户数
-        $add_user_num = User::RegTime($start_end_time)->count();
-        $prev_add_user_num = User::RegTime($prev_date)->count();
+        $add_user_num = app(UserService::class)->getFilterCount([
+            'reg_time' => $start_end_time
+        ]);
+        $prev_add_user_num = app(UserService::class)->getFilterCount([
+            'reg_time' => $prev_date
+        ]);
         $add_user_growth_rate = $this->getGrowthRate($add_user_num, $prev_add_user_num);
 
         //成交用户数
-        $deal_user_num = app(OrderService::class)->getPayOrderUserTotal($start_end_time);
-        $prev_deal_user_num = app(OrderService::class)->getPayOrderUserTotal($prev_date);
+        $deal_user_num = app(OrderService::class)->getPayOrderUserTotal($start_end_time,$filter["shop_id"]);
+        $prev_deal_user_num = app(OrderService::class)->getPayOrderUserTotal($prev_date,$filter["shop_id"]);
         $deal_user_growth_rate = $this->getGrowthRate($deal_user_num, $prev_deal_user_num);
 
         // 充值用户数

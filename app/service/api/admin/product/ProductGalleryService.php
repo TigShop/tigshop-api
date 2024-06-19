@@ -13,8 +13,8 @@ namespace app\service\api\admin\product;
 
 use app\model\product\Product;
 use app\model\product\ProductGallery;
-use app\service\api\admin\BaseService;
 use app\service\api\admin\image\Image;
+use app\service\core\BaseService;
 
 /**
  * 商品相册服务类
