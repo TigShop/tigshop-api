@@ -13,7 +13,9 @@ namespace app\adminapi\controller\product;
 
 use app\adminapi\AdminBaseController;
 use app\service\api\admin\product\CommentService;
+use app\validate\product\CommentValidate;
 use think\App;
+use think\exception\ValidateException;
 
 /**
  * 评论晒单控制器
@@ -43,7 +45,6 @@ class Comment extends AdminBaseController
     public function list(): \think\Response
     {
         $filter = $this->request->only([
-            'is_show/d' => -1,
             'keyword' => '',
             'page/d' => 1,
             'size/d' => 15,
@@ -78,15 +79,12 @@ class Comment extends AdminBaseController
     }
 
     /**
-     * 执行添加或更新操作
-     *
-     * @return \think\Response
+     * 获取请求数据
+     * @return array
      */
-    public function create(): \think\Response
+    public function requestData(): array
     {
-        $id = input('id/d', 0);
         $data = $this->request->only([
-            'comment_id' => $id,
             'username' => '',
             'avatar' => '',
             'comment_rank/d' => 1,
@@ -101,39 +99,52 @@ class Comment extends AdminBaseController
             'order_item_id/d' => 0,
         ], 'post');
 
-        $result = $this->commentService->updateComment($id, $data, true);
+        return $data;
+    }
+
+
+    /**
+     * 执行添加
+     *
+     * @return \think\Response
+     */
+    public function create(): \think\Response
+    {
+        $data = $this->requestData();
+        try {
+            validate(CommentValidate::class)
+                ->scene('create')
+                ->check($data);
+        } catch (ValidateException $e) {
+            return $this->error($e->getError());
+        }
+        $result = $this->commentService->createComment($data);
         if ($result) {
-            return $this->success('评论晒单更新成功');
+            return $this->success('评论晒单添加成功');
         } else {
-            return $this->error('评论晒单更新失败');
+            return $this->error('评论晒单添加失败');
         }
     }
 
     /**
-     * 执行添加或更新操作
+     * 执行更新操作
      *
      * @return \think\Response
      */
     public function update(): \think\Response
     {
         $id = input('id/d', 0);
-        $data = $this->request->only([
-            'comment_id' => $id,
-            'username' => '',
-            'avatar' => '',
-            'comment_rank/d' => 1,
-            'comment_tag/a' => [],
-            'content' => '',
-            'show_pics' => '',
-            'sort_order/d' => 50,
-            'is_recommend/d' => 0,
-            'is_top/d' => 0,
-            'product_id/d' => 0,
-            'order_id/d' => 0,
-            'order_item_id/d' => 0,
-        ], 'post');
+        $data = $this->requestData();
+        $data['comment_id'] = $id;
+        try {
+            validate(CommentValidate::class)
+                ->scene('update')
+                ->check($data);
+        } catch (ValidateException $e) {
+            return $this->error($e->getError());
+        }
 
-        $result = $this->commentService->updateComment($id, $data, false);
+        $result = $this->commentService->updateComment($id, $data);
         if ($result) {
             return $this->success('评论晒单更新成功');
         } else {
@@ -151,8 +162,7 @@ class Comment extends AdminBaseController
         $id = input('id/d', 0);
         $field = input('field', '');
 
-        if (!in_array($field,
-            ['content', 'is_recommend', 'sort_order', 'status', 'is_top', 'comment_rank', 'is_show'])) {
+        if (!in_array($field,['is_recommend', 'sort_order', 'is_top', 'comment_rank'])) {
             return $this->error('#field 错误');
         }
 

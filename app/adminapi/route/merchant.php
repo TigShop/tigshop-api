@@ -45,6 +45,7 @@ Route::group('merchant', function () {
         Route::get('list', 'list');
         Route::get('detail', 'detail');
         Route::post('update_field', 'updateField');
+        Route::get('user_count', 'userCount');
 
     })->prefix('merchant.merchant/');
     // 店铺管理

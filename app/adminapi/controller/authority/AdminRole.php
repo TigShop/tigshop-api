@@ -95,6 +95,7 @@ class AdminRole extends AdminBaseController
             'checkall' => '', // 是否全选
             'admin_type' => request()->adminType
         ], 'post');
+        $data["merchant_id"] = request()->merchantId;
 
         try {
             validate(AdminRoleValidate::class)
