@@ -8,7 +8,7 @@ Route::group('user', function () {
         // 账户金额变动列表
         Route::get('list', 'user.account/list');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 收货地址
     Route::group('address', function () {
@@ -25,7 +25,7 @@ Route::group('user', function () {
         // 设为选中
         Route::post('set_selected', 'user.address/setSelected');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 售后
     Route::group('aftersales', function () {
@@ -48,7 +48,7 @@ Route::group('user', function () {
         // 撤销申请售后
         Route::post('cancel', 'user.aftersales/cancel');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 商品收藏
     Route::group('collect_product', function () {
@@ -59,7 +59,7 @@ Route::group('user', function () {
         // 取消收藏
         Route::post('cancel', 'user.collectProduct/cancel');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 评论晒单
     Route::group('comment', function () {
@@ -74,7 +74,7 @@ Route::group('user', function () {
         // 评价/晒单详情
         Route::get('detail', 'user.comment/detail');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 优惠券
     Route::group('coupon', function () {
@@ -89,7 +89,7 @@ Route::group('user', function () {
         // 优惠券详情
         Route::get('detail', 'user.coupon/detail');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 留言咨询
     Route::group('feedback', function () {
@@ -98,7 +98,7 @@ Route::group('user', function () {
         // 提交留言
         Route::post('submit', 'user.feedback/submit');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 增票资质发票
     Route::group('invoice', function () {
@@ -111,7 +111,7 @@ Route::group('user', function () {
         // 判断当前用户的增票资质是否审核通过
         Route::get('get_status', 'user.invoice/getStatus');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 登录
     Route::group('login', function () {
@@ -145,7 +145,7 @@ Route::group('user', function () {
         // 删除站内信
         Route::post('del', 'user.message/del');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
 
     // 订单
@@ -167,7 +167,7 @@ Route::group('user', function () {
         // 再次购买
         Route::post('buy_again', 'user.order/buyAgain');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 订单发票
     Route::group('order_invoice', function () {
@@ -178,14 +178,14 @@ Route::group('user', function () {
         // 编辑
         Route::post('update', 'user.order_invoice/update');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 积分
     Route::group('points_log', function () {
         // 列表
         Route::get('list', 'user.pointsLog/list');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 充值
     Route::group('recharge_order', function () {
@@ -204,7 +204,7 @@ Route::group('user', function () {
         // 获取充值支付状态
         Route::get('check_status', 'user.rechargeOrder/checkStatus');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 会员登录
     Route::group('regist', function () {
@@ -246,7 +246,7 @@ Route::group('user', function () {
         // 修改头像
         Route::post('modify_avatar', 'user.user/modifyAvatar');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
     // 提现
     Route::group('withdraw_apply', function () {
@@ -263,6 +263,6 @@ Route::group('user', function () {
         // 提现申请
         Route::post('apply', 'user.withdrawApply/apply');
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
 });

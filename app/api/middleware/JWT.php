@@ -29,12 +29,9 @@ class JWT
         if ($result) {
             // 获取appUid
             $user_id = intval($result['data']->appId);
-            if (!$user_id) {
-                throw new ApiException('token数据验证失败', 401);
+            if ($user_id) {
+                app(UserService::class)->setLogin($user_id);
             }
-            app(UserService::class)->setLogin($user_id);
-        } else {
-            throw new ApiException('token数据验证失败', 401);
         }
         // 测试
         //app(UserService::class)->setLogin(1);

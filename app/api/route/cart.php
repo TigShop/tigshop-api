@@ -21,5 +21,5 @@ Route::group('cart', function () {
         Route::get('get_coupon_discount', 'cart.cart/getCouponDiscount');
     });
 })->middleware([
-    \app\api\middleware\JWT::class,
+    \app\api\middleware\CheckLogin::class,
 ]);

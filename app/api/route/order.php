@@ -18,7 +18,7 @@ Route::group('order', function () {
         Route::get('get_invoice', 'order.check/getInvoice');
 
     })->middleware([
-        \app\api\middleware\JWT::class,
+        \app\api\middleware\CheckLogin::class,
     ]);
 
     // 订单支付

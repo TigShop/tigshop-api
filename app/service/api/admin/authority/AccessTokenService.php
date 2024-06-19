@@ -78,14 +78,14 @@ class AccessTokenService extends BaseService
 
     /**
      * 验证token
-     * @return array
+     * @return false
      * @throws ApiException
      */
-    public function checkToken(): array
+    public function checkToken(): bool|array
     {
         $token = $this->getHeaderToken();
         if (!$token) {
-            throw new ApiException('签名错误:无效token', ResponseCode::NOT_TOKEN);
+            return false;
         }
         try {
             JWT::$leeway = 10; //当前时间减去60，把时间留点余地

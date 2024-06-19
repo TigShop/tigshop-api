@@ -33,7 +33,7 @@ Route::group('product', function () {
         Route::get('is_collect', 'product.product/isCollect');
         //加入购物车
         Route::post('add_to_cart', 'product.product/addToCart')->middleware([
-            \app\api\middleware\JWT::class,
+            \app\api\middleware\CheckLogin::class,
         ]);
 
     });

@@ -16,5 +16,5 @@ Route::group('merchant', function () {
         Route::get('apply_detail', 'merchant.merchant/applyDetail');
     });
 })->middleware([
-    \app\api\middleware\JWT::class,
+    \app\api\middleware\CheckLogin::class,
 ]);

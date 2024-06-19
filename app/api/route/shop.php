@@ -14,7 +14,7 @@ Route::group('shop', function () {
         Route::get('category', 'category');
         // 收藏
         Route::post('collect', 'collect')->middleware([
-            \app\api\middleware\JWT::class
+            \app\api\middleware\CheckLogin::class
         ]);
 
     });
