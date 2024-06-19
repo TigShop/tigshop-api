@@ -14,4 +14,13 @@ class CategoryValidate extends Validate
         'category_name.require' => '分类名称不能为空',
         'category_name.max' => '分类名称最多30个字符',
     ];
+
+    protected $scene = [
+        'create' => [
+            'category_name',
+        ],
+        'update' => [
+            'category_name',
+        ],
+    ];
 }

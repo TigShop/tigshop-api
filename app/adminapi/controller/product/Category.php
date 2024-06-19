@@ -13,8 +13,10 @@ namespace app\adminapi\controller\product;
 
 use app\adminapi\AdminBaseController;
 use app\service\api\admin\product\CategoryService;
+use app\validate\product\CategoryValidate;
 use log\AdminLog;
 use think\App;
+use think\exception\ValidateException;
 use tig\CacheManager;
 
 /**
@@ -102,15 +104,12 @@ class Category extends AdminBaseController
     }
 
     /**
-     * 执行更新
-     *
-     * @return \think\Response
+     * 获取请求数据
+     * @return array
      */
-    public function update(): \think\Response
+    public function requestData(): array
     {
-        $id = input('id/d', 0);
         $data = $this->request->only([
-            'category_id' => $id,
             'category_name' => '',
             'short_name' => '',
             'parent_id' => 0,
@@ -125,10 +124,34 @@ class Category extends AdminBaseController
             'is_show' => 0,
             'sort_order' => 50,
         ], 'post');
+
+        return $data;
+    }
+
+
+    /**
+     * 执行更新
+     *
+     * @return \think\Response
+     */
+    public function update(): \think\Response
+    {
+        $id = input('id/d', 0);
+        $data = $this->requestData();
+        $data['category_id'] = $id;
+
+        try {
+            validate(CategoryValidate::class)
+                ->scene('update')
+                ->check($data);
+        } catch (ValidateException $e) {
+            return $this->error($e->getError());
+        }
+
         if ($data['category_id'] == $data['parent_id']) {
             return $this->error(/** LANG */ '上级不能选自己');
         }
-        $result = $this->categoryService->updateCategory($id, $data, false);
+        $result = $this->categoryService->updateCategory($id, $data);
         if ($result) {
             AdminLog::add('编辑分类：' . $data['category_name']);
             return $this->success('分类更新成功');
@@ -183,23 +206,16 @@ class Category extends AdminBaseController
      */
     public function create(): \think\Response
     {
-        $data = $this->request->only([
-            'category_name' => '',
-            'short_name' => '',
-            'parent_id' => 0,
-            'category_pic' => '',
-            'category_ico' => '',
-            'measure_unit' => '',
-            'seo_title' => '',
-            'search_keywords' => '',
-            'keywords' => '',
-            'category_desc' => '',
-            'is_hot' => 0,
-            'is_show' => 0,
-            'sort_order' => 50,
-        ], 'post');
+        $data = $this->requestData();
+        try {
+            validate(CategoryValidate::class)
+                ->scene('create')
+                ->check($data);
+        } catch (ValidateException $e) {
+            return $this->error($e->getError());
+        }
 
-        $result = $this->categoryService->updateCategory(0, $data, true);
+        $result = $this->categoryService->createCategory($data);
         if ($result) {
             AdminLog::add('新增分类：' . $data['category_name']);
             return $this->success('分类添加成功');
