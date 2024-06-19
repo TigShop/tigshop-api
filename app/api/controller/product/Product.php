@@ -175,7 +175,8 @@ class Product extends IndexBaseController
             'ids' => null,
             'shop_id/d' => -2, // 店铺id
             'intro_type' => '', // 商品类型
-            'coupon_id' => 0
+            'coupon_id' => 0,
+            'shop_category_id' => -1
         ], 'get');
         $filterResult = app(ProductService::class)->getFilterResult($filter);
         $total = app(ProductService::class)->getFilterCount($filter);
