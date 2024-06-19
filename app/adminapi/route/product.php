@@ -23,7 +23,10 @@ Route::group('product', function () {
         Route::post('batch', 'product.brand/batch');
         // 批量更新首字母
         Route::post('update_first_word', 'product.brand/updateFirstWord');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'brandManage'
+    ]);
     // 分类
     Route::group('category', function () {
         // 列表
@@ -44,7 +47,10 @@ Route::group('product', function () {
         Route::post('batch', 'product.category/batch');
         // 详情
         Route::get('detail', 'product.category/detail');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'categoryManage'
+    ]);
     // 评论
     Route::group('comment', function () {
         // 列表
@@ -63,7 +69,10 @@ Route::group('product', function () {
         Route::post('batch', 'product.comment/batch');
         // 详情
         Route::get('detail', 'product.comment/detail');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'commentManage'
+    ]);
     // 商品管理
     Route::group('product', function () {
         // 商品列表
@@ -90,7 +99,10 @@ Route::group('product', function () {
         Route::post('recycle', 'product.product/recycle');
         // 批量操作
         Route::post('batch', 'product.product/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productManage'
+    ]);
     // 商品分组
     Route::group('product_group', function () {
         // 列表
@@ -105,7 +117,10 @@ Route::group('product', function () {
         Route::post('batch', 'batch');
         // 详情
         Route::get('detail', 'detail');
-    })->prefix('product.productGroup/');
+    })->prefix('product.productGroup/')->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productGroupManage'
+    ]);
     // 商品属性
     Route::group('product_attributes', function () {
         // 列表
@@ -122,7 +137,10 @@ Route::group('product', function () {
         Route::post('update_field', 'product.productAttributes/updateField');
         // batch批量操作
         Route::post('batch', 'product.productAttributes/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productAttributesTplManage'
+    ]);
     // 商品属性模板
     Route::group('product_attributes_tpl', function () {
         // 列表
@@ -139,7 +157,10 @@ Route::group('product', function () {
         Route::post('update_field', 'product.productAttributesTpl/updateField');
         // batch批量操作
         Route::post('batch', 'product.productAttributesTpl/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productAttributesTplManage'
+    ]);
     // 商品库存日志
     Route::group('product_inventory_log', function () {
         // 列表
@@ -148,7 +169,10 @@ Route::group('product', function () {
         Route::post('del', 'product.productAttributesTpl/del');
         // batch批量操作
         Route::post('batch', 'product.productAttributesTpl/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productInventoryLogManage'
+    ]);
     // 商品批量处理
     Route::group('product_batch', function () {
         // 图片批量处理
@@ -159,7 +183,10 @@ Route::group('product', function () {
         Route::post('product_batch_edit', 'product.productBatch/productBatchEdit');
         // 下载模版文件
         Route::post('download_template', 'product.productBatch/downloadTemplate');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productBatch'
+    ]);
     // 商品服务
     Route::group('product_services', function () {
         // 列表
@@ -176,5 +203,8 @@ Route::group('product', function () {
         Route::post('update_field', 'product.productServices/updateField');
         // batch批量操作
         Route::post('batch', 'product.productServices/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendGroupName' => 'productServicesManage'
+    ]);
 });

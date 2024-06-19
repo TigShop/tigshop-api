@@ -7,10 +7,7 @@ Route::group('user', function () {
     // 会员留言
     Route::group('feedback', function () {
         // 列表
-        Route::get('list', 'user.feedback/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'feedbackManage'
-        ]);
+        Route::get('list', 'user.feedback/list');
         // 详情
         Route::get('detail', 'user.feedback/detail');
         // 编辑
@@ -23,14 +20,14 @@ Route::group('user', function () {
         Route::post('update_field', 'user.feedback/updateField');
         // batch批量操作
         Route::post('batch', 'user.feedback/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'feedbackManage'
+    ]);
     // 会员
     Route::group('user', function () {
         // 列表
-        Route::get('list', 'user.user/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'userManage'
-        ]);
+        Route::get('list', 'user.user/list');
         // 详情
         Route::get('detail', 'user.user/detail');
         // 编辑
@@ -47,14 +44,14 @@ Route::group('user', function () {
         Route::get('user_fund_detail', 'user.user/userFundDetail');
         // 资金管理
         Route::post('fund_management', 'user.user/fundManagement');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'userManage'
+    ]);
     // 会员日志
     Route::group('user_message_log', function () {
         // 列表
-        Route::get('list', 'user.userMessageLog/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'messageLogManage'
-        ]);
+        Route::get('list', 'user.userMessageLog/list');
         // 列表
         Route::get('detail', 'user.userMessageLog/detail');
         // 新增
@@ -65,26 +62,26 @@ Route::group('user', function () {
         Route::post('del', 'user.userMessageLog/del');
         // 撤回
         Route::post('recall', 'user.userMessageLog/recall');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'messageLogManage'
+    ]);
     // 会员积分日志
     Route::group('user_points_log', function () {
         // 列表
-        Route::get('list', 'user.userPointsLog/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'integralLogManage'
-        ]);
+        Route::get('list', 'user.userPointsLog/list');
         // 删除
         Route::post('del', 'user.userPointsLog/del');
         // batch批量操作
         Route::post('batch', 'user.userPointsLog/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'integralLogManage'
+    ]);
     // 会员等级
     Route::group('user_rank', function () {
         // 列表
-        Route::get('list', 'user.userRank/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'userRankManage'
-        ]);
+        Route::get('list', 'user.userRank/list');
         // 详情
         Route::get('detail', 'user.userRank/detail');
         // 编辑
@@ -97,7 +94,10 @@ Route::group('user', function () {
         Route::post('update_field', 'user.userRank/updateField');
         // batch批量操作
         Route::post('batch', 'user.userRank/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'userRankManage'
+    ]);
 })->middleware([
     \app\adminapi\middleware\CheckAuthor::class
 ]);

@@ -53,7 +53,10 @@ class Search extends IndexBaseController
             'keyword' => '',
             'max/d' => 0,
             'min/d' => 0,
-            'intro' => ""
+            'intro' => "",
+            'coupon_id' => 0,
+            'shop_category_id' => 0,
+            'shop_id' => 0
         ]);
         $product_search = new ProductSearchService($params, 'list');
         $filter_selected = $product_search->getFilterSeleted();
@@ -83,7 +86,7 @@ class Search extends IndexBaseController
             'size' => 25,
             'intro' => "",
             'coupon_id' => 0,
-            'shop_category_id' => -1,
+            'shop_category_id' => 0,
             'shop_id' => -1
         ]);
         $product_search = new ProductSearchService($params, 'list');

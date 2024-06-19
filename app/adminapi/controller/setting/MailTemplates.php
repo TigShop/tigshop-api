@@ -37,7 +37,6 @@ class MailTemplates extends AdminBaseController
     {
         parent::__construct($app);
         $this->mailTemplatesService = $mailTemplatesService;
-        $this->checkAuthor('mailTemplatesManage'); //权限检查
     }
 
     /**

@@ -35,7 +35,6 @@ class RechargeSetting extends AdminBaseController
     {
         parent::__construct($app);
         $this->rechargeSettingService = $rechargeSettingService;
-        $this->checkAuthor('rechargeSettingManage'); //权限检查
     }
 
     /**

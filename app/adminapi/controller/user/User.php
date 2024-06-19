@@ -36,7 +36,6 @@ class User extends AdminBaseController
     {
         parent::__construct($app);
         $this->userService = $userService;
-        $this->checkAuthor('userManage'); //权限检查
     }
 
     /**

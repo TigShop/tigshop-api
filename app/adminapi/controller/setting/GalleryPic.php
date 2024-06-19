@@ -42,7 +42,6 @@ class GalleryPic extends AdminBaseController
         parent::__construct($app);
         $this->galleryPicService = $galleryPicService;
         $this->galleryService = $galleryService;
-        $this->checkAuthor('galleryPicManage'); //权限检查
     }
 
     /**

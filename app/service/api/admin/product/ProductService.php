@@ -85,7 +85,7 @@ class ProductService extends BaseService
         $filter['page'] = !empty($filter['page']) ? intval($filter['page']) : 1;
         $filter['size'] = !empty($filter['size'] && $filter['size'] < 999) ? intval($filter['size']) : 999;
         $filter['product_status'] = 1;
-        $query = $this->filterQuery($filter)->with(['seckillMinPrice', "product_sku"])
+        $query = $this->filterQuery($filter)->with(['seckillMinPrice', "product_sku", "shopIdAndName"])
             ->field('product_id,pic_thumb,pic_url,product_name,check_status,shop_id,suppliers_id,product_type,product_sn,product_price,market_price,product_status,is_best,is_new,is_hot,product_stock,sort_order');
         if (isset($filter['sort_field']) && !empty($filter['sort_field'])) {
             $query->order($filter['sort_field'], $filter['sort_order'] ?? 'desc');

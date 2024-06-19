@@ -11,6 +11,7 @@
 
 namespace app\service\api\admin\product;
 
+use app\service\api\admin\merchant\ShopProductCategoryService;
 use app\service\core\BaseService;
 
 /**
@@ -154,6 +155,7 @@ class ProductSearchService extends BaseService
             'brand' => '',
             'keyword' => '',
             'intro' => '',
+            'shop_category' => ''
         ];
         if ($this->categoryId > 0) {
             $seleted['category'] = app(CategoryService::class)->getName($this->categoryId);
@@ -167,6 +169,9 @@ class ProductSearchService extends BaseService
         }
         if ($this->introType) {
             $seleted['intro'] = $this->introType;
+        }
+        if ($this->shopCategoryId) {
+            $seleted['shop_category'] = app(ShopProductCategoryService::class)->getName($this->shopCategoryId);
         }
 
         return $seleted;
