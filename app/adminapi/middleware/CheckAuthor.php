@@ -13,7 +13,7 @@ class CheckAuthor
     {
         $authority_sn = $request->all('authorityCheckAppendName');
         if ($authority_sn) {
-            app(AuthorityService::class)->checkAuthor($authority_sn, request()->shopId, request()->authList);
+            app(AuthorityService::class)->checkAuthor($authority_sn, (int)request()->shopId, request()->authList);
         }
         return $next($request);
     }
