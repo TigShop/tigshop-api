@@ -39,7 +39,10 @@ class Shop extends Model
 
     public function getStatusTextAttr($value, $data): string
     {
-        return self::STATUS_LIST[$data['status']] ?: '';
+        if (isset($data['status'])) {
+            return self::STATUS_LIST[$data['status']] ?: '';
+        }
+        return '';
     }
 
     public function merchant()
