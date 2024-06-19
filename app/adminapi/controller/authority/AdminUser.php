@@ -248,6 +248,24 @@ class AdminUser extends AdminBaseController
     }
 
     /**
+     * 验证手机号码验证码
+     * @return Response
+     */
+    public function checkCode(): Response
+    {
+        $data = $this->request->only([
+            'mobile' => '',
+            "code" => '',
+        ], 'post');
+        $result = app(SmsService::class)->checkCode($data["mobile"], $data["code"]);
+        if ($result === true) {
+            $this->success(/** LANG */'验证成功');
+        }else{
+            $this->error(/** LANG */'验证码错误');
+        }
+    }
+
+    /**
      * 个人中心管理员账号修改
      * @return Response
      * @throws ApiException

@@ -56,6 +56,8 @@ Route::group('authority', function () {
         Route::post('modify_manage_accounts', 'authority.adminUser/modifyManageAccounts');
         // 获取验证码
         Route::get('get_code', 'authority.adminUser/getCode');
+        // 验证验证码
+        Route::post('check_code', 'authority.adminUser/checkCode');
     })->append([
         //用于权限校验的名称
         'authorityCheckAppendName' => 'adminUserManage'
