@@ -19,6 +19,7 @@ use app\validate\authority\AdminUserValidate;
 use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
+use think\facade\Cache;
 use think\facade\Db;
 use think\Response;
 use utils\Format;
@@ -259,6 +260,7 @@ class AdminUser extends AdminBaseController
         ], 'post');
         $result = app(SmsService::class)->checkCode($data["mobile"], $data["code"]);
         if ($result === true) {
+            Cache::delete('loginmobileCode:' . $data["mobile"]);
             $this->success(/** LANG */'验证成功');
         }else{
             $this->error(/** LANG */'验证码错误');
