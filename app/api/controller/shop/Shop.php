@@ -16,6 +16,7 @@ use app\model\user\CollectShop;
 use app\service\api\admin\decorate\DecorateDiscreteService;
 use app\service\api\admin\decorate\DecorateService;
 use app\service\api\admin\decorate\MobileCatNavService;
+use app\service\api\admin\merchant\ShopProductCategoryService;
 use app\service\api\admin\merchant\ShopService;
 use app\service\api\admin\product\ProductService;
 use app\service\api\admin\promotion\CouponService;
@@ -107,6 +108,18 @@ class Shop extends IndexBaseController
             ]);
         }
         return $this->success();
+    }
+
+    public function category()
+    {
+        $id = input('shop_id/d', 0);
+        if (empty($id)) {
+            return $this->error("请选择店铺");
+        }
+        $catList = app(ShopProductCategoryService::class)->catList(0, $id);
+        return $this->success([
+            'list' => $catList,
+        ]);
     }
 
 

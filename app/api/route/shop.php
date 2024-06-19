@@ -10,6 +10,8 @@ Route::group('shop', function () {
         Route::get('decorate', 'decorate');
         // 详情
         Route::get('detail', 'detail');
+        // 分类
+        Route::get('category', 'category');
         // 收藏
         Route::post('collect', 'collect')->middleware([
             \app\api\middleware\JWT::class

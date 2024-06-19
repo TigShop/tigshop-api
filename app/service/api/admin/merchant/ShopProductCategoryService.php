@@ -219,7 +219,7 @@ class ShopProductCategoryService extends BaseService
             $parentObj['children'][] = &$tmpMap[$rv['category_id']];
         }
         if (!isset($tree['children'])) {
-            return (array)$tree;
+            return (array)[];
         }
         return (array)$tree['children'];
     }

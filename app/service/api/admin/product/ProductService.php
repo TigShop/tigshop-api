@@ -184,6 +184,11 @@ class ProductService extends BaseService
             $query->where('shop_id', $filter["shop_id"]);
         }
 
+        // 店铺id
+        if (isset($filter["shop_category_id"]) && $filter["shop_category_id"] > -1) {
+            $query->where('shop_category_id', $filter["shop_category_id"]);
+        }
+
         // 商品类型
         if (isset($filter["intro_type"]) && !empty($filter["intro_type"])) {
             $query->introType($filter["intro_type"]);
