@@ -37,7 +37,6 @@ class ShippingTpl extends AdminBaseController
     {
         parent::__construct($app);
         $this->shippingTplService = $shippingTplService;
-        $this->checkAuthor('shippingTplManage'); //权限检查
     }
 
     /**

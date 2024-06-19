@@ -35,7 +35,6 @@ class MessageType extends AdminBaseController
     {
         parent::__construct($app);
         $this->messageTypeService = $messageTypeService;
-        $this->checkAuthor('messageTypeManage'); //权限检查
     }
 
     /**

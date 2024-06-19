@@ -38,7 +38,6 @@ class Gallery extends AdminBaseController
     {
         parent::__construct($app);
         $this->galleryService = $galleryService;
-        $this->checkAuthor('galleryManage'); //权限检查
     }
 
     /**

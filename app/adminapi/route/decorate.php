@@ -33,13 +33,13 @@ Route::group('decorate', function () {
     // 装修模块管理
     Route::group('decorate_discrete', function () {
         // 装修模块详情
-        Route::get('detail', 'decorate.decorateDiscrete/detail')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'pcDecorateOtherManage'
-        ]);
+        Route::get('detail', 'decorate.decorateDiscrete/detail');
         // 装修模块编辑
         Route::post('update', 'decorate.decorateDiscrete/update');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'pcDecorateOtherManage'
+    ]);
     // 装修异步请求
     Route::group('decorate_request', function () {
         // 获取商品列表
@@ -86,10 +86,7 @@ Route::group('decorate', function () {
     // PC分类抽屉
     Route::group('pc_cat_floor', function () {
         // PC分类抽屉列表
-        Route::get('list', 'decorate.pcCatFloor/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'pcCatFloorManage'
-        ]);
+        Route::get('list', 'decorate.pcCatFloor/list');
         // PC分类抽屉详情
         Route::get('detail', 'decorate.pcCatFloor/detail');
         // PC分类抽屉添加
@@ -102,14 +99,14 @@ Route::group('decorate', function () {
         Route::post('del', 'decorate.pcCatFloor/del');
         // 批量操作
         Route::post('batch', 'decorate.pcCatFloor/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'pcCatFloorManage'
+    ]);
     // PC导航栏
     Route::group('pc_navigation', function () {
         // PC导航栏列表
-        Route::get('list', 'decorate.pcNavigation/list')->append([
-            //用于权限校验的名称
-            'authorityCheckAppendName' => 'pcNavigationManage'
-        ]);
+        Route::get('list', 'decorate.pcNavigation/list');
         // PC导航栏详情
         Route::get('detail', 'decorate.pcNavigation/detail');
         // 获取上级导航
@@ -126,7 +123,10 @@ Route::group('decorate', function () {
         Route::post('del', 'decorate.pcNavigation/del');
         // 批量操作
         Route::post('batch', 'decorate.pcNavigation/batch');
-    });
+    })->append([
+        //用于权限校验的名称
+        'authorityCheckAppendName' => 'pcNavigationManage'
+    ]);
 })->middleware([
     \app\adminapi\middleware\CheckAuthor::class
 ]);

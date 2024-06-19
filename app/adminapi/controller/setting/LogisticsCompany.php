@@ -37,7 +37,6 @@ class LogisticsCompany extends AdminBaseController
     {
         parent::__construct($app);
         $this->logisticsCompanyService = $logisticsCompanyService;
-        $this->checkAuthor('logisticsCompanyManage'); //权限检查
     }
 
     /**

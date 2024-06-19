@@ -37,7 +37,6 @@ class Seckill extends AdminBaseController
     {
         parent::__construct($app);
         $this->seckillService = $seckillService;
-        $this->checkAuthor('seckillManage'); //权限检查
     }
 
     /**

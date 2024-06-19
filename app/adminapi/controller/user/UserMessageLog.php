@@ -30,7 +30,6 @@ class UserMessageLog extends AdminBaseController
     public function __construct(App $app, protected UserMessageLogService $userMessageLogService)
     {
         parent::__construct($app);
-        $this->checkAuthor('userMessageLog'); //权限检查
     }
 
     /**

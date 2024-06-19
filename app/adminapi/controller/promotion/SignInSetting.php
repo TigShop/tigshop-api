@@ -37,7 +37,6 @@ class SignInSetting extends AdminBaseController
     {
         parent::__construct($app);
         $this->signInSettingService = $signInSettingService;
-        $this->checkAuthor('signInSettingManage'); //权限检查
     }
 
     /**

@@ -37,7 +37,6 @@ class FriendLinks extends AdminBaseController
     {
         parent::__construct($app);
         $this->friendLinksService = $friendLinksService;
-        $this->checkAuthor('friendLinksManage'); //权限检查
     }
 
     /**

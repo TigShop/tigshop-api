@@ -38,7 +38,6 @@ class ProductPromotion extends AdminBaseController
     {
         parent::__construct($app);
         $this->productPromotionService = $productPromotionService;
-        $this->checkAuthor('productPromotionManage'); //权限检查
     }
 
     /**

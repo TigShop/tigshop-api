@@ -32,7 +32,6 @@ class Feedback extends AdminBaseController
     {
         parent::__construct($app);
         $this->feedbackService = $feedbackService;
-        $this->checkAuthor('feedbackManage'); //权限检查
     }
 
     /**
