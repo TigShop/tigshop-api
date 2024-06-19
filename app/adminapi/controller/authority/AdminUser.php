@@ -261,9 +261,9 @@ class AdminUser extends AdminBaseController
         $result = app(SmsService::class)->checkCode($data["mobile"], $data["code"]);
         if ($result === true) {
             Cache::delete('loginmobileCode:' . $data["mobile"]);
-            $this->success(/** LANG */'验证成功');
+            return $this->success(/** LANG */'验证成功');
         }else{
-            $this->error(/** LANG */'验证码错误');
+            return $this->error(/** LANG */'验证码错误');
         }
     }
 
