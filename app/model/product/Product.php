@@ -11,6 +11,7 @@
 
 namespace app\model\product;
 
+use app\model\merchant\Shop;
 use app\model\promotion\SeckillItem;
 use app\service\api\admin\product\CategoryService;
 use think\Model;
@@ -47,6 +48,11 @@ class Product extends Model
     public function productSku()
     {
         return $this->hasMany(ProductSku::class, 'product_id', 'product_id');
+    }
+
+    public function shopIdAndName()
+    {
+        return $this->hasOne(Shop::class, 'shop_id', 'shop_id')->field(['shop_id', 'shop_title']);
     }
 
     // 审核状态
