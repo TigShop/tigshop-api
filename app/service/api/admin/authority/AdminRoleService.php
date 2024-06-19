@@ -118,6 +118,8 @@ class AdminRoleService extends BaseService
             'role_name' => $data['role_name'],
             'role_desc' => $data['role_desc'],
             'authority_list' => $data["authority_list"],
+            'admin_type' => $data['admin_type'],
+            'merchant_id' => $data['merchant_id'],
         ];
 
         if ($data["checkall"]) {
