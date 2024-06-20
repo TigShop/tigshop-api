@@ -74,8 +74,7 @@ class Product extends AdminBaseController
             'check_status/d' => -1, // 审核状态
         ], 'get');
 
-        if(request()->adminType == 'shop')
-        {
+        if (request()->adminType == 'shop') {
             $filter['shop_id'] = request()->shopId;
         }
         $filterResult = $this->productService->getFilterResult($filter);
@@ -107,13 +106,13 @@ class Product extends AdminBaseController
         $item = [];
         $item['user_rank_list'] = app(UserRankService::class)->getUserRankList();
 
-        foreach ($item['user_rank_list'] as $key => $value) {
-            if (isset($member_price_list[$value['rank_id']]) && !empty($member_price_list[$value['rank_id']])) {
-                $item['user_rank_list'][$key]['price'] = $member_price_list[$value['rank_id']];
-            } else {
-                $item['user_rank_list'][$key]['price'] = -1;
-            }
-        }
+        // foreach ($item['user_rank_list'] as $key => $value) {
+        //     if (isset($member_price_list[$value['rank_id']]) && !empty($member_price_list[$value['rank_id']])) {
+        //         $item['user_rank_list'][$key]['price'] = $member_price_list[$value['rank_id']];
+        //     } else {
+        //         $item['user_rank_list'][$key]['price'] = -1;
+        //     }
+        // }
         if (request()->shopId > 0) {
             if (Config::get('store_product_need_check') == 1) {
                 $item['check_status'] = 0;
@@ -131,7 +130,7 @@ class Product extends AdminBaseController
             'suppliers_list' => $suppliers_list,
             'service_list' => $service_list,
             'attr_tpl_list' => $attr_tpl_list,
-            'item' => $item
+            'item' => $item,
         ]);
     }
 
@@ -197,7 +196,6 @@ class Product extends AdminBaseController
         }
     }
 
-
     /**
      * 获取分词
      * @return \think\Response
@@ -224,7 +222,6 @@ class Product extends AdminBaseController
             'shipping_tpl_list' => $shipping_tpl_list,
         ]);
     }
-
 
     /**
      * 新增接口
@@ -283,7 +280,7 @@ class Product extends AdminBaseController
             'product_article_list' => [],
             'img_list' => [],
             'shop_id' => request()->shopId,
-            'shop_category_id' => 0
+            'shop_category_id' => 0,
         ], 'post');
         validate(ProductValidate::class)->only(array_keys($data))->check($data);
         $result = $this->productService->updateProduct($id, $data, true);
@@ -358,7 +355,7 @@ class Product extends AdminBaseController
             'check_reason' => '',
             'product_article_list' => [],
             'img_list' => [],
-            'shop_category_id' => 0
+            'shop_category_id' => 0,
         ], 'post');
 
         /* 处理属性 */
@@ -405,7 +402,7 @@ class Product extends AdminBaseController
             'product_status',
             'is_delete',
             'product_stock',
-            'productSku'
+            'productSku',
         ])) {
             return $this->error('#field 错误');
         }

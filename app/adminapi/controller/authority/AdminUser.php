@@ -19,6 +19,7 @@ use app\validate\authority\AdminUserValidate;
 use exceptions\ApiException;
 use think\App;
 use think\exception\ValidateException;
+use think\facade\Cache;
 use think\facade\Db;
 use think\Response;
 use utils\Format;
@@ -244,6 +245,25 @@ class AdminUser extends AdminBaseController
             return $this->success(/** LANG */'批量操作执行成功！');
         } else {
             return $this->error(/** LANG */'#type 错误');
+        }
+    }
+
+    /**
+     * 验证手机号码验证码
+     * @return Response
+     */
+    public function checkCode(): Response
+    {
+        $data = $this->request->only([
+            'mobile' => '',
+            "code" => '',
+        ], 'post');
+        $result = app(SmsService::class)->checkCode($data["mobile"], $data["code"]);
+        if ($result === true) {
+            Cache::delete('loginmobileCode:' . $data["mobile"]);
+            return $this->success(/** LANG */'验证成功');
+        }else{
+            return $this->error(/** LANG */'验证码错误');
         }
     }
 
