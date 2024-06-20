@@ -35,7 +35,22 @@ class JWT
                 'common/verification/check',
             ]
         )) {
-            app(AdminUserService::class)->setLogin(1);
+            $result = app(AccessTokenService::class)->setApp('admin')->checkToken();
+            if ($result) {
+                // 获取adminUid
+                $admin_id = intval($result['data']->adminId);
+                if (!$admin_id) {
+                    throw new Exception('token数据验证失败', ResponseCode::NOT_TOKEN);
+                }
+                app(AdminUserService::class)->setLogin($admin_id);
+                if (request()->adminType == 'shop' && Request::pathinfo() != 'merchant/shop/my_shop' && !in_array(request()->shopId,
+                        request()->shopIds)) {
+                    throw new ApiException('非法请求');
+                }
+            } else {
+                // token验证失败
+                throw new Exception('token验证失败', ResponseCode::NOT_TOKEN);
+            }
         }
 
         return $next($request);
